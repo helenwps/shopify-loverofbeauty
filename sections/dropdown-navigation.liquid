@@ -28,7 +28,8 @@
                     <div class="menu-column">
                       <h4 class="column-title">{{ block.settings.column_1_title }}</h4>
                       <ul class="menu-list">
-                        {% assign items_1 = block.settings.column_1_items | split: '|' %}
+                        {% assign items_1 = block.settings.column_1_items | split: '
+' %}
                         {% for item in items_1 %}
                           {% if item != blank %}
                             {% assign link_parts = item | split: ':' %}
@@ -45,7 +46,8 @@
                     <div class="menu-column">
                       <h4 class="column-title">{{ block.settings.column_2_title }}</h4>
                       <ul class="menu-list">
-                        {% assign items_2 = block.settings.column_2_items | split: '|' %}
+                        {% assign items_2 = block.settings.column_2_items | split: '
+' %}
                         {% for item in items_2 %}
                           {% if item != blank %}
                             {% assign link_parts = item | split: ':' %}
@@ -62,7 +64,8 @@
                     <div class="menu-column">
                       <h4 class="column-title">{{ block.settings.column_3_title }}</h4>
                       <ul class="menu-list">
-                        {% assign items_3 = block.settings.column_3_items | split: '|' %}
+                        {% assign items_3 = block.settings.column_3_items | split: '
+' %}
                         {% for item in items_3 %}
                           {% if item != blank %}
                             {% assign link_parts = item | split: ':' %}
@@ -79,7 +82,8 @@
                     <div class="menu-column">
                       <h4 class="column-title">{{ block.settings.column_4_title }}</h4>
                       <ul class="menu-list">
-                        {% assign items_4 = block.settings.column_4_items | split: '|' %}
+                        {% assign items_4 = block.settings.column_4_items | split: '
+' %}
                         {% for item in items_4 %}
                           {% if item != blank %}
                             {% assign link_parts = item | split: ':' %}
@@ -96,7 +100,8 @@
                     <div class="menu-column">
                       <h4 class="column-title">{{ block.settings.column_5_title }}</h4>
                       <ul class="menu-list">
-                        {% assign items_5 = block.settings.column_5_items | split: '|' %}
+                        {% assign items_5 = block.settings.column_5_items | split: '
+' %}
                         {% for item in items_5 %}
                           {% if item != blank %}
                             {% assign link_parts = item | split: ':' %}
@@ -682,13 +687,13 @@
           "type": "text",
           "id": "menu_title",
           "label": "Menu Title",
-          "default": "Category"
+          "default": "Menu"
         },
         {
           "type": "text",
           "id": "column_1_title",
           "label": "Column 1 Title",
-          "default": "Category 1"
+          "default": "Column 1"
         },
         {
           "type": "textarea",
@@ -701,7 +706,7 @@
           "type": "text",
           "id": "column_2_title",
           "label": "Column 2 Title",
-          "default": "Category 2"
+          "default": "Column 2"
         },
         {
           "type": "textarea",
@@ -714,7 +719,7 @@
           "type": "text",
           "id": "column_3_title",
           "label": "Column 3 Title",
-          "default": "Category 3"
+          "default": "Column 3"
         },
         {
           "type": "textarea",
@@ -727,7 +732,7 @@
           "type": "text",
           "id": "column_4_title",
           "label": "Column 4 Title (Optional)",
-          "default": ""
+          "default": "Column 4"
         },
         {
           "type": "textarea",
@@ -740,7 +745,7 @@
           "type": "text",
           "id": "column_5_title",
           "label": "Column 5 Title (Optional)",
-          "default": ""
+          "default": "Column 5"
         },
         {
           "type": "textarea",
@@ -763,7 +768,7 @@
           "type": "text",
           "id": "image_caption",
           "label": "Image Caption",
-          "placeholder": "e.g., Summer Wedding Guest"
+          "default": "Image"
         }
       ]
     }
@@ -781,7 +786,8 @@
             "column_2_title": "Dress Code",
             "column_2_items": "Black Tie: /collections/black-tie\nCocktail: /collections/cocktail",
             "column_3_title": "Season",
-            "column_3_items": "Summer: /collections/summer\nFall: /collections/fall"
+            "column_3_items": "Summer: /collections/summer\nFall: /collections/fall",
+            "image_caption": "Summer Wedding Guest"
           }
         }
       ]
