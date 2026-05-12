@@ -12,7 +12,7 @@
     <div class="nav-content">
       {% for block in section.blocks %}
         {% if block.type == 'menu_item' %}
-          <div class="dropdown-menu-item">
+          <div class="dropdown-menu-item" data-menu-id="{{ forloop.index0 }}">
             <button class="dropdown-trigger" aria-expanded="false" aria-label="Toggle {{ block.settings.menu_title }} menu">
               <span class="menu-title">{{ block.settings.menu_title }}</span>
               <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
@@ -141,6 +141,9 @@
     </div>
   </nav>
 
+  <!-- Dropdown Overlay (for fullscreen effect) -->
+  <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
   <!-- Mobile Menu Overlay -->
   <div class="mobile-menu-overlay" id="menuOverlay"></div>
 </div>
@@ -202,6 +205,7 @@
     padding: {{ section.settings.nav_padding }};
     max-width: 100%;
     margin: 0 auto;
+    position: relative;
   }
 
   .nav-content {
@@ -209,6 +213,8 @@
     width: 100%;
     gap: 2rem;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 100;
   }
 
   .dropdown-menu-item {
@@ -229,6 +235,7 @@
     transition: all 0.3s ease;
     border-bottom: 3px solid transparent;
     white-space: nowrap;
+    position: relative;
   }
 
   .dropdown-trigger:hover {
@@ -236,12 +243,12 @@
     border-bottom-color: var(--hover-color);
   }
 
-  .dropdown-trigger[aria-expanded="true"] {
+  .dropdown-trigger.active {
     color: var(--hover-color);
     border-bottom-color: var(--hover-color);
   }
 
-  .dropdown-trigger[aria-expanded="true"] .dropdown-icon {
+  .dropdown-trigger.active .dropdown-icon {
     transform: rotate(180deg);
   }
 
@@ -249,24 +256,56 @@
     transition: transform 0.3s ease;
   }
 
-  /* PC端 - hover时显示菜单 */
+  /* PC端 - 全屏下拉菜单 */
+  .dropdown-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.02) 100%);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .dropdown-overlay.active {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* PC端 dropdown内容 - 全屏显示 */
   .dropdown-content {
-    position: absolute;
+    position: fixed;
     top: 100%;
     left: 0;
+    right: 0;
+    width: 100vw;
     background-color: white;
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    min-width: max-content;
-    max-width: 90vw;
-    padding: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    padding: 3rem 2rem;
+    max-height: 600px;
+    overflow-y: auto;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transform: translateY(-30px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
-    margin-top: 0.5rem;
+    pointer-events: none;
+  }
+
+  /* 从上往下拉的渐变和动画效果 */
+  .dropdown-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
     pointer-events: none;
   }
 
@@ -278,24 +317,56 @@
     pointer-events: auto;
   }
 
+  .dropdown-menu-item:hover .dropdown-overlay {
+    display: block;
+    opacity: 1;
+  }
+
   .dropdown-inner {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     align-items: flex-start;
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .menu-columns {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    flex: 1;
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
+  /* 菜单列的渐进显示 */
   .menu-column {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     min-width: 150px;
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+  }
+
+  .menu-column:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+
+  .menu-column:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .menu-column:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+
+  .menu-column:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+
+  .menu-column:nth-child(5) {
+    animation-delay: 0.25s;
   }
 
   .column-title {
@@ -305,6 +376,13 @@
     margin: 0;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--border-color);
+  }
+
+  .menu-columns {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    flex: 1;
   }
 
   .menu-list {
@@ -336,6 +414,7 @@
     gap: 1rem;
     min-width: 250px;
     flex-shrink: 0;
+    animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s backwards;
   }
 
   .menu-image-container {
@@ -385,15 +464,15 @@
 
   /* Tablet Breakpoint (1024px and below) */
   @media (max-width: 1024px) {
-    .menu-columns {
-      gap: 1.5rem;
-    }
-
     .dropdown-content {
-      padding: 1.5rem;
+      padding: 2rem 1.5rem;
     }
 
     .dropdown-inner {
+      gap: 2rem;
+    }
+
+    .menu-columns {
       gap: 1.5rem;
     }
   }
@@ -455,8 +534,10 @@
       border-bottom: none;
     }
 
+    /* 移动端 dropdown内容 - 本地展开 */
     .dropdown-content {
       position: static;
+      width: auto;
       opacity: 0;
       visibility: hidden;
       max-height: 0;
@@ -464,13 +545,14 @@
       transform: none;
       border: none;
       border-radius: 0;
-      box-shadow: none;
-      margin: 0;
       padding: 0;
       background-color: #f9f9f9;
-      min-width: 100%;
       transition: max-height 0.3s ease, padding 0.3s ease;
       pointer-events: none;
+    }
+
+    .dropdown-content::before {
+      display: none;
     }
 
     .dropdown-menu-item[open] .dropdown-content {
@@ -484,6 +566,11 @@
     .dropdown-inner {
       flex-direction: column;
       gap: 1.5rem;
+      animation: none;
+    }
+
+    .menu-column {
+      animation: none;
     }
 
     .menu-columns {
@@ -493,6 +580,7 @@
 
     .menu-image-wrapper {
       min-width: 100%;
+      animation: none;
     }
 
     .menu-image {
@@ -527,7 +615,9 @@
     const mobileToggle = document.getElementById('mobileMenuToggle');
     const navContainer = document.getElementById('navContainer');
     const menuOverlay = document.getElementById('menuOverlay');
+    const dropdownOverlay = document.getElementById('dropdownOverlay');
     const triggers = document.querySelectorAll('.dropdown-trigger');
+    const menuItems = document.querySelectorAll('.dropdown-menu-item');
 
     // Mobile menu toggle
     if (mobileToggle) {
@@ -547,12 +637,46 @@
       });
     }
 
-    // Dropdown menu functionality (for mobile only)
+    // PC端 dropdown hover和高亮功能
+    menuItems.forEach((item, index) => {
+      const trigger = item.querySelector('.dropdown-trigger');
+      
+      item.addEventListener('mouseenter', function() {
+        if (window.innerWidth > 768) {
+          // 激活当前菜单项
+          trigger.classList.add('active');
+          dropdownOverlay?.classList.add('active');
+          
+          // 移除其他项的激活状态
+          triggers.forEach((t, i) => {
+            if (i !== index) {
+              t.classList.remove('active');
+            }
+          });
+        }
+      });
+
+      item.addEventListener('mouseleave', function() {
+        if (window.innerWidth > 768) {
+          trigger.classList.remove('active');
+          dropdownOverlay?.classList.remove('active');
+        }
+      });
+    });
+
+    // 点击overlay关闭
+    if (dropdownOverlay) {
+      dropdownOverlay.addEventListener('click', function() {
+        triggers.forEach(t => t.classList.remove('active'));
+        dropdownOverlay.classList.remove('active');
+      });
+    }
+
+    // 移动端点击功能
     triggers.forEach(trigger => {
       trigger.addEventListener('click', function(e) {
         // 只在移动端处理点击事件
         if (window.innerWidth > 768) {
-          e.preventDefault();
           return;
         }
 
