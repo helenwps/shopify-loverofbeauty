@@ -24,14 +24,14 @@
               <div class="dropdown-inner">
                 <!-- Dynamic menu columns -->
                 <div class="menu-columns">
-                  {% for column in menu_item.settings.columns %}
-                    {% if column != blank and column.column_title != blank %}
+                  {% for column_block in menu_item.blocks %}
+                    {% if column_block.type == 'menu_column' %}
                       <div class="menu-column">
-                        <h4 class="column-title">{{ column.column_title }}</h4>
+                        <h4 class="column-title">{{ column_block.settings.column_title }}</h4>
                         <ul class="menu-list">
-                          {% for link in column.column_links %}
-                            {% if link.column_link_text != blank and link.column_link_url != blank %}
-                              <li><a href="{{ link.column_link_url }}" class="menu-link">{{ link.column_link_text }}</a></li>
+                          {% for link_block in column_block.blocks %}
+                            {% if link_block.type == 'menu_link' %}
+                              <li><a href="{{ link_block.settings.column_link_url }}" class="menu-link">{{ link_block.settings.column_link_text }}</a></li>
                             {% endif %}
                           {% endfor %}
                         </ul>
@@ -601,36 +601,6 @@
       "id": "image_border_radius",
       "label": "Image Border Radius",
       "default": "8px"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "menu_item",
-      "name": "Menu Item",
-      "settings": [
-        {
-          "type": "text",
-          "id": "menu_title",
-          "label": "Menu Title",
-          "default": "Category"
-        },
-        {
-          "type": "image_picker",
-          "id": "menu_image",
-          "label": "Menu Image"
-        },
-        {
-          "type": "url",
-          "id": "image_link",
-          "label": "Image Link URL"
-        },
-        {
-          "type": "text",
-          "id": "image_caption",
-          "label": "Image Caption",
-          "placeholder": "e.g., Summer Wedding Guest"
-        }
-      ]
     }
   ],
   "blocks": [
