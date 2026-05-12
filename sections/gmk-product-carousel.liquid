@@ -1,0 +1,750 @@
+{% comment %}
+  Section: GMK Product Carousel
+  Purpose: Horizontal product recommendation carousel.
+{% endcomment %}
+
+{% liquid
+  assign anchor_id = section.settings.anchor_id | strip | handleize
+  if anchor_id == blank
+    assign section_dom_id = 'section-' | append: section.id
+  else
+    assign section_dom_id = anchor_id
+  endif
+
+  assign section_scope = 'gmk-product-carousel--' | append: section.id
+  assign enable_section = section.settings.enable_section
+  assign heading = section.settings.heading
+  assign heading_plain = heading | strip_html | strip
+  assign selected_products = section.settings.products
+  assign selected_collection = section.settings.collection
+  assign product_items = selected_products
+  assign product_limit = section.settings.product_limit
+  assign show_price = section.settings.show_price
+  assign show_arrows = section.settings.show_arrows
+  assign section_width = section.settings.section_width
+  assign content_max_width = section.settings.content_max_width
+  assign edge_gutter = section.settings.edge_gutter
+  assign card_gap = section.settings.card_gap
+  assign visible_cards = section.settings.visible_cards
+  assign visible_cards_num = visible_cards | plus: 0
+  assign desktop_gap_count = visible_cards_num | minus: 1
+  assign desktop_gap_total = card_gap | times: desktop_gap_count
+  assign tablet_gap_total = card_gap | times: 2
+  assign image_ratio_width = section.settings.image_ratio_width | default: 2
+  assign image_ratio_height = section.settings.image_ratio_height | default: 3
+  assign mobile_image_ratio_width = section.settings.mobile_image_ratio_width | default: 4
+  assign mobile_image_ratio_height = section.settings.mobile_image_ratio_height | default: 5
+  assign padding_top = section.settings.padding_top
+  assign padding_bottom = section.settings.padding_bottom
+  assign padding_top_mobile = section.settings.padding_top_mobile
+  assign padding_bottom_mobile = section.settings.padding_bottom_mobile
+  assign background_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+  assign price_color = section.settings.price_color
+  assign nav_bg_color = section.settings.nav_bg_color
+  assign nav_border_color = section.settings.nav_border_color
+  assign total_products = 0
+  assign render_section = false
+
+  case section_width
+    when 'full'
+      assign section_width_limit = '100%'
+    when 'wide'
+      assign section_width_limit = '1920px'
+    when 'standard'
+      assign section_width_limit = '1440px'
+    when 'narrow'
+      assign section_width_limit = '1180px'
+    else
+      assign section_width_limit = '1920px'
+  endcase
+
+  if selected_products != blank
+    assign total_products = selected_products.size
+    assign render_section = true
+  elsif selected_collection != blank and selected_collection.products_count > 0
+    assign product_items = selected_collection.products
+    assign total_products = selected_collection.products_count
+    assign render_section = true
+  endif
+
+  if total_products > product_limit
+    assign total_products = product_limit
+  endif
+%}
+
+{% if enable_section and render_section %}
+  <style>
+    .{{ section_scope }} {
+      --gmk-product-carousel-section-max: {{ section_width_limit }};
+      --gmk-product-carousel-content-max: {{ content_max_width }}px;
+      --gmk-product-carousel-edge: {{ edge_gutter }}px;
+      --gmk-product-carousel-gap: {{ card_gap }}px;
+      --gmk-product-carousel-card-width: calc((100% - {{ desktop_gap_total }}px) / {{ visible_cards_num }});
+      --gmk-product-carousel-image-ratio: {{ image_ratio_width }} / {{ image_ratio_height }};
+      --gmk-product-carousel-mobile-image-ratio: {{ mobile_image_ratio_width }} / {{ mobile_image_ratio_height }};
+      --gmk-product-carousel-padding-top: {{ padding_top }}px;
+      --gmk-product-carousel-padding-bottom: {{ padding_bottom }}px;
+      --gmk-product-carousel-padding-top-mobile: {{ padding_top_mobile }}px;
+      --gmk-product-carousel-padding-bottom-mobile: {{ padding_bottom_mobile }}px;
+      --gmk-product-carousel-bg: {{ background_color }};
+      --gmk-product-carousel-text: {{ text_color }};
+      --gmk-product-carousel-price: {{ price_color }};
+      --gmk-product-carousel-nav-bg: {{ nav_bg_color }};
+      --gmk-product-carousel-nav-border: {{ nav_border_color }};
+      width: 100%;
+      scroll-margin-top: 72px;
+      padding-top: var(--gmk-product-carousel-padding-top);
+      padding-bottom: var(--gmk-product-carousel-padding-bottom);
+      background: var(--gmk-product-carousel-bg);
+      color: var(--gmk-product-carousel-text);
+      font-family: Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .{{ section_scope }} * {
+      box-sizing: border-box;
+    }
+
+    .{{ section_scope }} a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__container {
+      width: min(calc(100% - (var(--gmk-product-carousel-edge) * 2)), var(--gmk-product-carousel-section-max));
+      margin: 0 auto;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__content {
+      width: min(100%, var(--gmk-product-carousel-content-max));
+      margin: 0 auto;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__header {
+      margin: 0 0 24px;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__heading {
+      margin: 0;
+      color: var(--gmk-product-carousel-text);
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__viewport {
+      position: relative;
+      width: 100%;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__scroller {
+      display: flex;
+      gap: var(--gmk-product-carousel-gap);
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      list-style: none;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__scroller::-webkit-scrollbar {
+      display: none;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__card {
+      flex: 0 0 var(--gmk-product-carousel-card-width);
+      min-width: 0;
+      scroll-snap-align: start;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__link {
+      display: block;
+      min-width: 0;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__media {
+      display: block;
+      width: 100%;
+      aspect-ratio: var(--gmk-product-carousel-image-ratio);
+      overflow: hidden;
+      background: #f4f4f4;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      transform: scale(1);
+      transition: transform 320ms ease;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__link:hover .gmk-product-carousel__image {
+      transform: scale(1.025);
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__title {
+      min-height: 48px;
+      margin: 16px 0 0;
+      color: var(--gmk-product-carousel-text);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.28;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__price {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 8px;
+      margin: 8px 0 0;
+      color: var(--gmk-product-carousel-price);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__compare {
+      color: rgba(17, 17, 17, 0.56);
+      text-decoration: line-through;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__nav {
+      position: absolute;
+      top: 43%;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      padding: 0;
+      border: 1.5px solid var(--gmk-product-carousel-nav-border);
+      border-radius: 50%;
+      color: var(--gmk-product-carousel-text);
+      background: var(--gmk-product-carousel-nav-bg);
+      cursor: pointer;
+      transform: translateY(-50%);
+      transition: opacity 180ms ease, background 180ms ease;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__nav:hover {
+      background: var(--gmk-product-carousel-nav-bg);
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__nav[hidden] {
+      display: none;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__nav--prev {
+      left: 12px;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__nav--next {
+      right: 12px;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__nav-icon {
+      display: block;
+      width: 14px;
+      height: 14px;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__nav--prev .gmk-product-carousel__nav-icon {
+      transform: translateX(3px) rotate(-135deg);
+    }
+
+    .{{ section_scope }} .gmk-product-carousel__nav--next .gmk-product-carousel__nav-icon {
+      transform: translateX(-3px) rotate(45deg);
+    }
+
+    @media screen and (max-width: 989px) {
+      .{{ section_scope }} {
+        --gmk-product-carousel-card-width: calc((100% - {{ tablet_gap_total }}px) / 3);
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__heading {
+        font-size: 26px;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      .{{ section_scope }} {
+        overflow: hidden;
+        padding-top: var(--gmk-product-carousel-padding-top-mobile);
+        padding-bottom: var(--gmk-product-carousel-padding-bottom-mobile);
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__container,
+      .{{ section_scope }} .gmk-product-carousel__content {
+        width: 100%;
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__header {
+        width: min(calc(100% - 32px), 520px);
+        margin: 0 auto 18px;
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__heading {
+        font-size: 24px;
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__scroller {
+        gap: 12px;
+        padding: 0 16px;
+        scroll-padding-inline: 16px;
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__card {
+        flex-basis: min(72vw, 320px);
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__media {
+        aspect-ratio: var(--gmk-product-carousel-mobile-image-ratio);
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__title {
+        min-height: auto;
+        margin-top: 12px;
+        font-size: 16px;
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__price {
+        font-size: 16px;
+      }
+
+      .{{ section_scope }} .gmk-product-carousel__nav {
+        display: none;
+      }
+    }
+  </style>
+
+  <section
+    id="{{ section_dom_id | escape }}"
+    class="gmk-product-carousel {{ section_scope | escape }}"
+    data-section-id="{{ section.id }}"
+    data-section-type="{{ section.type | escape }}"
+  >
+    <div class="gmk-product-carousel__container">
+      <div class="gmk-product-carousel__content">
+        {% if heading_plain != blank %}
+          <div class="gmk-product-carousel__header">
+            <h2 class="gmk-product-carousel__heading">{{ heading }}</h2>
+          </div>
+        {% endif %}
+
+        <div class="gmk-product-carousel__viewport">
+          <div class="gmk-product-carousel__scroller" role="list" tabindex="0">
+            {% for item_product in product_items limit: product_limit %}
+              {% liquid
+                assign product_image = item_product.featured_media.preview_image
+                if product_image == blank
+                  assign product_image = item_product.featured_image
+                endif
+                assign product_title = item_product.title | strip
+                assign image_alt = product_image.alt | default: product_title
+              %}
+
+              {% if item_product != blank and product_title != blank %}
+                <article class="gmk-product-carousel__card" role="listitem">
+                  <a class="gmk-product-carousel__link" href="{{ item_product.url }}" aria-label="{{ product_title | escape }}">
+                    {% if product_image != blank %}
+                      <picture class="gmk-product-carousel__media">
+                        <img
+                          class="gmk-product-carousel__image"
+                          src="{{ product_image | image_url: width: 720 }}"
+                          srcset="
+                            {{ product_image | image_url: width: 360 }} 360w,
+                            {{ product_image | image_url: width: 540 }} 540w,
+                            {{ product_image | image_url: width: 720 }} 720w,
+                            {{ product_image | image_url: width: 900 }} 900w
+                          "
+                          sizes="(max-width: 749px) 72vw, (max-width: 989px) 33vw, 16vw"
+                          alt="{{ image_alt | escape }}"
+                          loading="{% if forloop.index <= visible_cards_num %}eager{% else %}lazy{% endif %}"
+                          decoding="async"
+                          {% if product_image.presentation.focal_point != blank %}
+                            style="object-position: {{ product_image.presentation.focal_point }};"
+                          {% endif %}
+                        >
+                      </picture>
+                    {% endif %}
+
+                    <h3 class="gmk-product-carousel__title">{{ product_title }}</h3>
+
+                    {% if show_price %}
+                      <div class="gmk-product-carousel__price">
+                        <span class="gmk-product-carousel__current">{{ item_product.price | money }}</span>
+                        {% if item_product.compare_at_price > item_product.price %}
+                          <span class="gmk-product-carousel__compare">{{ item_product.compare_at_price | money }}</span>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </a>
+                </article>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          {% if show_arrows and total_products > 1 %}
+            <button class="gmk-product-carousel__nav gmk-product-carousel__nav--prev" type="button" aria-label="Previous products" hidden>
+              <span class="gmk-product-carousel__nav-icon" aria-hidden="true"></span>
+            </button>
+            <button class="gmk-product-carousel__nav gmk-product-carousel__nav--next" type="button" aria-label="Next products">
+              <span class="gmk-product-carousel__nav-icon" aria-hidden="true"></span>
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% if show_arrows and total_products > 1 %}
+    <script>
+      (function() {
+        var sectionId = {{ section_dom_id | json }};
+        var section = document.getElementById(sectionId);
+
+        if (!section || section.dataset.gmkProductCarouselReady === 'true') {
+          return;
+        }
+
+        var scroller = section.querySelector('.gmk-product-carousel__scroller');
+        var prevButton = section.querySelector('.gmk-product-carousel__nav--prev');
+        var nextButton = section.querySelector('.gmk-product-carousel__nav--next');
+
+        if (!scroller || !prevButton || !nextButton) {
+          return;
+        }
+
+        section.dataset.gmkProductCarouselReady = 'true';
+
+        var getScrollStep = function() {
+          var card = scroller.querySelector('.gmk-product-carousel__card');
+          var styles = window.getComputedStyle(scroller);
+          var gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+
+          if (!card) {
+            return scroller.clientWidth;
+          }
+
+          return card.getBoundingClientRect().width + gap;
+        };
+
+        var updateButtons = function() {
+          var maxScroll = scroller.scrollWidth - scroller.clientWidth;
+          var canScroll = maxScroll > 2;
+
+          prevButton.hidden = !canScroll || scroller.scrollLeft <= 2;
+          nextButton.hidden = !canScroll || scroller.scrollLeft >= maxScroll - 2;
+        };
+
+        var scrollByDirection = function(direction) {
+          var step = getScrollStep();
+          var distance = Math.max(step, scroller.clientWidth * 0.84);
+
+          scroller.scrollBy({
+            left: direction * distance,
+            behavior: 'smooth'
+          });
+        };
+
+        prevButton.addEventListener('click', function() {
+          scrollByDirection(-1);
+        });
+
+        nextButton.addEventListener('click', function() {
+          scrollByDirection(1);
+        });
+
+        scroller.addEventListener('scroll', updateButtons, { passive: true });
+
+        if ('ResizeObserver' in window) {
+          var observer = new ResizeObserver(updateButtons);
+          observer.observe(scroller);
+        } else {
+          window.addEventListener('resize', updateButtons);
+        }
+
+        updateButtons();
+      })();
+    </script>
+  {% endif %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "GMK Product Carousel",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_section",
+      "label": "启用 Section / Enable section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "锚点 ID / Anchor ID",
+      "info": "小写英文、数字、连字符 / Lowercase letters, numbers, and hyphens."
+    },
+    {
+      "type": "header",
+      "content": "内容设置 / Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "标题 / Heading",
+      "default": "Just For You"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "推荐商品 / Products",
+      "limit": 20
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "备用系列 / Fallback collection"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "商品数量 / Product limit",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "显示价格 / Show price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "显示箭头 / Show arrows",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "布局设置 / Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "区块宽度 / Section width",
+      "default": "full",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "内容最大宽度 / Content max width",
+      "min": 960,
+      "max": 2400,
+      "step": 20,
+      "unit": "px",
+      "default": 1920
+    },
+    {
+      "type": "range",
+      "id": "edge_gutter",
+      "label": "页面边距 / Edge gutter",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "卡片间距 / Card gap",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "visible_cards",
+      "label": "桌面可见卡片 / Desktop cards",
+      "default": "6",
+      "options": [
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        },
+        {
+          "value": "7",
+          "label": "7"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_ratio_width",
+      "label": "图片比例宽 / Image ratio width",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "image_ratio_height",
+      "label": "图片比例高 / Image ratio height",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_ratio_width",
+      "label": "移动端比例宽 / Mobile ratio width",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_ratio_height",
+      "label": "移动端比例高 / Mobile ratio height",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "间距设置 / Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "顶部间距 / Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "底部间距 / Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "移动端顶部间距 / Mobile padding top",
+      "min": 0,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "移动端底部间距 / Mobile padding bottom",
+      "min": 0,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "样式设置 / Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "背景颜色 / Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文字颜色 / Text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "价格颜色 / Price color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "nav_bg_color",
+      "label": "箭头背景 / Arrow background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_border_color",
+      "label": "箭头边框 / Arrow border",
+      "default": "#222222"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GMK Product Carousel",
+      "category": "GMK"
+    }
+  ]
+}
+{% endschema %}

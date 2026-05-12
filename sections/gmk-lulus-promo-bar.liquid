@@ -1,0 +1,409 @@
+{% comment %}
+  Section: GMK Lulus Promo Bar
+  Purpose: Lulus-style two-row promotion announcement bar.
+  Blocks: none
+{% endcomment %}
+
+{% liquid
+  assign section_id = 'gmk-lulus-promo-bar-' | append: section.id
+  assign enable_section = section.settings.enable_section
+  assign anchor_id = section.settings.anchor_id | strip | handleize
+  assign section_width = section.settings.section_width
+  assign content_max_width = section.settings.content_max_width
+  assign top_height = section.settings.top_height
+  assign terms_height = section.settings.terms_height
+  assign kicker = section.settings.kicker | strip
+  assign offer_text = section.settings.offer_text
+  assign offer_plain = offer_text | strip_html | strip
+  assign code_prefix = section.settings.code_prefix | strip
+  assign code_value = section.settings.code_value | strip
+  assign terms_text = section.settings.terms_text | strip
+  assign details_label = section.settings.details_label | strip
+  assign details_link = section.settings.details_link
+  assign promo_background_color = section.settings.promo_background_color
+  assign terms_background_color = section.settings.terms_background_color
+  assign text_color = section.settings.text_color
+  assign border_color = section.settings.border_color
+  assign has_top_content = false
+  assign has_terms_content = false
+  assign render_section = false
+
+  if kicker != blank or offer_plain != blank or code_prefix != blank or code_value != blank
+    assign has_top_content = true
+  endif
+
+  if terms_text != blank or details_label != blank
+    assign has_terms_content = true
+  endif
+
+  if has_top_content or has_terms_content
+    assign render_section = true
+  endif
+
+  case section_width
+    when 'full'
+      assign container_width = '100%'
+    when 'wide'
+      assign container_width = content_max_width | append: 'px'
+    when 'standard'
+      assign container_width = '1440px'
+    when 'narrow'
+      assign container_width = '1180px'
+    else
+      assign container_width = content_max_width | append: 'px'
+  endcase
+%}
+
+{% if enable_section and render_section %}
+  <style>
+    #{{ section_id }} {
+      --gmk-lulus-promo-bar-container: {{ container_width }};
+      --gmk-lulus-promo-bar-top-height: {{ top_height }}px;
+      --gmk-lulus-promo-bar-terms-height: {{ terms_height }}px;
+      --gmk-lulus-promo-bar-promo-bg: {{ promo_background_color }};
+      --gmk-lulus-promo-bar-terms-bg: {{ terms_background_color }};
+      --gmk-lulus-promo-bar-text: {{ text_color }};
+      --gmk-lulus-promo-bar-border: {{ border_color }};
+      width: 100%;
+      background: var(--gmk-lulus-promo-bar-terms-bg);
+      color: var(--gmk-lulus-promo-bar-text);
+      font-family: Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+      scroll-margin-top: 72px;
+    }
+
+    #{{ section_id }} * {
+      box-sizing: border-box;
+    }
+
+    #{{ section_id }} a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__anchor {
+      position: relative;
+      top: -72px;
+      display: block;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__top {
+      min-height: var(--gmk-lulus-promo-bar-top-height);
+      background: var(--gmk-lulus-promo-bar-promo-bg);
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__terms {
+      min-height: var(--gmk-lulus-promo-bar-terms-height);
+      border-bottom: 1px solid var(--gmk-lulus-promo-bar-border);
+      background: var(--gmk-lulus-promo-bar-terms-bg);
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__top-inner,
+    #{{ section_id }} .gmk-lulus-promo-bar__terms-inner {
+      width: min(100%, var(--gmk-lulus-promo-bar-container));
+      min-height: inherit;
+      margin: 0 auto;
+      padding: 0 clamp(18px, 3vw, 48px);
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__top-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      column-gap: clamp(28px, 5.4vw, 96px);
+      text-align: center;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__kicker,
+    #{{ section_id }} .gmk-lulus-promo-bar__code {
+      font-size: clamp(20px, 1.32vw, 27px);
+      font-weight: 400;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__kicker {
+      grid-column: 1;
+      justify-self: end;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__offer {
+      grid-column: 2;
+      justify-self: center;
+      font-size: clamp(24px, 1.56vw, 32px);
+      font-weight: 700;
+      line-height: 1.16;
+      white-space: nowrap;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__offer p {
+      margin: 0;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__code {
+      grid-column: 3;
+      justify-self: start;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__code-value {
+      font-weight: 700;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__terms-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-align: center;
+      font-size: clamp(12px, 0.76vw, 15px);
+      font-weight: 400;
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #{{ section_id }} .gmk-lulus-promo-bar__details {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    @media screen and (max-width: 749px) {
+      #{{ section_id }} {
+        --gmk-lulus-promo-bar-top-height: auto;
+      }
+
+      #{{ section_id }} .gmk-lulus-promo-bar__top-inner {
+        grid-template-columns: 1fr;
+        row-gap: 6px;
+        padding-top: 14px;
+        padding-bottom: 14px;
+      }
+
+      #{{ section_id }} .gmk-lulus-promo-bar__kicker,
+      #{{ section_id }} .gmk-lulus-promo-bar__offer,
+      #{{ section_id }} .gmk-lulus-promo-bar__code {
+        grid-column: auto;
+        justify-self: center;
+        white-space: normal;
+      }
+
+      #{{ section_id }} .gmk-lulus-promo-bar__terms-inner {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        flex-wrap: wrap;
+        letter-spacing: 0.8px;
+      }
+    }
+  </style>
+
+  <section id="{{ section_id }}" class="gmk-lulus-promo-bar">
+    {% if anchor_id != blank %}
+      <span id="{{ anchor_id }}" class="gmk-lulus-promo-bar__anchor"></span>
+    {% endif %}
+
+    {% if has_top_content %}
+      <div class="gmk-lulus-promo-bar__top">
+        <div class="gmk-lulus-promo-bar__top-inner">
+          {% if kicker != blank %}
+            <div class="gmk-lulus-promo-bar__kicker">{{ kicker | escape }}</div>
+          {% endif %}
+
+          {% if offer_plain != blank %}
+            <div class="gmk-lulus-promo-bar__offer">{{ offer_text }}</div>
+          {% endif %}
+
+          {% if code_prefix != blank or code_value != blank %}
+            <div class="gmk-lulus-promo-bar__code">
+              {% if code_prefix != blank %}
+                <span class="gmk-lulus-promo-bar__code-prefix">{{ code_prefix | escape }}</span>
+              {% endif %}
+              {% if code_value != blank %}
+                <span class="gmk-lulus-promo-bar__code-value">{{ code_value | escape }}</span>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if has_terms_content %}
+      <div class="gmk-lulus-promo-bar__terms">
+        <div class="gmk-lulus-promo-bar__terms-inner">
+          {% if terms_text != blank %}
+            <span class="gmk-lulus-promo-bar__terms-text">{{ terms_text | escape }}</span>
+          {% endif %}
+
+          {% if details_label != blank and details_link != blank %}
+            <a class="gmk-lulus-promo-bar__details" href="{{ details_link }}">{{ details_label | escape }}</a>
+          {% elsif details_label != blank %}
+            <span class="gmk-lulus-promo-bar__details">{{ details_label | escape }}</span>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "GMK Promo Bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "基础设置｜Base settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_section",
+      "label": "启用 Section｜Enable section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "锚点 ID｜Anchor ID",
+      "info": "可选，用于页面内跳转｜Optional anchor for page jump"
+    },
+    {
+      "type": "header",
+      "content": "内容设置｜Content settings"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "提示文案｜Kicker",
+      "default": "Limited Time Only"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "offer_text",
+      "label": "主优惠文案｜Offer text",
+      "default": "20% Off Select Styles"
+    },
+    {
+      "type": "text",
+      "id": "code_prefix",
+      "label": "优惠码前缀｜Code prefix",
+      "default": "Code:"
+    },
+    {
+      "type": "text",
+      "id": "code_value",
+      "label": "优惠码｜Code",
+      "default": "DEALS20"
+    },
+    {
+      "type": "text",
+      "id": "terms_text",
+      "label": "条款文案｜Terms text",
+      "default": "TERMS APPLY."
+    },
+    {
+      "type": "text",
+      "id": "details_label",
+      "label": "详情文案｜Details label",
+      "default": "SEE DETAILS."
+    },
+    {
+      "type": "url",
+      "id": "details_link",
+      "label": "详情链接｜Details link"
+    },
+    {
+      "type": "header",
+      "content": "布局设置｜Layout settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "区块宽度｜Section width",
+      "default": "full",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "内容最大宽度｜Content max width",
+      "min": 960,
+      "max": 1920,
+      "step": 20,
+      "unit": "px",
+      "default": 1180
+    },
+    {
+      "type": "range",
+      "id": "top_height",
+      "label": "顶部高度｜Top height",
+      "min": 48,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 92
+    },
+    {
+      "type": "range",
+      "id": "terms_height",
+      "label": "条款高度｜Terms height",
+      "min": 32,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "样式设置｜Style settings"
+    },
+    {
+      "type": "color",
+      "id": "promo_background_color",
+      "label": "促销背景色｜Promo background",
+      "default": "#f8b4bf"
+    },
+    {
+      "type": "color",
+      "id": "terms_background_color",
+      "label": "条款背景色｜Terms background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文字颜色｜Text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "边框颜色｜Border color",
+      "default": "#e8e8e8"
+    }
+  ],
+  "presets": [
+    {
+      "name": "GMK Promo Bar",
+      "category": "GMK"
+    }
+  ]
+}
+{% endschema %}

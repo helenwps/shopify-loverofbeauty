@@ -1,0 +1,250 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "gmk_lulus_footer_QVkd9E": {
+      "type": "gmk-lulus-footer",
+      "blocks": {
+        "link_column_cgjGxq": {
+          "type": "link_column",
+          "settings": {
+            "title": "Shop Dresses",
+            "links_text": "Prom Dresses|/collections/prom-dresses\nDresses|/collections/dresses\nWedding Guest Dresses|/collections/wedding-guest-dresses\nBridesmaid Dresses|/collections/bridesmaid-dresses\nCocktail Dresses|/collections/cocktail-dresses"
+          }
+        },
+        "link_column_YGHmJY": {
+          "type": "link_column",
+          "settings": {
+            "title": "Quick Links",
+            "links_text": "View Account|/account\nTrack Your Order|/pages/track-order\nInitiate Return/Exchange|/pages/returns\nPromotions|/pages/promotions\nCustomer Reviews|/pages/customer-reviews"
+          }
+        },
+        "link_column_7Y689E": {
+          "type": "link_column",
+          "settings": {
+            "title": "Customer Care",
+            "links_text": "Help Center|/pages/help-center\nReturn/Exchange Policy|/pages/return-exchange-policy\nShipping Policy|/pages/shipping-policy\nPromo Terms|/pages/promo-terms\nGiveaways|/pages/giveaways"
+          }
+        },
+        "link_column_x6jWmQ": {
+          "type": "link_column",
+          "settings": {
+            "title": "Services",
+            "links_text": "Affiliate Program|/pages/affiliate-program\nStudent Discount|/pages/student-discount"
+          }
+        },
+        "link_column_iHmNyC": {
+          "type": "link_column",
+          "settings": {
+            "title": "About",
+            "links_text": "Our Story|/pages/our-story\nCareers|/pages/careers\nOur Blog|/blogs/news\nInvestors|/pages/investors\nWholesale|/pages/wholesale"
+          }
+        }
+      },
+      "block_order": [
+        "link_column_cgjGxq",
+        "link_column_YGHmJY",
+        "link_column_7Y689E",
+        "link_column_x6jWmQ",
+        "link_column_iHmNyC"
+      ],
+      "name": "GMK Lulus Footer",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "show_logo_bar": true,
+        "logo_text": "lovelulus",
+        "logo_bold_prefix": "love",
+        "logo_mark": "°",
+        "logo_link": "",
+        "show_newsletter": true,
+        "newsletter_heading": "Get rewarded just for shopping!",
+        "newsletter_placeholder": "Enter email for newsletter signup",
+        "newsletter_submit_label": "Sign up",
+        "newsletter_success_text": "Thanks for signing up.",
+        "newsletter_consent": "<p>By entering my email address, I agree to receive promotional emails from Lulus and agree to the <a href=\"/policies/terms-of-service\">Terms of Service</a>, <a href=\"/policies/privacy-policy\">Privacy Policy</a> and <a href=\"/pages/financial-incentive-notice\">Financial Incentive Notice</a>. <a href=\"/pages/unsubscribe\">Unsubscribe at any time from emails here</a>.</p>",
+        "show_socials": true,
+        "instagram_url": "",
+        "pinterest_url": "",
+        "facebook_url": "",
+        "x_url": "",
+        "youtube_url": "",
+        "tiktok_url": "",
+        "show_utility_badges": true,
+        "accessibility_url": "",
+        "experience_settings_url": "",
+        "legal_links_text": "Terms of Service|/policies/terms-of-service\nPrivacy Policy|/policies/privacy-policy\nFinancial Incentive Notice|/pages/financial-incentive-notice\nCA Supply Chains|/pages/ca-supply-chains\nExperience Settings|#experience-settings\nYour Privacy Choices|#privacy-choices|privacy\nAccessibility|/pages/accessibility\nSite Map|/pages/site-map",
+        "copyright_text": "© 2026 Lulu's Fashion Lounge, LLC",
+        "section_width": "wide",
+        "content_max_width": 1760,
+        "edge_gutter": 28,
+        "logo_bar_height": 88,
+        "newsletter_width": 510,
+        "main_gap": 204,
+        "column_gap": 60,
+        "padding_top": 64,
+        "padding_bottom": 32,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 32,
+        "logo_font_size": 28,
+        "newsletter_heading_font_size": 12,
+        "newsletter_input_font_size": 14,
+        "newsletter_message_font_size": 16,
+        "newsletter_consent_font_size": 10,
+        "footer_column_title_font_size": 14,
+        "footer_column_link_font_size": 12,
+        "legal_link_font_size": 10,
+        "copyright_font_size": 10,
+        "background_color": "#ffffff",
+        "text_color": "#171717",
+        "muted_color": "#515151",
+        "border_color": "#e5e5e5",
+        "icon_color": "#171717",
+        "privacy_badge_color": "#2f7bff"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "newsletter": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Newsletter",
+            "content": "<p>Subscribe to receive updates, and more.</p>",
+            "show_social_media": true
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "menu": "footer",
+            "mobile_width": "half_width",
+            "show_menu_title": true,
+            "menu_title": "",
+            "collapse_content_on_mobile": false
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "title": "About our theme",
+            "content": "<p><a href=\"https://www.zalify.com/theme\" target=\"_blank\" title=\"https://www.zalify.com/theme\">Zalify Theme</a> is a next-generation theme template designed specifically for Shopify, with a more exquisite design and better performance.</p>"
+          }
+        },
+        "contact": {
+          "type": "contact",
+          "settings": {
+            "title": "About Shopify",
+            "email": "xxx@xxx.com",
+            "phone": "(613) XXX-XXXX",
+            "address": "150 Elgin Street in Ottawa, Ontario",
+            "mobile_width": "full_width",
+            "collapse_content_on_mobile": false
+          }
+        }
+      },
+      "block_order": [
+        "newsletter",
+        "links",
+        "text",
+        "contact"
+      ],
+      "disabled": true,
+      "settings": {
+        "show_payment_icons": true,
+        "show_powered_by_shopify": true,
+        "show_country_selector": true,
+        "show_country_flag": true,
+        "show_country_name": false,
+        "show_locale_selector": true
+      }
+    },
+    "bottom-bar": {
+      "type": "bottom-bar",
+      "disabled": true,
+      "settings": {
+        "reduce_padding": true,
+        "show_payment_icons": false,
+        "navigation_menu": "",
+        "content": "",
+        "background_type": "boxed"
+      }
+    },
+    "footer-menu": {
+      "type": "footer-menu",
+      "blocks": {
+        "navigation-1": {
+          "type": "navigation",
+          "settings": {
+            "icon": "squares-four",
+            "label": "Collections",
+            "link": ""
+          }
+        },
+        "navigation-2": {
+          "type": "navigation",
+          "settings": {
+            "icon": "article",
+            "label": "Blogs",
+            "link": ""
+          }
+        },
+        "search": {
+          "type": "search",
+          "settings": {}
+        },
+        "cart": {
+          "type": "cart",
+          "settings": {
+            "cart_badge_background": "rgba(0,0,0,0)",
+            "cart_badge_text_color": "rgba(0,0,0,0)"
+          }
+        }
+      },
+      "block_order": [
+        "navigation-1",
+        "navigation-2",
+        "search",
+        "cart"
+      ],
+      "disabled": true,
+      "settings": {
+        "background": "rgba(0,0,0,0)",
+        "text_color": "rgba(0,0,0,0)"
+      }
+    },
+    "back-to-top": {
+      "type": "back-to-top",
+      "settings": {
+        "enable": false,
+        "show_only_on_index": true,
+        "vertical_offset": 1200,
+        "icon": "caret-double-up",
+        "shape": "circle",
+        "size": 56,
+        "desktop_right_distance": 56,
+        "desktop_bottom_distance": 108,
+        "mobile_right_distance": 32,
+        "mobile_bottom_distance": 108,
+        "background": "#ffffff",
+        "text_color": "#1a1a1a"
+      }
+    }
+  },
+  "order": [
+    "gmk_lulus_footer_QVkd9E",
+    "footer",
+    "bottom-bar",
+    "footer-menu",
+    "back-to-top"
+  ]
+}

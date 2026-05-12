@@ -1,0 +1,561 @@
+{% comment %}
+  Section: GMK Lulus Trending Tiles
+  Purpose: Lulus-style trending collection image links.
+  Blocks: item
+{% endcomment %}
+
+{% liquid
+  assign section_id = 'gmk-lulus-trending-tiles-' | append: section.id
+  assign enable_section = section.settings.enable_section
+  assign anchor_id = section.settings.anchor_id | strip
+  assign section_width = section.settings.section_width
+  assign content_max_width = section.settings.content_max_width
+  assign edge_gutter = section.settings.edge_gutter
+  assign image_ratio_width = section.settings.image_ratio_width | default: 48
+  assign image_ratio_height = section.settings.image_ratio_height | default: 70
+  assign mobile_image_ratio_width = section.settings.mobile_image_ratio_width | default: 4
+  assign mobile_image_ratio_height = section.settings.mobile_image_ratio_height | default: 5
+  assign heading = section.settings.heading
+  assign heading_plain = heading | strip_html | strip
+  assign subtext = section.settings.subtext | strip
+  assign padding_top = section.settings.padding_top
+  assign padding_bottom = section.settings.padding_bottom
+  assign padding_top_mobile = section.settings.padding_top_mobile
+  assign padding_bottom_mobile = section.settings.padding_bottom_mobile
+  assign background_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+  assign render_section = false
+
+  case section_width
+    when 'full'
+      assign container_width = '100%'
+    when 'wide'
+      assign container_width = content_max_width | append: 'px'
+    when 'standard'
+      assign container_width = '1440px'
+    when 'narrow'
+      assign container_width = '1180px'
+    else
+      assign container_width = content_max_width | append: 'px'
+  endcase
+
+  for block in section.blocks
+    if block.type == 'item' and block.settings.image != blank
+      assign render_section = true
+      break
+    endif
+  endfor
+%}
+
+{% if enable_section and render_section %}
+  <style>
+    #{{ section_id }} {
+      --gmk-lulus-trending-tiles-container: {{ container_width }};
+      --gmk-lulus-trending-tiles-edge: {{ edge_gutter }}px;
+      --gmk-lulus-trending-tiles-image-ratio: {{ image_ratio_width }} / {{ image_ratio_height }};
+      --gmk-lulus-trending-tiles-mobile-image-ratio: {{ mobile_image_ratio_width }} / {{ mobile_image_ratio_height }};
+      --gmk-lulus-trending-tiles-padding-top: {{ padding_top }}px;
+      --gmk-lulus-trending-tiles-padding-bottom: {{ padding_bottom }}px;
+      --gmk-lulus-trending-tiles-padding-top-mobile: {{ padding_top_mobile }}px;
+      --gmk-lulus-trending-tiles-padding-bottom-mobile: {{ padding_bottom_mobile }}px;
+      --gmk-lulus-trending-tiles-bg: {{ background_color }};
+      --gmk-lulus-trending-tiles-text: {{ text_color }};
+      width: 100%;
+      scroll-margin-top: 72px;
+      padding-top: var(--gmk-lulus-trending-tiles-padding-top);
+      padding-bottom: var(--gmk-lulus-trending-tiles-padding-bottom);
+      background: var(--gmk-lulus-trending-tiles-bg);
+      color: var(--gmk-lulus-trending-tiles-text);
+      font-family: Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+    }
+
+    #{{ section_id }} * {
+      box-sizing: border-box;
+    }
+
+    #{{ section_id }} a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__anchor {
+      position: relative;
+      top: -72px;
+      display: block;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__body {
+      width: min(calc(100% - (var(--gmk-lulus-trending-tiles-edge) * 2)), var(--gmk-lulus-trending-tiles-container));
+      margin: 0 auto;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__header {
+      width: min(100%, 920px);
+      margin: 0 auto 58px;
+      text-align: center;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__heading {
+      margin: 0;
+      color: var(--gmk-lulus-trending-tiles-text);
+      font-size: clamp(30px, 2vw, 40px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__subtext {
+      margin: 16px 0 0;
+      color: var(--gmk-lulus-trending-tiles-text);
+      font-size: clamp(18px, 1.36vw, 28px);
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0 18px;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__item {
+      display: block;
+      min-width: 0;
+      color: var(--gmk-lulus-trending-tiles-text);
+      text-align: center;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__media {
+      display: block;
+      width: 100%;
+      aspect-ratio: var(--gmk-lulus-trending-tiles-image-ratio);
+      overflow: hidden;
+      background: #f4f4f4;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      transform: scale(1);
+      transition: transform 320ms ease;
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__item[href]:hover .gmk-lulus-trending-tiles__image {
+      transform: scale(1.025);
+    }
+
+    #{{ section_id }} .gmk-lulus-trending-tiles__title {
+      display: inline-block;
+      max-width: 100%;
+      margin: 38px 0 0;
+      color: var(--gmk-lulus-trending-tiles-text);
+      font-size: clamp(20px, 1.25vw, 26px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: 0;
+      text-decoration-line: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 5px;
+      overflow-wrap: anywhere;
+    }
+
+    @media screen and (max-width: 989px) {
+      #{{ section_id }} .gmk-lulus-trending-tiles__header {
+        margin-bottom: 40px;
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 36px 18px;
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__title {
+        margin-top: 24px;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      #{{ section_id }} {
+        overflow: hidden;
+        padding-top: var(--gmk-lulus-trending-tiles-padding-top-mobile);
+        padding-bottom: var(--gmk-lulus-trending-tiles-padding-bottom-mobile);
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__body {
+        width: 100%;
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__header {
+        width: min(calc(100% - 32px), 520px);
+        margin-bottom: 30px;
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__heading {
+        font-size: 30px;
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__subtext {
+        margin-top: 10px;
+        font-size: 18px;
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__grid {
+        display: flex;
+        gap: 16px;
+        padding: 0 16px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__item {
+        flex: 0 0 min(76vw, 360px);
+        scroll-snap-align: start;
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__media {
+        aspect-ratio: var(--gmk-lulus-trending-tiles-mobile-image-ratio);
+      }
+
+      #{{ section_id }} .gmk-lulus-trending-tiles__title {
+        margin-top: 20px;
+        font-size: 21px;
+      }
+    }
+  </style>
+
+  <section
+    id="{{ section_id }}"
+    class="gmk-lulus-trending-tiles"
+    data-section-id="{{ section.id }}"
+    data-section-type="{{ section.type | escape }}"
+  >
+    {% if anchor_id != blank %}
+      <span id="{{ anchor_id | escape }}" class="gmk-lulus-trending-tiles__anchor" aria-hidden="true"></span>
+    {% endif %}
+
+    <div class="gmk-lulus-trending-tiles__body">
+      {% if heading_plain != blank or subtext != blank %}
+        <div class="gmk-lulus-trending-tiles__header">
+          {% if heading_plain != blank %}
+            <h2 class="gmk-lulus-trending-tiles__heading">{{ heading }}</h2>
+          {% endif %}
+
+          {% if subtext != blank %}
+            <div class="gmk-lulus-trending-tiles__subtext">{{ subtext | escape | newline_to_br }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="gmk-lulus-trending-tiles__grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'item' %}
+            {% liquid
+              assign image = block.settings.image
+              assign title = block.settings.title | strip
+              assign link_url = block.settings.link_url
+              assign image_alt = image.alt | default: title
+            %}
+
+            {% if image != blank %}
+              {% if link_url != blank %}
+                <a
+                  class="gmk-lulus-trending-tiles__item"
+                  href="{{ link_url }}"
+                  aria-label="{% if title != blank %}{{ title | escape }}{% else %}{{ image_alt | escape }}{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+              {% else %}
+                <div class="gmk-lulus-trending-tiles__item" {{ block.shopify_attributes }}>
+              {% endif %}
+                  <picture class="gmk-lulus-trending-tiles__media">
+                    <img
+                      class="gmk-lulus-trending-tiles__image"
+                      src="{{ image | image_url: width: 1200 }}"
+                      srcset="
+                        {{ image | image_url: width: 600 }} 600w,
+                        {{ image | image_url: width: 900 }} 900w,
+                        {{ image | image_url: width: 1200 }} 1200w,
+                        {{ image | image_url: width: 1600 }} 1600w
+                      "
+                      sizes="(min-width: 990px) 25vw, (min-width: 750px) 50vw, 76vw"
+                      width="{{ image.width }}"
+                      height="{{ image.height }}"
+                      alt="{{ image_alt | escape }}"
+                      loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                      decoding="async"
+                      {% if image.presentation.focal_point != blank %}
+                        style="object-position: {{ image.presentation.focal_point }};"
+                      {% endif %}
+                    >
+                  </picture>
+
+                  {% if title != blank %}
+                    <span class="gmk-lulus-trending-tiles__title">{{ title }}</span>
+                  {% endif %}
+              {% if link_url != blank %}
+                </a>
+              {% else %}
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "GMK Trending Tiles",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_section",
+      "label": "启用 Section｜Enable section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "锚点 ID｜Anchor ID",
+      "info": "小写英文、数字、连字符。Lowercase letters, numbers, and hyphens."
+    },
+    {
+      "type": "header",
+      "content": "内容设置｜Content settings"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "标题｜Heading",
+      "default": "Trending Now"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "副标题｜Subtext",
+      "default": "Curated collections of our most in-demand styles"
+    },
+    {
+      "type": "header",
+      "content": "布局设置｜Layout settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "区块宽度｜Section width",
+      "default": "full",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "内容最大宽度｜Content max width",
+      "min": 960,
+      "max": 1920,
+      "step": 20,
+      "unit": "px",
+      "default": 1920
+    },
+    {
+      "type": "range",
+      "id": "edge_gutter",
+      "label": "页面边距｜Edge gutter",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "image_ratio_width",
+      "label": "桌面图片比例宽｜Desktop ratio width",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "image_ratio_height",
+      "label": "桌面图片比例高｜Desktop ratio height",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_ratio_width",
+      "label": "移动端图片比例宽｜Mobile ratio width",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_ratio_height",
+      "label": "移动端图片比例高｜Mobile ratio height",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "顶部间距｜Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "底部间距｜Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "移动端顶部间距｜Mobile padding top",
+      "min": 0,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "移动端底部间距｜Mobile padding bottom",
+      "min": 0,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "样式设置｜Style settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "背景颜色｜Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文字颜色｜Text color",
+      "default": "#111111"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "入口｜Entry",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片｜Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "标题｜Title"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "链接｜Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "GMK Trending Tiles",
+      "category": "GMK",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "title": "Shop White Dresses",
+            "link_url": "/collections/white-dresses"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Shop Swimwear",
+            "link_url": "/collections/swimwear"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Shop Summer Prep",
+            "link_url": "/collections/summer-prep"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Shop Sundresses",
+            "link_url": "/collections/sundresses"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

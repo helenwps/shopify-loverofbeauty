@@ -1,0 +1,1396 @@
+{% comment %}
+  Section: GMK Lulus Footer
+  Purpose: Lulus-style footer with logo bar, newsletter signup, social links, link columns, legal links, and copyright.
+  Blocks: link_column
+{% endcomment %}
+
+{% liquid
+  assign section_id = 'gmk-lulus-footer-' | append: section.id
+  assign enable_section = section.settings.enable_section
+  assign anchor_id = section.settings.anchor_id | strip | handleize
+  assign section_width = section.settings.section_width
+  assign content_max_width = section.settings.content_max_width
+  assign edge_gutter = section.settings.edge_gutter
+  assign padding_top = section.settings.padding_top
+  assign padding_bottom = section.settings.padding_bottom
+  assign padding_top_mobile = section.settings.padding_top_mobile
+  assign padding_bottom_mobile = section.settings.padding_bottom_mobile
+  assign logo_bar_height = section.settings.logo_bar_height
+  assign newsletter_width = section.settings.newsletter_width
+  assign main_gap = section.settings.main_gap
+  assign column_gap = section.settings.column_gap
+  assign show_logo_bar = section.settings.show_logo_bar
+  assign logo_text = section.settings.logo_text | strip
+  assign logo_bold_prefix = section.settings.logo_bold_prefix | strip
+  assign logo_mark = section.settings.logo_mark | strip
+  assign logo_link = section.settings.logo_link
+  assign show_newsletter = section.settings.show_newsletter
+  assign newsletter_heading = section.settings.newsletter_heading | strip
+  assign newsletter_placeholder = section.settings.newsletter_placeholder | strip
+  assign newsletter_submit_label = section.settings.newsletter_submit_label | strip
+  assign newsletter_success_text = section.settings.newsletter_success_text | strip
+  assign newsletter_consent = section.settings.newsletter_consent
+  assign newsletter_consent_plain = newsletter_consent | strip_html | strip
+  assign show_socials = section.settings.show_socials
+  assign instagram_url = section.settings.instagram_url
+  assign pinterest_url = section.settings.pinterest_url
+  assign facebook_url = section.settings.facebook_url
+  assign x_url = section.settings.x_url
+  assign youtube_url = section.settings.youtube_url
+  assign tiktok_url = section.settings.tiktok_url
+  assign show_utility_badges = section.settings.show_utility_badges
+  assign accessibility_url = section.settings.accessibility_url
+  assign experience_settings_url = section.settings.experience_settings_url
+  assign legal_links_text = section.settings.legal_links_text | strip
+  assign copyright_text = section.settings.copyright_text | strip
+  assign background_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+  assign muted_color = section.settings.muted_color
+  assign border_color = section.settings.border_color
+  assign icon_color = section.settings.icon_color
+  assign privacy_badge_color = section.settings.privacy_badge_color
+  assign logo_font_size = section.settings.logo_font_size
+  assign newsletter_heading_font_size = section.settings.newsletter_heading_font_size
+  assign newsletter_input_font_size = section.settings.newsletter_input_font_size
+  assign newsletter_message_font_size = section.settings.newsletter_message_font_size
+  assign newsletter_consent_font_size = section.settings.newsletter_consent_font_size
+  assign footer_column_title_font_size = section.settings.footer_column_title_font_size
+  assign footer_column_link_font_size = section.settings.footer_column_link_font_size
+  assign legal_link_font_size = section.settings.legal_link_font_size
+  assign copyright_font_size = section.settings.copyright_font_size
+  assign render_section = false
+  assign render_newsletter = false
+  assign has_columns = false
+  assign has_socials = false
+  assign has_utility_badges = false
+
+  case section_width
+    when 'full'
+      assign container_width = content_max_width | append: 'px'
+    when 'wide'
+      assign container_width = content_max_width | append: 'px'
+    when 'standard'
+      assign container_width = '1440px'
+    when 'narrow'
+      assign container_width = '1180px'
+    else
+      assign container_width = content_max_width | append: 'px'
+  endcase
+
+  if logo_link == blank
+    assign logo_link = routes.root_url
+  endif
+
+  if newsletter_placeholder == blank
+    assign newsletter_placeholder = 'Enter email for newsletter signup'
+  endif
+
+  if newsletter_submit_label == blank
+    assign newsletter_submit_label = 'Sign up'
+  endif
+
+  if instagram_url != blank or pinterest_url != blank or facebook_url != blank or x_url != blank or youtube_url != blank or tiktok_url != blank
+    assign has_socials = true
+  endif
+
+  if accessibility_url != blank or experience_settings_url != blank
+    assign has_utility_badges = true
+  endif
+
+  if show_newsletter and newsletter_heading != blank
+    assign render_newsletter = true
+  endif
+
+  for block in section.blocks
+    if block.type == 'link_column'
+      assign block_title = block.settings.title | strip
+      assign block_links = block.settings.links_text | strip
+
+      if block_title != blank or block_links != blank
+        assign has_columns = true
+        break
+      endif
+    endif
+  endfor
+
+  if show_logo_bar and logo_text != blank
+    assign render_section = true
+  endif
+
+  if render_newsletter
+    assign render_section = true
+  endif
+
+  if show_socials and has_socials
+    assign render_section = true
+  endif
+
+  if show_utility_badges and has_utility_badges
+    assign render_section = true
+  endif
+
+  if has_columns or legal_links_text != blank or copyright_text != blank
+    assign render_section = true
+  endif
+%}
+
+{% if enable_section and render_section %}
+  <style>
+    #{{ section_id }} {
+      --gmk-lulus-footer-container: {{ container_width }};
+      --gmk-lulus-footer-edge: {{ edge_gutter }}px;
+      --gmk-lulus-footer-padding-top: {{ padding_top }}px;
+      --gmk-lulus-footer-padding-bottom: {{ padding_bottom }}px;
+      --gmk-lulus-footer-padding-top-mobile: {{ padding_top_mobile }}px;
+      --gmk-lulus-footer-padding-bottom-mobile: {{ padding_bottom_mobile }}px;
+      --gmk-lulus-footer-logo-height: {{ logo_bar_height }}px;
+      --gmk-lulus-footer-newsletter-width: {{ newsletter_width }}px;
+      --gmk-lulus-footer-main-gap: {{ main_gap }}px;
+      --gmk-lulus-footer-column-gap: {{ column_gap }}px;
+      --gmk-lulus-footer-bg: {{ background_color }};
+      --gmk-lulus-footer-text: {{ text_color }};
+      --gmk-lulus-footer-muted: {{ muted_color }};
+      --gmk-lulus-footer-border: {{ border_color }};
+      --gmk-lulus-footer-icon: {{ icon_color }};
+      --gmk-lulus-footer-privacy: {{ privacy_badge_color }};
+      --gmk-lulus-footer-logo-font: {{ logo_font_size }}px;
+      --gmk-lulus-footer-newsletter-heading-font: {{ newsletter_heading_font_size }}px;
+      --gmk-lulus-footer-newsletter-input-font: {{ newsletter_input_font_size }}px;
+      --gmk-lulus-footer-newsletter-message-font: {{ newsletter_message_font_size }}px;
+      --gmk-lulus-footer-newsletter-consent-font: {{ newsletter_consent_font_size }}px;
+      --gmk-lulus-footer-column-title-font: {{ footer_column_title_font_size }}px;
+      --gmk-lulus-footer-column-link-font: {{ footer_column_link_font_size }}px;
+      --gmk-lulus-footer-legal-font: {{ legal_link_font_size }}px;
+      --gmk-lulus-footer-copyright-font: {{ copyright_font_size }}px;
+      width: 100%;
+      background: var(--gmk-lulus-footer-bg);
+      color: var(--gmk-lulus-footer-text);
+      font-family: Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+      scroll-margin-top: 72px;
+    }
+
+    #{{ section_id }} * {
+      box-sizing: border-box;
+    }
+
+    #{{ section_id }} a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #{{ section_id }} a:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    #{{ section_id }} button,
+    #{{ section_id }} input {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__anchor {
+      position: relative;
+      top: -72px;
+      display: block;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__logo-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--gmk-lulus-footer-logo-height);
+      padding: 18px var(--gmk-lulus-footer-edge);
+      border-bottom: 1px solid var(--gmk-lulus-footer-border);
+      background: var(--gmk-lulus-footer-bg);
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__logo {
+      display: inline-flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0;
+      min-width: 0;
+      color: var(--gmk-lulus-footer-text);
+      font-size: var(--gmk-lulus-footer-logo-font);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__logo-prefix {
+      font-weight: 700;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__logo-rest {
+      font-weight: 400;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__logo-mark {
+      display: inline-block;
+      margin-left: 1px;
+      font-size: calc(var(--gmk-lulus-footer-logo-font) * 0.4);
+      font-weight: 400;
+      line-height: 1;
+      transform: translateY(-5px);
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__body {
+      padding-top: var(--gmk-lulus-footer-padding-top);
+      padding-bottom: var(--gmk-lulus-footer-padding-bottom);
+      background: var(--gmk-lulus-footer-bg);
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__container {
+      width: min(calc(100% - (var(--gmk-lulus-footer-edge) * 2)), var(--gmk-lulus-footer-container));
+      margin: 0 auto;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__main {
+      display: grid;
+      grid-template-columns: minmax(260px, min(var(--gmk-lulus-footer-newsletter-width), 420px)) minmax(0, 1fr);
+      gap: min(var(--gmk-lulus-footer-main-gap), 48px);
+      align-items: start;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__main.gmk-lulus-footer__main--nav-only {
+      grid-template-columns: 1fr;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__newsletter {
+      min-width: 0;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__newsletter-title {
+      margin: 0 0 12px;
+      color: var(--gmk-lulus-footer-text);
+      font-size: var(--gmk-lulus-footer-newsletter-heading-font);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__form {
+      margin: 0;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__form-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 28px;
+      align-items: center;
+      min-height: 32px;
+      border-bottom: 1px solid var(--gmk-lulus-footer-border);
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      border-radius: 0;
+      padding: 0 16px 0 0;
+      background: transparent;
+      color: var(--gmk-lulus-footer-text);
+      font-size: var(--gmk-lulus-footer-newsletter-input-font);
+      font-weight: 400;
+      line-height: 1.25;
+      outline: 0;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__input::placeholder {
+      color: var(--gmk-lulus-footer-muted);
+      opacity: 0.78;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--gmk-lulus-footer-icon);
+      cursor: pointer;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__submit svg {
+      display: block;
+      width: 16px;
+      height: 16px;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__message {
+      margin: 12px 0 0;
+      color: var(--gmk-lulus-footer-text);
+      font-size: var(--gmk-lulus-footer-newsletter-message-font);
+      line-height: 1.45;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__errors {
+      margin-top: 12px;
+      color: var(--gmk-lulus-footer-text);
+      font-size: var(--gmk-lulus-footer-newsletter-message-font);
+      line-height: 1.45;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__consent {
+      margin-top: 16px;
+      color: var(--gmk-lulus-footer-muted);
+      font-size: var(--gmk-lulus-footer-newsletter-consent-font);
+      line-height: 1.45;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__consent p {
+      margin: 0;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__consent a {
+      color: var(--gmk-lulus-footer-text);
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__socials {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 18px;
+      padding: 0;
+      list-style: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      color: var(--gmk-lulus-footer-icon);
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__social-link svg {
+      display: block;
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__social-link--filled svg {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__utility-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 34px;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__utility-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--gmk-lulus-footer-icon);
+      color: var(--gmk-lulus-footer-bg);
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__utility-badge svg {
+      display: block;
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__columns {
+      display: grid;
+      grid-template-columns: repeat(5, max-content);
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px min(var(--gmk-lulus-footer-column-gap), 20px);
+      min-width: 0;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__column {
+      min-width: max-content;
+      max-width: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__column-title {
+      margin: 0 0 14px;
+      color: var(--gmk-lulus-footer-text);
+      font-size: var(--gmk-lulus-footer-column-title-font);
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__link {
+      color: var(--gmk-lulus-footer-text);
+      font-size: var(--gmk-lulus-footer-column-link-font);
+      font-weight: 400;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__bottom {
+      margin-top: 36px;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__legal {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 18px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__legal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--gmk-lulus-footer-text);
+      font-size: var(--gmk-lulus-footer-legal-font);
+      font-weight: 400;
+      line-height: 1.35;
+      white-space: nowrap;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__privacy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      transform: translateY(1px);
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__privacy-badge span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 12px;
+      border-radius: 7px;
+      background: var(--gmk-lulus-footer-privacy);
+      color: #ffffff;
+      font-size: var(--gmk-lulus-footer-legal-font);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    #{{ section_id }} .gmk-lulus-footer__copyright {
+      margin: 18px 0 0;
+      color: var(--gmk-lulus-footer-text);
+      font-size: var(--gmk-lulus-footer-copyright-font);
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    @media screen and (max-width: 1399px) {
+      #{{ section_id }} .gmk-lulus-footer__main {
+        grid-template-columns: minmax(260px, min(var(--gmk-lulus-footer-newsletter-width), 420px)) minmax(0, 1fr);
+        gap: min(var(--gmk-lulus-footer-main-gap), 40px);
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__columns {
+        grid-template-columns: repeat(5, max-content);
+        gap: 20px 16px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__column {
+        min-width: max-content;
+        max-width: none;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__link {
+        white-space: nowrap;
+      }
+    }
+
+    @media screen and (max-width: 989px) {
+      #{{ section_id }} .gmk-lulus-footer__main {
+        grid-template-columns: 1fr;
+        gap: 56px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__newsletter {
+        max-width: 620px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__utility-badges {
+        margin-top: 32px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__bottom {
+        margin-top: 60px;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      #{{ section_id }} {
+        --gmk-lulus-footer-edge: 20px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__logo-bar {
+        min-height: 70px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__logo {
+        font-size: var(--gmk-lulus-footer-logo-font);
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__body {
+        padding-top: var(--gmk-lulus-footer-padding-top-mobile);
+        padding-bottom: var(--gmk-lulus-footer-padding-bottom-mobile);
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__newsletter-title {
+        margin-bottom: 16px;
+        font-size: var(--gmk-lulus-footer-newsletter-heading-font);
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__input {
+        font-size: var(--gmk-lulus-footer-newsletter-input-font);
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__consent {
+        margin-top: 22px;
+        font-size: var(--gmk-lulus-footer-newsletter-consent-font);
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__socials {
+        flex-wrap: wrap;
+        gap: 22px;
+        margin-top: 28px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__columns {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 34px 28px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__column-title {
+        margin-bottom: 20px;
+        font-size: var(--gmk-lulus-footer-column-title-font);
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__links {
+        gap: 16px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__link {
+        font-size: var(--gmk-lulus-footer-column-link-font);
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__legal {
+        gap: 14px 22px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__legal-link {
+        font-size: var(--gmk-lulus-footer-legal-font);
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__copyright {
+        font-size: var(--gmk-lulus-footer-copyright-font);
+      }
+    }
+
+    @media screen and (max-width: 479px) {
+      #{{ section_id }} .gmk-lulus-footer__columns {
+        grid-template-columns: 1fr;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__legal-link {
+        white-space: normal;
+      }
+    }
+  </style>
+
+  <footer id="{{ section_id }}" class="gmk-lulus-footer">
+    {% if anchor_id != blank %}
+      <span id="{{ anchor_id }}" class="gmk-lulus-footer__anchor"></span>
+    {% endif %}
+
+    {% if show_logo_bar and logo_text != blank %}
+      <div class="gmk-lulus-footer__logo-bar">
+        <a class="gmk-lulus-footer__logo" href="{{ logo_link | escape }}" aria-label="{{ logo_text | escape }}">
+          {% if logo_bold_prefix != blank and logo_text contains logo_bold_prefix %}
+            {% assign logo_rest = logo_text | remove_first: logo_bold_prefix %}
+            <span class="gmk-lulus-footer__logo-prefix">{{ logo_bold_prefix | escape }}</span>
+            <span class="gmk-lulus-footer__logo-rest">{{ logo_rest | escape }}</span>
+          {% else %}
+            <span class="gmk-lulus-footer__logo-prefix">{{ logo_text | escape }}</span>
+          {% endif %}
+
+          {% if logo_mark != blank %}
+            <span class="gmk-lulus-footer__logo-mark">{{ logo_mark | escape }}</span>
+          {% endif %}
+        </a>
+      </div>
+    {% endif %}
+
+    <div class="gmk-lulus-footer__body">
+      <div class="gmk-lulus-footer__container">
+        {% if render_newsletter or has_columns %}
+          <div class="gmk-lulus-footer__main {% unless render_newsletter %}gmk-lulus-footer__main--nav-only{% endunless %}">
+            {% if render_newsletter %}
+            <div class="gmk-lulus-footer__newsletter">
+              <p class="gmk-lulus-footer__newsletter-title">{{ newsletter_heading | escape }}</p>
+
+              {% form 'customer', class: 'gmk-lulus-footer__form' %}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="gmk-lulus-footer__form-row">
+                  <input
+                    class="gmk-lulus-footer__input"
+                    type="email"
+                    name="contact[email]"
+                    value="{% if customer %}{{ customer.email | escape }}{% endif %}"
+                    autocomplete="email"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    placeholder="{{ newsletter_placeholder | escape }}"
+                    aria-label="{{ newsletter_placeholder | escape }}"
+                    required
+                  >
+                  <button class="gmk-lulus-footer__submit" type="submit" aria-label="{{ newsletter_submit_label | escape }}">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M5 12h14"></path>
+                      <path d="M13 6l6 6-6 6"></path>
+                    </svg>
+                  </button>
+                </div>
+
+                {% if form.posted_successfully? and newsletter_success_text != blank %}
+                  <p class="gmk-lulus-footer__message">{{ newsletter_success_text | escape }}</p>
+                {% elsif form.errors %}
+                  <div class="gmk-lulus-footer__errors">{{ form.errors | default_errors }}</div>
+                {% endif %}
+              {% endform %}
+
+              {% if newsletter_consent_plain != blank %}
+                <div class="gmk-lulus-footer__consent">{{ newsletter_consent }}</div>
+              {% endif %}
+
+              {% if show_socials and has_socials %}
+                <ul class="gmk-lulus-footer__socials" aria-label="Social links">
+                  {% if instagram_url != blank %}
+                    <li>
+                      <a class="gmk-lulus-footer__social-link" href="{{ instagram_url | escape }}" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                          <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                          <circle cx="12" cy="12" r="3.5"></circle>
+                          <path d="M17.5 6.5h.01"></path>
+                        </svg>
+                      </a>
+                    </li>
+                  {% endif %}
+
+                  {% if pinterest_url != blank %}
+                    <li>
+                      <a class="gmk-lulus-footer__social-link gmk-lulus-footer__social-link--filled" href="{{ pinterest_url | escape }}" aria-label="Pinterest">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                          <path d="M12.2 2.8c-5.4 0-8.2 3.8-8.2 7 0 2 1 3.8 2.7 4.5.3.1.6 0 .7-.4l.3-1.2c.1-.4.1-.5-.2-.9-.5-.6-.8-1.3-.8-2.3 0-2.9 2.2-5.5 5.7-5.5 3.1 0 4.8 1.9 4.8 4.4 0 3.3-1.5 6.1-3.7 6.1-1.2 0-2.1-1-1.8-2.2.4-1.5 1.2-3.1 1.2-4.2 0-1-.5-1.8-1.6-1.8-1.3 0-2.3 1.3-2.3 3.1 0 1.1.4 1.9.4 1.9l-1.5 6.4c-.4 1.9-.1 4.2 0 4.5 0 .2.3.2.4.1.2-.2 2.4-3 2.9-4.8l.8-3c.4.8 1.6 1.5 2.9 1.5 3.8 0 6.4-3.5 6.4-8.1 0-3.5-3-6.8-7.6-6.8z"></path>
+                        </svg>
+                      </a>
+                    </li>
+                  {% endif %}
+
+                  {% if facebook_url != blank %}
+                    <li>
+                      <a class="gmk-lulus-footer__social-link gmk-lulus-footer__social-link--filled" href="{{ facebook_url | escape }}" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                          <path d="M14.5 8H17V4h-3c-3.4 0-5.2 2-5.2 5v3H6v4h2.8v6H13v-6h3.2l.6-4H13V9.3c0-.9.4-1.3 1.5-1.3z"></path>
+                        </svg>
+                      </a>
+                    </li>
+                  {% endif %}
+
+                  {% if x_url != blank %}
+                    <li>
+                      <a class="gmk-lulus-footer__social-link" href="{{ x_url | escape }}" aria-label="X">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                          <path d="M4 4l16 16"></path>
+                          <path d="M20 4L4 20"></path>
+                        </svg>
+                      </a>
+                    </li>
+                  {% endif %}
+
+                  {% if youtube_url != blank %}
+                    <li>
+                      <a class="gmk-lulus-footer__social-link gmk-lulus-footer__social-link--filled" href="{{ youtube_url | escape }}" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                          <path d="M22 12s0-3.4-.4-5c-.2-.9-.9-1.6-1.8-1.8C18.2 4.8 12 4.8 12 4.8s-6.2 0-7.8.4c-.9.2-1.6.9-1.8 1.8C2 8.6 2 12 2 12s0 3.4.4 5c.2.9.9 1.6 1.8 1.8 1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.6.4-5 .4-5zM10 15.2V8.8l5.5 3.2L10 15.2z"></path>
+                        </svg>
+                      </a>
+                    </li>
+                  {% endif %}
+
+                  {% if tiktok_url != blank %}
+                    <li>
+                      <a class="gmk-lulus-footer__social-link gmk-lulus-footer__social-link--filled" href="{{ tiktok_url | escape }}" aria-label="TikTok">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                          <path d="M15 3c.4 3 2.1 4.8 5 5v3.4c-1.9 0-3.5-.6-5-1.7v6.1c0 3.6-2.3 6.2-5.8 6.2C6 22 4 20 4 17.3c0-3.2 2.5-5.4 6.1-5.4.3 0 .6 0 .9.1v3.5c-.3-.1-.6-.1-.9-.1-1.4 0-2.3.8-2.3 1.9 0 1.1.8 1.8 1.9 1.8 1.3 0 2.2-.9 2.2-2.7V3h3.1z"></path>
+                        </svg>
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              {% endif %}
+
+              {% if show_utility_badges and has_utility_badges %}
+                <div class="gmk-lulus-footer__utility-badges" aria-label="Footer utilities">
+                  {% if accessibility_url != blank %}
+                    <a class="gmk-lulus-footer__utility-badge" href="{{ accessibility_url | escape }}" aria-label="Accessibility">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="4.5" r="1.6"></circle>
+                        <path d="M5 8h14"></path>
+                        <path d="M12 8v5"></path>
+                        <path d="M8 22l2.1-8.5"></path>
+                        <path d="M16 22l-2.1-8.5"></path>
+                      </svg>
+                    </a>
+                  {% endif %}
+
+                  {% if experience_settings_url != blank %}
+                    <a class="gmk-lulus-footer__utility-badge" href="{{ experience_settings_url | escape }}" aria-label="Experience settings">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <rect x="5" y="4" width="14" height="11" rx="1.5"></rect>
+                        <path d="M8 20h8"></path>
+                        <path d="M12 15v5"></path>
+                        <path d="M8 8h8"></path>
+                        <path d="M8 11h5"></path>
+                      </svg>
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+            {% endif %}
+
+            {% if has_columns %}
+            <nav class="gmk-lulus-footer__columns" aria-label="Footer navigation">
+              {% for block in section.blocks %}
+                {% if block.type == 'link_column' %}
+                  {% liquid
+                    assign column_title = block.settings.title | strip
+                    assign column_links = block.settings.links_text | strip
+                  %}
+
+                  {% if column_title != blank or column_links != blank %}
+                    <div class="gmk-lulus-footer__column" {{ block.shopify_attributes }}>
+                      {% if column_title != blank %}
+                        <p class="gmk-lulus-footer__column-title">{{ column_title | escape }}</p>
+                      {% endif %}
+
+                      {% if column_links != blank %}
+                        <ul class="gmk-lulus-footer__links">
+                          {% assign column_lines = column_links | newline_to_br | split: '<br />' %}
+                          {% for column_line in column_lines %}
+                            {% liquid
+                              assign clean_line = column_line | strip
+                              assign line_parts = clean_line | split: '|'
+                              assign line_label = line_parts[0] | strip
+                              assign line_url = line_parts[1] | strip
+                            %}
+
+                            {% if line_label != blank %}
+                              <li>
+                                {% if line_url != blank %}
+                                  <a class="gmk-lulus-footer__link" href="{{ line_url | escape }}">{{ line_label | escape }}</a>
+                                {% else %}
+                                  <span class="gmk-lulus-footer__link">{{ line_label | escape }}</span>
+                                {% endif %}
+                              </li>
+                            {% endif %}
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </nav>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if legal_links_text != blank or copyright_text != blank %}
+          <div class="gmk-lulus-footer__bottom">
+            {% if legal_links_text != blank %}
+              <ul class="gmk-lulus-footer__legal" aria-label="Legal links">
+                {% assign legal_lines = legal_links_text | newline_to_br | split: '<br />' %}
+                {% for legal_line in legal_lines %}
+                  {% liquid
+                    assign clean_legal_line = legal_line | strip
+                    assign legal_parts = clean_legal_line | split: '|'
+                    assign legal_label = legal_parts[0] | strip
+                    assign legal_url = legal_parts[1] | strip
+                    assign legal_icon = legal_parts[2] | strip
+                  %}
+
+                  {% if legal_label != blank %}
+                    <li>
+                      {% if legal_url != blank %}
+                        <a class="gmk-lulus-footer__legal-link" href="{{ legal_url | escape }}">
+                          <span>{{ legal_label | escape }}</span>
+                          {% if legal_icon == 'privacy' %}
+                            <span class="gmk-lulus-footer__privacy-badge" aria-hidden="true">
+                              <span>✓</span>
+                              <span>×</span>
+                            </span>
+                          {% endif %}
+                        </a>
+                      {% else %}
+                        <span class="gmk-lulus-footer__legal-link">
+                          <span>{{ legal_label | escape }}</span>
+                          {% if legal_icon == 'privacy' %}
+                            <span class="gmk-lulus-footer__privacy-badge" aria-hidden="true">
+                              <span>✓</span>
+                              <span>×</span>
+                            </span>
+                          {% endif %}
+                        </span>
+                      {% endif %}
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if copyright_text != blank %}
+              <p class="gmk-lulus-footer__copyright">{{ copyright_text | escape }}</p>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </footer>
+{% endif %}
+
+{% schema %}
+{
+  "name": "GMK Lulus Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "基础设置｜Basic settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_section",
+      "label": "启用 Section｜Enable section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "锚点 ID｜Anchor ID",
+      "info": "小写英文、数字、连字符。Lowercase letters, numbers, and hyphens."
+    },
+    {
+      "type": "header",
+      "content": "Logo 设置｜Logo settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo_bar",
+      "label": "显示顶部 Logo 横条｜Show logo bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo 文字｜Logo text",
+      "default": "lovelulus"
+    },
+    {
+      "type": "text",
+      "id": "logo_bold_prefix",
+      "label": "Logo 加粗前缀｜Logo bold prefix",
+      "default": "love"
+    },
+    {
+      "type": "text",
+      "id": "logo_mark",
+      "label": "Logo 右上角标记｜Logo mark",
+      "default": "°"
+    },
+    {
+      "type": "url",
+      "id": "logo_link",
+      "label": "Logo 链接｜Logo link"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter 设置｜Newsletter settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "显示订阅区域｜Show newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "订阅标题｜Newsletter heading",
+      "default": "Get rewarded just for shopping!"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "输入框提示｜Input placeholder",
+      "default": "Enter email for newsletter signup"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_submit_label",
+      "label": "提交按钮读屏文案｜Submit label",
+      "default": "Sign up"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_success_text",
+      "label": "订阅成功文案｜Success text",
+      "default": "Thanks for signing up."
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_consent",
+      "label": "订阅合规文案｜Newsletter consent",
+      "default": "<p>By entering my email address, I agree to receive promotional emails from Lulus and agree to the <a href='/policies/terms-of-service'>Terms of Service</a>, <a href='/policies/privacy-policy'>Privacy Policy</a> and <a href='/pages/financial-incentive-notice'>Financial Incentive Notice</a>. <a href='/pages/unsubscribe'>Unsubscribe at any time from emails here</a>.</p>"
+    },
+    {
+      "type": "header",
+      "content": "社媒设置｜Social settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_socials",
+      "label": "显示社媒图标｜Show social icons",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram 链接｜Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest 链接｜Pinterest URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook 链接｜Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "x_url",
+      "label": "X 链接｜X URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube 链接｜YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok 链接｜TikTok URL"
+    },
+    {
+      "type": "header",
+      "content": "辅助入口｜Utility badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_utility_badges",
+      "label": "显示辅助入口图标｜Show utility badges",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "accessibility_url",
+      "label": "Accessibility 链接｜Accessibility URL"
+    },
+    {
+      "type": "url",
+      "id": "experience_settings_url",
+      "label": "Experience settings 链接｜Experience settings URL"
+    },
+    {
+      "type": "header",
+      "content": "底部链接｜Legal links"
+    },
+    {
+      "type": "textarea",
+      "id": "legal_links_text",
+      "label": "政策链接｜Legal links",
+      "info": "一行一个链接。格式：Label|/link。第三段写 privacy 可显示隐私选择图标。One link per line. Use Label|/link. Add |privacy to show the privacy badge.",
+      "default": "Terms of Service|/policies/terms-of-service\nPrivacy Policy|/policies/privacy-policy\nFinancial Incentive Notice|/pages/financial-incentive-notice\nCA Supply Chains|/pages/ca-supply-chains\nExperience Settings|#experience-settings\nYour Privacy Choices|#privacy-choices|privacy\nAccessibility|/pages/accessibility\nSite Map|/pages/site-map"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "版权文案｜Copyright text",
+      "default": "© 2026 Lulu's Fashion Lounge, LLC"
+    },
+    {
+      "type": "header",
+      "content": "布局设置｜Layout settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "区块宽度｜Section width",
+      "default": "wide",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "内容最大宽度｜Content max width",
+      "min": 960,
+      "max": 2400,
+      "step": 20,
+      "unit": "px",
+      "default": 1760
+    },
+    {
+      "type": "range",
+      "id": "edge_gutter",
+      "label": "页面边距｜Edge gutter",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "logo_bar_height",
+      "label": "Logo 横条高度｜Logo bar height",
+      "min": 64,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "newsletter_width",
+      "label": "订阅区宽度｜Newsletter width",
+      "min": 320,
+      "max": 620,
+      "step": 10,
+      "unit": "px",
+      "default": 420
+    },
+    {
+      "type": "range",
+      "id": "main_gap",
+      "label": "订阅区与链接区间距｜Main gap",
+      "min": 32,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "链接列横向间距｜Column gap",
+      "min": 20,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "顶部间距｜Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "底部间距｜Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 8,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "移动端顶部间距｜Mobile padding top",
+      "min": 0,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "移动端底部间距｜Mobile padding bottom",
+      "min": 0,
+      "max": 96,
+      "step": 8,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "样式设置｜Style settings"
+    },
+    {
+      "type": "header",
+      "content": "文字大小｜Font sizes"
+    },
+    {
+      "type": "range",
+      "id": "logo_font_size",
+      "label": "Logo 字号｜Logo font size",
+      "min": 12,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "newsletter_heading_font_size",
+      "label": "订阅标题字号｜Newsletter heading font size",
+      "min": 6,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "newsletter_input_font_size",
+      "label": "订阅输入框字号｜Newsletter input font size",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "newsletter_message_font_size",
+      "label": "订阅提示字号｜Newsletter message font size",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "newsletter_consent_font_size",
+      "label": "订阅合规文案字号｜Newsletter consent font size",
+      "min": 6,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "footer_column_title_font_size",
+      "label": "链接列标题字号｜Column title font size",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "footer_column_link_font_size",
+      "label": "链接文字字号｜Column link font size",
+      "min": 6,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "legal_link_font_size",
+      "label": "政策链接字号｜Legal link font size",
+      "min": 6,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "copyright_font_size",
+      "label": "版权文案字号｜Copyright font size",
+      "min": 6,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "颜色设置｜Color settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "背景颜色｜Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文字颜色｜Text color",
+      "default": "#171717"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "次级文字颜色｜Muted text color",
+      "default": "#515151"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "边框颜色｜Border color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "图标颜色｜Icon color",
+      "default": "#171717"
+    },
+    {
+      "type": "color",
+      "id": "privacy_badge_color",
+      "label": "隐私图标颜色｜Privacy badge color",
+      "default": "#2f7bff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_column",
+      "name": "链接列｜Link column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "列标题｜Column title"
+        },
+        {
+          "type": "textarea",
+          "id": "links_text",
+          "label": "链接文本｜Links",
+          "info": "一行一个链接。格式：Label|/link。One link per line. Use Label|/link."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "GMK Lulus Footer",
+      "category": "GMK",
+      "blocks": [
+        {
+          "type": "link_column",
+          "settings": {
+            "title": "Shop Dresses",
+            "links_text": "Prom Dresses|/collections/prom-dresses\nDresses|/collections/dresses\nWedding Guest Dresses|/collections/wedding-guest-dresses\nBridesmaid Dresses|/collections/bridesmaid-dresses\nCocktail Dresses|/collections/cocktail-dresses"
+          }
+        },
+        {
+          "type": "link_column",
+          "settings": {
+            "title": "Quick Links",
+            "links_text": "View Account|/account\nTrack Your Order|/pages/track-order\nInitiate Return/Exchange|/pages/returns\nPromotions|/pages/promotions\nCustomer Reviews|/pages/customer-reviews"
+          }
+        },
+        {
+          "type": "link_column",
+          "settings": {
+            "title": "Customer Care",
+            "links_text": "Help Center|/pages/help-center\nReturn/Exchange Policy|/pages/return-exchange-policy\nShipping Policy|/pages/shipping-policy\nPromo Terms|/pages/promo-terms\nGiveaways|/pages/giveaways"
+          }
+        },
+        {
+          "type": "link_column",
+          "settings": {
+            "title": "Services",
+            "links_text": "Affiliate Program|/pages/affiliate-program\nStudent Discount|/pages/student-discount"
+          }
+        },
+        {
+          "type": "link_column",
+          "settings": {
+            "title": "About",
+            "links_text": "Our Story|/pages/our-story\nCareers|/pages/careers\nOur Blog|/blogs/news\nInvestors|/pages/investors\nWholesale|/pages/wholesale"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

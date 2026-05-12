@@ -1,0 +1,571 @@
+{% comment %}
+  Section: GMK Lulus Collection Tiles
+  Purpose: Full-width Lulus-style collection entrance tiles.
+  Blocks: item
+{% endcomment %}
+
+{% liquid
+  assign section_id = 'gmk-lulus-collection-tiles-' | append: section.id
+  assign enable_section = section.settings.enable_section
+  assign anchor_id = section.settings.anchor_id | strip
+  assign section_width = section.settings.section_width
+  assign content_max_width = section.settings.content_max_width
+  assign edge_gutter = section.settings.edge_gutter
+  assign desktop_height = section.settings.desktop_height
+  assign mobile_height = section.settings.mobile_height
+  assign image_size_mode = section.settings.image_size_mode | default: 'height'
+  assign image_ratio_width = section.settings.image_ratio_width | default: 2
+  assign image_ratio_height = section.settings.image_ratio_height | default: 3
+  assign mobile_image_ratio_width = section.settings.mobile_image_ratio_width | default: 4
+  assign mobile_image_ratio_height = section.settings.mobile_image_ratio_height | default: 5
+  assign background_color = section.settings.background_color
+  assign text_color = section.settings.text_color
+  assign render_section = false
+
+  case section_width
+    when 'full'
+      assign container_width = '100%'
+    when 'wide'
+      assign container_width = content_max_width | append: 'px'
+    when 'standard'
+      assign container_width = '1440px'
+    when 'narrow'
+      assign container_width = '1180px'
+    else
+      assign container_width = content_max_width | append: 'px'
+  endcase
+
+  for block in section.blocks
+    if block.type == 'item' and block.settings.image != blank
+      assign render_section = true
+      break
+    endif
+  endfor
+%}
+
+{% if enable_section and render_section %}
+  <style>
+    #{{ section_id }} {
+      --gmk-lulus-collection-tiles-container: {{ container_width }};
+      --gmk-lulus-collection-tiles-edge: {{ edge_gutter }}px;
+      --gmk-lulus-collection-tiles-desktop-height: {{ desktop_height }}px;
+      --gmk-lulus-collection-tiles-mobile-height: {{ mobile_height }}px;
+      --gmk-lulus-collection-tiles-image-ratio: {{ image_ratio_width }} / {{ image_ratio_height }};
+      --gmk-lulus-collection-tiles-mobile-image-ratio: {{ mobile_image_ratio_width }} / {{ mobile_image_ratio_height }};
+      --gmk-lulus-collection-tiles-bg: {{ background_color }};
+      --gmk-lulus-collection-tiles-text: {{ text_color }};
+      width: 100%;
+      scroll-margin-top: 72px;
+      background: var(--gmk-lulus-collection-tiles-bg);
+      color: var(--gmk-lulus-collection-tiles-text);
+      font-family: Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+    }
+
+    #{{ section_id }} * {
+      box-sizing: border-box;
+    }
+
+    #{{ section_id }} a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__anchor {
+      position: relative;
+      top: -72px;
+      display: block;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__body {
+      width: min(calc(100% - (var(--gmk-lulus-collection-tiles-edge) * 2)), var(--gmk-lulus-collection-tiles-container));
+      margin: 0 auto;
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__item {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: var(--gmk-lulus-collection-tiles-desktop-height);
+      min-width: 0;
+      overflow: hidden;
+      color: var(--gmk-lulus-collection-tiles-text);
+      background: #f4f4f4;
+    }
+
+    #{{ section_id }}.gmk-lulus-collection-tiles--ratio .gmk-lulus-collection-tiles__item {
+      height: auto;
+      aspect-ratio: var(--gmk-lulus-collection-tiles-image-ratio);
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__item::after {
+      position: absolute;
+      inset: 42% 0 0;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2));
+      content: "";
+      pointer-events: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__media,
+    #{{ section_id }} .gmk-lulus-collection-tiles__image {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__image {
+      object-fit: cover;
+      object-position: center center;
+      transform: scale(1);
+      transition: transform 320ms ease;
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__item[href]:hover .gmk-lulus-collection-tiles__image {
+      transform: scale(1.025);
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__title {
+      position: absolute;
+      top: 53%;
+      left: 50%;
+      width: min(94%, 620px);
+      margin: 0;
+      color: var(--gmk-lulus-collection-tiles-text);
+      font-family: Didot, "Bodoni 72", "Bodoni 72 Smallcaps", Georgia, "Times New Roman", serif;
+      font-size: clamp(44px, 3vw, 68px);
+      font-weight: 400;
+      line-height: 0.98;
+      letter-spacing: 0;
+      text-shadow: 0 1px 14px rgba(0, 0, 0, 0.26);
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    #{{ section_id }} .gmk-lulus-collection-tiles__cta {
+      position: absolute;
+      right: 28px;
+      bottom: 28px;
+      left: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: max-content;
+      max-width: calc(100% - 56px);
+      min-height: 30px;
+      margin: 0 auto;
+      color: var(--gmk-lulus-collection-tiles-text);
+      font-size: clamp(18px, 1.2vw, 26px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: 0;
+      text-decoration-line: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.24);
+      white-space: nowrap;
+    }
+
+    @media screen and (max-width: 989px) {
+      #{{ section_id }} .gmk-lulus-collection-tiles__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      #{{ section_id }} .gmk-lulus-collection-tiles__item {
+        height: min(62vw, 560px);
+      }
+
+      #{{ section_id }}.gmk-lulus-collection-tiles--ratio .gmk-lulus-collection-tiles__item {
+        height: auto;
+        aspect-ratio: var(--gmk-lulus-collection-tiles-image-ratio);
+      }
+
+      #{{ section_id }} .gmk-lulus-collection-tiles__title {
+        font-size: clamp(38px, 5.8vw, 56px);
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      #{{ section_id }} {
+        overflow: hidden;
+      }
+
+      #{{ section_id }} .gmk-lulus-collection-tiles__body {
+        width: 100%;
+      }
+
+      #{{ section_id }} .gmk-lulus-collection-tiles__grid {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #{{ section_id }} .gmk-lulus-collection-tiles__grid::-webkit-scrollbar {
+        display: none;
+      }
+
+      #{{ section_id }} .gmk-lulus-collection-tiles__item {
+        flex: 0 0 min(82vw, 430px);
+        height: var(--gmk-lulus-collection-tiles-mobile-height);
+        scroll-snap-align: start;
+      }
+
+      #{{ section_id }}.gmk-lulus-collection-tiles--ratio .gmk-lulus-collection-tiles__item {
+        height: auto;
+        aspect-ratio: var(--gmk-lulus-collection-tiles-mobile-image-ratio);
+      }
+
+      #{{ section_id }} .gmk-lulus-collection-tiles__content {
+        padding: 22px;
+      }
+
+      #{{ section_id }} .gmk-lulus-collection-tiles__title {
+        width: 92%;
+        font-size: clamp(34px, 9vw, 46px);
+      }
+
+      #{{ section_id }} .gmk-lulus-collection-tiles__cta {
+        right: 22px;
+        bottom: 22px;
+        left: 22px;
+        max-width: calc(100% - 44px);
+        font-size: 20px;
+      }
+    }
+  </style>
+
+  <section
+    id="{{ section_id }}"
+    class="gmk-lulus-collection-tiles gmk-lulus-collection-tiles--{{ image_size_mode | escape }}"
+    data-section-id="{{ section.id }}"
+    data-section-type="{{ section.type | escape }}"
+  >
+    {% if anchor_id != blank %}
+      <span id="{{ anchor_id | escape }}" class="gmk-lulus-collection-tiles__anchor" aria-hidden="true"></span>
+    {% endif %}
+
+    <div class="gmk-lulus-collection-tiles__body">
+      <div class="gmk-lulus-collection-tiles__grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'item' %}
+            {% liquid
+              assign image = block.settings.image
+              assign title = block.settings.title | strip
+              assign link_label = block.settings.link_label | strip
+              assign link_url = block.settings.link_url
+              assign has_cta = false
+              assign image_alt = image.alt | default: title
+
+              if link_label != blank and link_url != blank
+                assign has_cta = true
+              endif
+            %}
+
+            {% if image != blank %}
+              {% if link_url != blank %}
+                <a
+                  class="gmk-lulus-collection-tiles__item"
+                  href="{{ link_url }}"
+                  aria-label="{% if title != blank %}{{ title | escape }}{% else %}{{ link_label | escape }}{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+              {% else %}
+                <div class="gmk-lulus-collection-tiles__item" {{ block.shopify_attributes }}>
+              {% endif %}
+                  <picture class="gmk-lulus-collection-tiles__media">
+                    <img
+                      class="gmk-lulus-collection-tiles__image"
+                      src="{{ image | image_url: width: 1200 }}"
+                      srcset="
+                        {{ image | image_url: width: 600 }} 600w,
+                        {{ image | image_url: width: 900 }} 900w,
+                        {{ image | image_url: width: 1200 }} 1200w,
+                        {{ image | image_url: width: 1600 }} 1600w
+                      "
+                      sizes="(min-width: 990px) 25vw, (min-width: 750px) 50vw, 82vw"
+                      width="{{ image.width }}"
+                      height="{{ image.height }}"
+                      alt="{{ image_alt | escape }}"
+                      loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                      decoding="async"
+                      {% if image.presentation.focal_point != blank %}
+                        style="object-position: {{ image.presentation.focal_point }};"
+                      {% endif %}
+                    >
+                  </picture>
+
+                  {% if title != blank or has_cta %}
+                    <div class="gmk-lulus-collection-tiles__content">
+                      {% if title != blank %}
+                        <h2 class="gmk-lulus-collection-tiles__title">{{ title }}</h2>
+                      {% endif %}
+
+                      {% if has_cta %}
+                        <span class="gmk-lulus-collection-tiles__cta">{{ link_label }}</span>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+              {% if link_url != blank %}
+                </a>
+              {% else %}
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "GMK Collection Tiles",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_section",
+      "label": "启用 Section｜Enable section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "锚点 ID｜Anchor ID",
+      "info": "小写英文、数字、连字符。Lowercase letters, numbers, and hyphens."
+    },
+    {
+      "type": "header",
+      "content": "布局设置｜Layout settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "区块宽度｜Section width",
+      "default": "full",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        },
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "内容最大宽度｜Content max width",
+      "min": 960,
+      "max": 1920,
+      "step": 20,
+      "unit": "px",
+      "default": 1920
+    },
+    {
+      "type": "range",
+      "id": "edge_gutter",
+      "label": "页面边距｜Edge gutter",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "桌面高度｜Desktop height",
+      "min": 420,
+      "max": 780,
+      "step": 10,
+      "unit": "px",
+      "default": 740
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "移动端高度｜Mobile height",
+      "min": 320,
+      "max": 620,
+      "step": 10,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "select",
+      "id": "image_size_mode",
+      "label": "图片尺寸模式｜Image size mode",
+      "default": "height",
+      "options": [
+        {
+          "value": "height",
+          "label": "Height"
+        },
+        {
+          "value": "ratio",
+          "label": "Ratio"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_ratio_width",
+      "label": "桌面图片比例宽｜Desktop ratio width",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "image_ratio_height",
+      "label": "桌面图片比例高｜Desktop ratio height",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_ratio_width",
+      "label": "移动端图片比例宽｜Mobile ratio width",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_ratio_height",
+      "label": "移动端图片比例高｜Mobile ratio height",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "样式设置｜Style settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "背景颜色｜Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文字颜色｜Text color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "入口｜Entry",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "图片｜Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "标题｜Title"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "链接文字｜Link label"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "链接｜Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "GMK Collection Tiles",
+      "category": "GMK",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "title": "Dresses",
+            "link_label": "Shop Now",
+            "link_url": "/collections/dresses"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Formal Dresses",
+            "link_label": "Shop Now",
+            "link_url": "/collections/formal-dresses"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Wedding Guest",
+            "link_label": "Shop Now",
+            "link_url": "/collections/wedding-guest"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "title": "Cocktail Dresses",
+            "link_label": "Shop Now",
+            "link_url": "/collections/cocktail-dresses"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

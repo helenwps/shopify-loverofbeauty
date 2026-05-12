@@ -1,0 +1,657 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "gmk_lulus_promo_bar_rjRGjq": {
+      "type": "gmk-lulus-promo-bar",
+      "name": "GMK Promo Bar",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "kicker": "Limited Time Only",
+        "offer_text": "20% Off Select Styles",
+        "code_prefix": "Code:",
+        "code_value": "DEALS20",
+        "terms_text": "TERMS APPLY.",
+        "details_label": "SEE DETAILS.",
+        "details_link": "",
+        "section_width": "full",
+        "content_max_width": 1180,
+        "top_height": 60,
+        "terms_height": 32,
+        "promo_background_color": "#f8b4bf",
+        "terms_background_color": "#ffffff",
+        "text_color": "#111111",
+        "border_color": "#e8e8e8"
+      }
+    },
+    "gmk_hero_banner_AqhFWE": {
+      "type": "gmk-hero-banner",
+      "name": "GMK Hero",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "media_type": "video",
+        "video": "shopify://files/videos/Apr2026-SummerDresses-Index (1).webm",
+        "media_position": "center_center",
+        "overlay_opacity": 10,
+        "heading": "",
+        "description": "",
+        "button_label": "",
+        "button_link": "shopify://collections/spring-dresses",
+        "text_align": "center",
+        "text_style": "serif_large",
+        "content_position": "center",
+        "caption_position": "bottom",
+        "heading_image_width": 480,
+        "text_color": "#ffffff",
+        "legal_text": "",
+        "section_width": "full",
+        "content_max_width": 1440,
+        "text_max_width": 760,
+        "desktop_aspect_ratio": "custom_height",
+        "mobile_aspect_ratio": "custom_height",
+        "desktop_height": 1043,
+        "mobile_height": 480
+      }
+    },
+    "gmk_lulus_collection_tiles_JGcc3r": {
+      "type": "gmk-lulus-collection-tiles",
+      "blocks": {
+        "item_RKBgJT": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/11824941_2446731.jpg",
+            "title": "Dresses",
+            "link_label": "Shop Now",
+            "link_url": "shopify://collections/dresses"
+          }
+        },
+        "item_XMWaDK": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/12219581_2531651.jpg",
+            "title": "Formal Dresses",
+            "link_label": "Shop Now",
+            "link_url": "shopify://collections/formal-outfits"
+          }
+        },
+        "item_CXc9Yr": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/2785011_New_03_detail_2025-12-15.jpg",
+            "title": "Wedding Guest",
+            "link_label": "Shop Now",
+            "link_url": "shopify://collections/wedding-guest-dresses"
+          }
+        },
+        "item_w8L9nB": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/11899461_2436211.jpg",
+            "title": "Cocktail Dresses",
+            "link_label": "Shop Now",
+            "link_url": "shopify://collections/graduation-dresses"
+          }
+        }
+      },
+      "block_order": [
+        "item_RKBgJT",
+        "item_XMWaDK",
+        "item_CXc9Yr",
+        "item_w8L9nB"
+      ],
+      "name": "GMK Collection Tiles",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "section_width": "full",
+        "content_max_width": 1920,
+        "edge_gutter": 0,
+        "desktop_height": 780,
+        "mobile_height": 320,
+        "image_size_mode": "height",
+        "image_ratio_width": 2,
+        "image_ratio_height": 3,
+        "mobile_image_ratio_width": 4,
+        "mobile_image_ratio_height": 5,
+        "background_color": "#ffffff",
+        "text_color": "#ffffff"
+      }
+    },
+    "separator_MjbTUQ": {
+      "type": "separator",
+      "name": "Separator",
+      "settings": {
+        "background_type": "full_width",
+        "background": "rgba(0,0,0,0)",
+        "ignore_vertical_spacing": true,
+        "desktop_top_padding": 20,
+        "desktop_bottom_padding": 0,
+        "mobile_top_padding": 0,
+        "mobile_bottom_padding": 0
+      }
+    },
+    "gmk_hero_banner_hiyLr4": {
+      "type": "gmk-hero-banner",
+      "name": "GMK Hero",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "media_type": "image",
+        "bg_image": "shopify://shop_images/ig_0034c9b0abc660050169fb5a3edce08191866bbe9f5d1cdf5d.png",
+        "media_position": "center_center",
+        "overlay_opacity": 10,
+        "heading": "The Deviel | Lulus",
+        "description": "<p>Description</p>",
+        "button_label": "",
+        "button_link": "shopify://collections/formal-outfits",
+        "text_align": "center",
+        "text_style": "logo_lockup",
+        "content_position": "center",
+        "caption_position": "bottom",
+        "heading_image_width": 480,
+        "text_color": "#ffffff",
+        "legal_text": "",
+        "section_width": "full",
+        "content_max_width": 1440,
+        "text_max_width": 720,
+        "desktop_aspect_ratio": "custom_height",
+        "mobile_aspect_ratio": "custom_height",
+        "desktop_height": 980,
+        "mobile_height": 480
+      }
+    },
+    "separator_BPryMD": {
+      "type": "separator",
+      "name": "Separator",
+      "settings": {
+        "background_type": "full_width",
+        "background": "rgba(0,0,0,0)",
+        "ignore_vertical_spacing": true,
+        "desktop_top_padding": 20,
+        "desktop_bottom_padding": 0,
+        "mobile_top_padding": 0,
+        "mobile_bottom_padding": 0
+      }
+    },
+    "gmk_hero_banner_8qyj9q": {
+      "type": "gmk-hero-banner",
+      "name": "GMK Hero",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "media_type": "image",
+        "bg_image": "shopify://shop_images/ig_0034c9b0abc660050169fb5cd6c39081919488d94bebc708aa.png",
+        "media_position": "center_center",
+        "overlay_opacity": 10,
+        "heading": "",
+        "description": "",
+        "button_label": "",
+        "button_link": "shopify://collections/graduation-dresses",
+        "text_align": "center",
+        "text_style": "serif_large",
+        "content_position": "center",
+        "caption_position": "bottom",
+        "heading_image_width": 480,
+        "text_color": "#ffffff",
+        "legal_text": "",
+        "section_width": "full",
+        "content_max_width": 1440,
+        "text_max_width": 760,
+        "desktop_aspect_ratio": "custom_height",
+        "mobile_aspect_ratio": "custom_height",
+        "desktop_height": 760,
+        "mobile_height": 480
+      }
+    },
+    "separator_y9Lh8M": {
+      "type": "separator",
+      "name": "Separator",
+      "settings": {
+        "background_type": "full_width",
+        "background": "rgba(0,0,0,0)",
+        "ignore_vertical_spacing": true,
+        "desktop_top_padding": 20,
+        "desktop_bottom_padding": 0,
+        "mobile_top_padding": 0,
+        "mobile_bottom_padding": 0
+      }
+    },
+    "gmk_lulus_trending_tiles_NAcMXR": {
+      "type": "gmk-lulus-trending-tiles",
+      "blocks": {
+        "item_Krw6YA": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/2752351_04_back_2025-10-17.jpg",
+            "title": "Shop White Dresses",
+            "link_url": "/collections/white-dresses"
+          }
+        },
+        "item_Cdcnfh": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/11824921_2446731.jpg",
+            "title": "Shop Swimwear",
+            "link_url": "shopify://collections/bikinis"
+          }
+        },
+        "item_YnVe6N": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/12219641_2531651.jpg",
+            "title": "Shop Summer Prep",
+            "link_url": "/collections/summer-prep"
+          }
+        },
+        "item_AjRXDz": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/2729591_04_back_2025-09-08.jpg",
+            "title": "Shop Sundresses",
+            "link_url": "shopify://collections/dresses"
+          }
+        }
+      },
+      "block_order": [
+        "item_Krw6YA",
+        "item_Cdcnfh",
+        "item_YnVe6N",
+        "item_AjRXDz"
+      ],
+      "name": "GMK Trending Tiles",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "heading": "Trending Now",
+        "subtext": "Curated collections of our most in-demand styles",
+        "section_width": "full",
+        "content_max_width": 1920,
+        "edge_gutter": 40,
+        "image_ratio_width": 48,
+        "image_ratio_height": 70,
+        "mobile_image_ratio_width": 4,
+        "mobile_image_ratio_height": 5,
+        "padding_top": 16,
+        "padding_bottom": 40,
+        "padding_top_mobile": 16,
+        "padding_bottom_mobile": 32,
+        "background_color": "#ffffff",
+        "text_color": "#111111"
+      }
+    },
+    "gmk_lulus_trending_tiles_JAczyU": {
+      "type": "gmk-lulus-trending-tiles",
+      "blocks": {
+        "item_BjEjeg": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/2752351_04_back_2025-10-17.jpg",
+            "title": "Shop White Dresses",
+            "link_url": "/collections/white-dresses"
+          }
+        },
+        "item_BwqMhP": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/11824921_2446731.jpg",
+            "title": "Shop Swimwear",
+            "link_url": "/collections/swimwear"
+          }
+        },
+        "item_cDybdL": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/12219641_2531651.jpg",
+            "title": "Shop Summer Prep",
+            "link_url": "/collections/summer-prep"
+          }
+        },
+        "item_FgprHJ": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/2729591_04_back_2025-09-08.jpg",
+            "title": "Shop Sundresses",
+            "link_url": "/collections/sundresses"
+          }
+        }
+      },
+      "block_order": [
+        "item_BjEjeg",
+        "item_BwqMhP",
+        "item_cDybdL",
+        "item_FgprHJ"
+      ],
+      "name": "GMK Trending Tiles",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "heading": "Where Are You Going?",
+        "subtext": "Curated collections of our most in-demand styles",
+        "section_width": "full",
+        "content_max_width": 1920,
+        "edge_gutter": 40,
+        "image_ratio_width": 48,
+        "image_ratio_height": 90,
+        "mobile_image_ratio_width": 4,
+        "mobile_image_ratio_height": 5,
+        "padding_top": 16,
+        "padding_bottom": 40,
+        "padding_top_mobile": 16,
+        "padding_bottom_mobile": 32,
+        "background_color": "#ffffff",
+        "text_color": "#111111"
+      }
+    },
+    "gmk_social_feed_gyEYqn": {
+      "type": "gmk-social-feed",
+      "blocks": {
+        "item_9rxAMT": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/2762331_02_front_2025-10-02.jpg",
+            "caption": "图片文字 / Caption",
+            "link_url": ""
+          }
+        },
+        "item_7pYHt9": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/2762331_02_front_2025-10-02.jpg",
+            "caption": "图片文字 / Caption",
+            "link_url": ""
+          }
+        },
+        "item_Qx4qUc": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/2762331_02_front_2025-10-02.jpg",
+            "caption": "图片文字 / Caption",
+            "link_url": ""
+          }
+        },
+        "item_nWBPTh": {
+          "type": "item",
+          "settings": {
+            "image": "shopify://shop_images/2762331_02_front_2025-10-02.jpg",
+            "caption": "图片文字 / Caption",
+            "link_url": ""
+          }
+        },
+        "item_ejLDTF": {
+          "type": "item",
+          "settings": {
+            "caption": "",
+            "link_url": ""
+          }
+        },
+        "item_NJPWEr": {
+          "type": "item",
+          "settings": {
+            "caption": "",
+            "link_url": ""
+          }
+        },
+        "item_KU7FtG": {
+          "type": "item",
+          "settings": {
+            "caption": "",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_9rxAMT",
+        "item_7pYHt9",
+        "item_Qx4qUc",
+        "item_nWBPTh",
+        "item_ejLDTF",
+        "item_NJPWEr",
+        "item_KU7FtG"
+      ],
+      "name": "GMK Social Feed",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "heading": "Shop Our Feed",
+        "subtext": "Cute on our socials, even cuter in your closet",
+        "button_label": "Get Inspired",
+        "button_url": "",
+        "section_width": "wide",
+        "content_max_width": 1920,
+        "edge_gutter": 40,
+        "image_gap": 18,
+        "image_ratio": "portrait_tall",
+        "mobile_image_ratio": "square",
+        "padding_top": 16,
+        "padding_bottom": 40,
+        "padding_top_mobile": 16,
+        "padding_bottom_mobile": 32,
+        "background_color": "#ffffff",
+        "text_color": "#111111",
+        "caption_color": "#ffffff"
+      }
+    },
+    "gmk_promo_images_mfPB9P": {
+      "type": "gmk-promo-images",
+      "blocks": {
+        "top_item_Wef6c3": {
+          "type": "top_item",
+          "settings": {
+            "image": "shopify://shop_images/content___desktop01.webp",
+            "aria_label": "Free In-App Shipping",
+            "link_url": ""
+          }
+        },
+        "top_item_7qAcbc": {
+          "type": "top_item",
+          "settings": {
+            "image": "shopify://shop_images/content___desktop02.webp",
+            "aria_label": "Give $20, Get $20",
+            "link_url": ""
+          }
+        },
+        "top_item_iMtjFi": {
+          "type": "top_item",
+          "settings": {
+            "image": "shopify://shop_images/content___desktop03.webp",
+            "aria_label": "Join LOVE REWARDS",
+            "link_url": ""
+          }
+        },
+        "top_item_pXBgfM": {
+          "type": "top_item",
+          "settings": {
+            "image": "shopify://shop_images/content___desktop04ukstudent1004.webp",
+            "aria_label": "UK Student Discount",
+            "link_url": ""
+          }
+        },
+        "top_item_8mAMj3": {
+          "type": "top_item",
+          "settings": {
+            "image": "shopify://shop_images/content___desktop051.webp",
+            "aria_label": "Healthcare Discount",
+            "link_url": ""
+          }
+        },
+        "top_item_8N7bFJ": {
+          "type": "top_item",
+          "settings": {
+            "image": "shopify://shop_images/content___desktop061.webp",
+            "aria_label": "Military Discount",
+            "link_url": ""
+          }
+        },
+        "bottom_item_bYV838": {
+          "type": "bottom_item",
+          "settings": {
+            "image": "shopify://shop_images/content___desktop07klarna.webp",
+            "aria_label": "Klarna payment banner",
+            "link_url": ""
+          }
+        },
+        "bottom_item_ndMUR7": {
+          "type": "bottom_item",
+          "settings": {
+            "image": "shopify://shop_images/content___desktop08afterpay.webp",
+            "aria_label": "Afterpay payment banner",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "top_item_Wef6c3",
+        "top_item_7qAcbc",
+        "top_item_iMtjFi",
+        "top_item_pXBgfM",
+        "top_item_8mAMj3",
+        "top_item_8N7bFJ",
+        "bottom_item_bYV838",
+        "bottom_item_ndMUR7"
+      ],
+      "name": "GMK Promo Images",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "section_width": "full",
+        "content_max_width": 1920,
+        "edge_gutter": 0,
+        "mobile_edge_gutter": 0,
+        "image_gap": 2,
+        "row_gap": 2,
+        "top_ratio_width": 26,
+        "top_ratio_height": 10,
+        "bottom_ratio_width": 16,
+        "bottom_ratio_height": 1,
+        "top_mobile_ratio_width": 26,
+        "top_mobile_ratio_height": 10,
+        "bottom_mobile_ratio_width": 8,
+        "bottom_mobile_ratio_height": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "image_fit": "cover",
+        "background_color": "#ffffff",
+        "tile_background_color": "#f4f4f4"
+      }
+    },
+    "gmk_long_text_dwLFBC": {
+      "type": "gmk-long-text",
+      "blocks": {
+        "item_e4NF6i": {
+          "type": "item",
+          "settings": {
+            "title": "Wedding Guest Dresses",
+            "body_content": "<p>If your inbox is flooded with save-the-dates and you're wondering what to wear, we've got it covered. From casual beach weddings to full-blown black tie affairs, our collection of wedding guest dresses suits every dress code, every venue, and every price range. Our curated collection of RSVP-ready dresses features silhouettes, colors, and hemlines that make getting dressed feel effortless, so you can focus on celebrating the moment.</p>"
+          }
+        },
+        "item_qdhBJa": {
+          "type": "item",
+          "settings": {
+            "title": "Prom Dresses",
+            "body_content": "<p>Looking for prom dresses under HK$900.00? Our curated collection of prom dresses is made to stun at the pre-dinner, in the group photos, and especially on the dance floor. With tons of options across styles, colors, silhouettes, and sizes from XXS to 3X, you can find a dress that perfectly suits your style and stays in your budget. We can't promise the prom queen status and crown, but we'll make sure you feel confident look your best on prom night.</p>"
+          }
+        },
+        "item_w8Y3z7": {
+          "type": "item",
+          "settings": {
+            "title": "Formal Dresses",
+            "body_content": "<p>Have a formal dress code on the calendar? Our lineup of floor-length gowns and formal dresses will ensure you look and feel your best. With luxe fabrications, flattering silhouettes, and perfect price points, this collection of black tie-ready dresses has exactly what you need for every charity gala, formal dance, or any celebration that calls for doing the most (in the best way!)</p>"
+          }
+        },
+        "item_NYwgRR": {
+          "type": "item",
+          "settings": {
+            "title": "Bridesmaid Dresses",
+            "body_content": "<p>It's your big day, but your besties still deserve to look and feel their absolute best. Our curated collection of bridesmaid dresses offers flattering silhouettes, comfortable fits, and colors to complement your whole party, whether you're going mix-and-match or perfectly coordinated. With tons of styles under HK$900.00 and sizes ranging from XXS-3X, we'll make sure your bridesmaids feel their most confident while they celebrate you.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_e4NF6i",
+        "item_qdhBJa",
+        "item_w8Y3z7",
+        "item_NYwgRR"
+      ],
+      "name": "GMK Long Text",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "intro_text": "One destination for every dress code. Find your forever plus one for every RSVP.",
+        "section_width": "full",
+        "content_max_width": 2400,
+        "text_max_width": 2400,
+        "edge_gutter": 28,
+        "padding_top": 32,
+        "padding_bottom": 40,
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 32,
+        "intro_margin_bottom": 48,
+        "item_gap": 48,
+        "background_color": "#ffffff",
+        "text_color": "#111111",
+        "intro_font_size": 12,
+        "title_font_size": 12,
+        "body_font_size": 12
+      }
+    },
+    "gmk_product_carousel_ECHdJ9": {
+      "type": "gmk-product-carousel",
+      "name": "GMK Product Carousel",
+      "settings": {
+        "enable_section": true,
+        "anchor_id": "",
+        "heading": "Just For You",
+        "products": [],
+        "collection": "casual-dresses",
+        "product_limit": 12,
+        "show_price": true,
+        "show_arrows": true,
+        "section_width": "full",
+        "content_max_width": 1920,
+        "edge_gutter": 60,
+        "card_gap": 6,
+        "visible_cards": "6",
+        "image_ratio_width": 2,
+        "image_ratio_height": 3,
+        "mobile_image_ratio_width": 4,
+        "mobile_image_ratio_height": 5,
+        "padding_top": 24,
+        "padding_bottom": 40,
+        "padding_top_mobile": 16,
+        "padding_bottom_mobile": 32,
+        "background_color": "#ffffff",
+        "text_color": "#111111",
+        "price_color": "#111111",
+        "nav_bg_color": "#ffffff",
+        "nav_border_color": "#222222"
+      }
+    }
+  },
+  "order": [
+    "gmk_lulus_promo_bar_rjRGjq",
+    "gmk_hero_banner_AqhFWE",
+    "gmk_lulus_collection_tiles_JGcc3r",
+    "separator_MjbTUQ",
+    "gmk_hero_banner_hiyLr4",
+    "separator_BPryMD",
+    "gmk_hero_banner_8qyj9q",
+    "separator_y9Lh8M",
+    "gmk_lulus_trending_tiles_NAcMXR",
+    "gmk_lulus_trending_tiles_JAczyU",
+    "gmk_social_feed_gyEYqn",
+    "gmk_promo_images_mfPB9P",
+    "gmk_long_text_dwLFBC",
+    "gmk_product_carousel_ECHdJ9"
+  ]
+}

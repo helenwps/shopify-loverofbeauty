@@ -1,0 +1,1 @@
+/Users/wupeishan/Documents/testDemo/loverofbeauty/AGENTS.md

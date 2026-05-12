@@ -1,0 +1,917 @@
+{%- liquid
+  assign anchor_id = section.settings.anchor_id | strip | handleize
+  if anchor_id == blank
+    assign anchor_id = 'section-' | append: section.id
+  endif
+
+  assign bg_image = section.settings.bg_image
+  assign mobile_image = section.settings.mobile_image
+  assign fallback_image = bg_image
+  if fallback_image == blank
+    assign fallback_image = mobile_image
+  endif
+
+  assign use_video = false
+  if section.settings.media_type == 'video' and section.settings.video != blank
+    assign use_video = true
+  endif
+
+  assign has_media = false
+  if use_video or fallback_image != blank
+    assign has_media = true
+  endif
+
+  assign heading_image = section.settings.heading_image
+  assign heading_alt = section.settings.heading | strip_html | escape
+
+  assign has_heading = false
+  if heading_image != blank or section.settings.heading != blank
+    assign has_heading = true
+  endif
+
+  assign has_description = false
+  if section.settings.description != blank
+    assign has_description = true
+  endif
+
+  assign has_button = false
+  if section.settings.button_label != blank and section.settings.button_link != blank
+    assign has_button = true
+  endif
+
+  assign has_caption = false
+  if has_description or has_button
+    assign has_caption = true
+  endif
+
+  assign caption_with_heading = false
+  if section.settings.caption_position == 'below_heading'
+    assign caption_with_heading = true
+  endif
+
+  assign has_bottom_caption = false
+  if has_caption and caption_with_heading == false
+    assign has_bottom_caption = true
+  endif
+
+  assign has_content_block = false
+  if has_heading
+    assign has_content_block = true
+  elsif caption_with_heading and has_caption
+    assign has_content_block = true
+  endif
+
+  assign has_legal_text = false
+  if section.settings.legal_text != blank
+    assign has_legal_text = true
+  endif
+
+  assign has_text_layer = false
+  if has_content_block or has_bottom_caption
+    assign has_text_layer = true
+  endif
+
+  assign section_width_limit = '100vw'
+  case section.settings.section_width
+    when 'wide'
+      assign section_width_limit = '1440px'
+    when 'standard'
+      assign section_width_limit = '1280px'
+    when 'narrow'
+      assign section_width_limit = '960px'
+  endcase
+
+  assign desktop_aspect_ratio_mode = section.settings.desktop_aspect_ratio
+  if desktop_aspect_ratio_mode == blank
+    assign desktop_aspect_ratio_mode = 'custom_height'
+  endif
+
+  assign desktop_aspect_ratio = 'auto'
+  case desktop_aspect_ratio_mode
+    when '21_9'
+      assign desktop_aspect_ratio = '21 / 9'
+    when '16_9'
+      assign desktop_aspect_ratio = '16 / 9'
+    when '5_2'
+      assign desktop_aspect_ratio = '5 / 2'
+    when '2_1'
+      assign desktop_aspect_ratio = '2 / 1'
+    when '3_2'
+      assign desktop_aspect_ratio = '3 / 2'
+    when '4_3'
+      assign desktop_aspect_ratio = '4 / 3'
+    when '1_1'
+      assign desktop_aspect_ratio = '1 / 1'
+  endcase
+
+  assign mobile_aspect_ratio_mode = section.settings.mobile_aspect_ratio
+  if mobile_aspect_ratio_mode == blank
+    assign mobile_aspect_ratio_mode = 'custom_height'
+  endif
+
+  assign mobile_aspect_ratio = 'auto'
+  case mobile_aspect_ratio_mode
+    when '16_9'
+      assign mobile_aspect_ratio = '16 / 9'
+    when '4_5'
+      assign mobile_aspect_ratio = '4 / 5'
+    when '3_4'
+      assign mobile_aspect_ratio = '3 / 4'
+    when '2_3'
+      assign mobile_aspect_ratio = '2 / 3'
+    when '9_16'
+      assign mobile_aspect_ratio = '9 / 16'
+    when '1_1'
+      assign mobile_aspect_ratio = '1 / 1'
+  endcase
+
+  assign overlay_opacity = section.settings.overlay_opacity | times: 0.01
+-%}
+
+{%- if section.settings.enable_section and has_media -%}
+  <style>
+    .gmk-hero-banner--{{ section.id }} {
+      --gmk-hero-banner-height: {{ section.settings.desktop_height }}px;
+      --gmk-hero-banner-mobile-height: {{ section.settings.mobile_height }}px;
+      --gmk-hero-banner-section-max: {{ section_width_limit }};
+      --gmk-hero-banner-content-max: {{ section.settings.content_max_width }}px;
+      --gmk-hero-banner-text-max: {{ section.settings.text_max_width }}px;
+      --gmk-hero-banner-heading-image-width: {{ section.settings.heading_image_width }}px;
+      --gmk-hero-banner-overlay-opacity: {{ overlay_opacity }};
+      --gmk-hero-banner-edge-gutter: clamp(16px, 3vw, 32px);
+      position: relative;
+      min-height: var(--gmk-hero-banner-height);
+      overflow: hidden;
+      color: {{ section.settings.text_color }};
+      background: #111111;
+      scroll-margin-top: 72px;
+      isolation: isolate;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__media,
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__picture,
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__image,
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__picture {
+      display: block;
+      z-index: 0;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__image,
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__video {
+      object-fit: cover;
+      object-position: {{ section.settings.media_position | replace: '_', ' ' }};
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__video {
+      z-index: 1;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: rgba(0, 0, 0, var(--gmk-hero-banner-overlay-opacity));
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__container {
+      position: relative;
+      z-index: 3;
+      width: min(calc(100vw - var(--gmk-hero-banner-edge-gutter) - var(--gmk-hero-banner-edge-gutter)), var(--gmk-hero-banner-section-max));
+      min-height: var(--gmk-hero-banner-height);
+      margin: 0 auto;
+      text-align: {{ section.settings.text_align }};
+      pointer-events: none;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__content {
+      position: absolute;
+      width: min(100%, var(--gmk-hero-banner-content-max));
+      pointer-events: auto;
+    }
+
+    {%- if desktop_aspect_ratio_mode != 'custom_height' -%}
+      .gmk-hero-banner--{{ section.id }} {
+        aspect-ratio: {{ desktop_aspect_ratio }};
+        min-height: 0;
+      }
+
+      .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__container {
+        position: absolute;
+        inset: 0;
+        min-height: 0;
+      }
+    {%- endif -%}
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-center .gmk-hero-banner__content {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -52%);
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-left_center .gmk-hero-banner__content {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-right_center .gmk-hero-banner__content {
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-bottom_center .gmk-hero-banner__content {
+      bottom: clamp(36px, 5.2vw, 72px);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__text {
+      width: min(100%, var(--gmk-hero-banner-text-max));
+      margin: 0 auto;
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-left_center .gmk-hero-banner__text {
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-right_center .gmk-hero-banner__text {
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__heading {
+      margin: 0;
+      color: inherit;
+      letter-spacing: 0;
+      white-space: pre-line;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.16);
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--style-serif_large .gmk-hero-banner__heading {
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: clamp(72px, 8.8vw, 140px);
+      font-weight: 400;
+      line-height: 0.92;
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--style-promo_bold .gmk-hero-banner__heading {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: clamp(64px, 7.2vw, 128px);
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--style-logo_lockup .gmk-hero-banner__heading {
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: clamp(44px, 4.6vw, 86px);
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__heading-image {
+      display: block;
+      width: min(100%, var(--gmk-hero-banner-heading-image-width));
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--align-left .gmk-hero-banner__heading-image {
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--align-right .gmk-hero-banner__heading-image {
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__caption {
+      position: absolute;
+      right: 0;
+      bottom: clamp(36px, 5.2vw, 72px);
+      left: 0;
+      width: min(100%, var(--gmk-hero-banner-text-max));
+      margin: 0 auto;
+      color: inherit;
+      font-family: Arial, Helvetica, sans-serif;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.24);
+      pointer-events: auto;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__caption--inline {
+      position: static;
+      width: auto;
+      margin-top: 18px;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__description {
+      margin: 0;
+      font-size: clamp(17px, 1.18vw, 24px);
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__description p {
+      margin: 0;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+      color: inherit;
+      font-size: clamp(16px, 1.12vw, 22px);
+      font-weight: 700;
+      line-height: 1.2;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 5px;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__button:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__legal {
+      position: absolute;
+      left: var(--gmk-hero-banner-edge-gutter);
+      bottom: 18px;
+      z-index: 3;
+      width: min(360px, calc(100% - var(--gmk-hero-banner-edge-gutter) - var(--gmk-hero-banner-edge-gutter)));
+      color: inherit;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.25;
+      text-align: left;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.28);
+    }
+
+    .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__legal p {
+      margin: 0;
+    }
+
+    @media screen and (max-width: 767px) {
+      .gmk-hero-banner--{{ section.id }} {
+        {%- if mobile_aspect_ratio_mode == 'custom_height' -%}
+          aspect-ratio: auto;
+          min-height: var(--gmk-hero-banner-mobile-height);
+        {%- else -%}
+          aspect-ratio: {{ mobile_aspect_ratio }};
+          min-height: 0;
+        {%- endif -%}
+      }
+
+      .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__container {
+        {%- if mobile_aspect_ratio_mode == 'custom_height' -%}
+          position: relative;
+          inset: auto;
+          min-height: var(--gmk-hero-banner-mobile-height);
+        {%- else -%}
+          position: absolute;
+          inset: 0;
+          min-height: 0;
+        {%- endif -%}
+      }
+
+      .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-center .gmk-hero-banner__content {
+        transform: translate(-50%, -58%);
+      }
+
+      .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-left_center .gmk-hero-banner__content,
+      .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-right_center .gmk-hero-banner__content {
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -50%);
+      }
+
+      .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-left_center .gmk-hero-banner__text,
+      .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--position-right_center .gmk-hero-banner__text {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--style-serif_large .gmk-hero-banner__heading {
+        font-size: clamp(48px, 16vw, 78px);
+        line-height: 0.96;
+      }
+
+      .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--style-promo_bold .gmk-hero-banner__heading {
+        font-size: clamp(44px, 14vw, 72px);
+      }
+
+      .gmk-hero-banner--{{ section.id }}.gmk-hero-banner--style-logo_lockup .gmk-hero-banner__heading {
+        font-size: clamp(34px, 11vw, 56px);
+      }
+
+      .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__caption {
+        bottom: 32px;
+      }
+
+      .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__description {
+        font-size: 16px;
+        line-height: 1.35;
+      }
+
+      .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__button {
+        font-size: 16px;
+      }
+
+      .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__legal {
+        bottom: 12px;
+        font-size: 10px;
+      }
+    }
+  </style>
+
+  <section id="{{ anchor_id | escape }}" class="gmk-hero-banner gmk-hero-banner--{{ section.id }} gmk-hero-banner--style-{{ section.settings.text_style }} gmk-hero-banner--position-{{ section.settings.content_position }} gmk-hero-banner--caption-{{ section.settings.caption_position }} gmk-hero-banner--align-{{ section.settings.text_align }}">
+    <div class="gmk-hero-banner__media" aria-hidden="true">
+      {%- if fallback_image != blank -%}
+        <picture class="gmk-hero-banner__picture">
+          {%- if mobile_image != blank -%}
+            <source
+              media="(max-width: 767px)"
+              srcset="
+                {{ mobile_image | image_url: width: 550 }} 550w,
+                {{ mobile_image | image_url: width: 750 }} 750w,
+                {{ mobile_image | image_url: width: 1100 }} 1100w
+              "
+              sizes="100vw"
+            >
+          {%- endif -%}
+          {{
+            fallback_image
+            | image_url: width: 2880
+            | image_tag:
+              widths: '750, 1100, 1500, 2000, 2400, 2880',
+              sizes: '100vw',
+              class: 'gmk-hero-banner__image',
+              loading: 'eager',
+              fetchpriority: 'high'
+          }}
+        </picture>
+      {%- endif -%}
+
+      {%- if use_video -%}
+        {{
+          section.settings.video
+          | video_tag:
+            class: 'gmk-hero-banner__video',
+            image_size: '2400x',
+            autoplay: true,
+            loop: true,
+            muted: true,
+            playsinline: true
+        }}
+      {%- endif -%}
+    </div>
+
+    <div class="gmk-hero-banner__overlay"></div>
+
+    {%- if has_text_layer -%}
+      <div class="gmk-hero-banner__container">
+        {%- if has_content_block -%}
+          <div class="gmk-hero-banner__content">
+            <div class="gmk-hero-banner__text">
+              {%- if heading_image != blank -%}
+                {{
+                  heading_image
+                  | image_url: width: 1240
+                  | image_tag:
+                    widths: '240, 360, 480, 620, 760, 960, 1240',
+                    sizes: '(max-width: 767px) 80vw, 620px',
+                    class: 'gmk-hero-banner__heading-image',
+                    loading: 'eager',
+                    alt: heading_alt
+                }}
+              {%- elsif section.settings.heading != blank -%}
+                <h1 class="gmk-hero-banner__heading">{{ section.settings.heading }}</h1>
+              {%- endif -%}
+
+              {%- if caption_with_heading and has_caption -%}
+                <div class="gmk-hero-banner__caption gmk-hero-banner__caption--inline">
+                  {%- if has_description -%}
+                    <div class="gmk-hero-banner__description">
+                      {{ section.settings.description }}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if has_button -%}
+                    <a class="gmk-hero-banner__button" href="{{ section.settings.button_link | escape }}">
+                      {{ section.settings.button_label | escape }}
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if has_bottom_caption -%}
+          <div class="gmk-hero-banner__caption">
+            {%- if has_description -%}
+              <div class="gmk-hero-banner__description">
+                {{ section.settings.description }}
+              </div>
+            {%- endif -%}
+
+            {%- if has_button -%}
+              <a class="gmk-hero-banner__button" href="{{ section.settings.button_link | escape }}">
+                {{ section.settings.button_label | escape }}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if has_legal_text -%}
+      <div class="gmk-hero-banner__legal">
+        {{ section.settings.legal_text | escape | newline_to_br }}
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "GMK Hero",
+  "tag": "section",
+  "class": "section-gmk-hero-banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_section",
+      "label": "启用模块｜Enable section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "锚点 ID｜Anchor ID",
+      "info": "只填写小写英文、数字和连字符｜Use lowercase letters, numbers, and hyphens"
+    },
+    {
+      "type": "header",
+      "content": "媒体｜Media"
+    },
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "媒体类型｜Media type",
+      "default": "image",
+      "options": [
+        {
+          "value": "image",
+          "label": "图片｜Image"
+        },
+        {
+          "value": "video",
+          "label": "视频｜Video"
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "背景视频｜Background video"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "桌面图片｜Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "移动图片｜Mobile image"
+    },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "媒体裁切位置｜Media position",
+      "default": "center_center",
+      "options": [
+        {
+          "value": "center_center",
+          "label": "居中｜Center"
+        },
+        {
+          "value": "center_top",
+          "label": "居上｜Top"
+        },
+        {
+          "value": "center_bottom",
+          "label": "居下｜Bottom"
+        },
+        {
+          "value": "left_center",
+          "label": "居左｜Left"
+        },
+        {
+          "value": "right_center",
+          "label": "居右｜Right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "遮罩透明度｜Overlay opacity",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "内容｜Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "标题｜Heading",
+      "default": "Hi, Summer"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "描述｜Description",
+      "default": "<p>Dresses for long days, high temps, and full calendars</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "按钮文案｜Button label",
+      "default": "Shop the Summer Dress Edit"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "按钮链接｜Button link"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "文字对齐｜Text align",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "左对齐｜Left"
+        },
+        {
+          "value": "center",
+          "label": "居中｜Center"
+        },
+        {
+          "value": "right",
+          "label": "右对齐｜Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_style",
+      "label": "文案样式｜Text style",
+      "default": "serif_large",
+      "options": [
+        {
+          "value": "serif_large",
+          "label": "优雅衬线｜Elegant serif"
+        },
+        {
+          "value": "promo_bold",
+          "label": "促销粗体｜Promo bold"
+        },
+        {
+          "value": "logo_lockup",
+          "label": "品牌组合｜Logo lockup"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "文案位置｜Text position",
+      "default": "center",
+      "options": [
+        {
+          "value": "center",
+          "label": "居中｜Center"
+        },
+        {
+          "value": "left_center",
+          "label": "左侧居中｜Left center"
+        },
+        {
+          "value": "right_center",
+          "label": "右侧居中｜Right center"
+        },
+        {
+          "value": "bottom_center",
+          "label": "底部居中｜Bottom center"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "caption_position",
+      "label": "描述和按钮位置｜Caption position",
+      "default": "bottom",
+      "options": [
+        {
+          "value": "bottom",
+          "label": "底部｜Bottom"
+        },
+        {
+          "value": "below_heading",
+          "label": "标题下方｜Below heading"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "heading_image",
+      "label": "标题图片｜Heading image"
+    },
+    {
+      "type": "range",
+      "id": "heading_image_width",
+      "label": "标题图片宽度｜Heading image width",
+      "min": 160,
+      "max": 620,
+      "step": 20,
+      "unit": "px",
+      "default": 480
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "文案颜色｜Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "textarea",
+      "id": "legal_text",
+      "label": "底部小字｜Bottom note"
+    },
+    {
+      "type": "header",
+      "content": "布局｜Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "模块宽度｜Section width",
+      "default": "full",
+      "options": [
+        {
+          "value": "full",
+          "label": "全宽｜Full"
+        },
+        {
+          "value": "wide",
+          "label": "宽版｜Wide"
+        },
+        {
+          "value": "standard",
+          "label": "标准｜Standard"
+        },
+        {
+          "value": "narrow",
+          "label": "窄版｜Narrow"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "内容最大宽度｜Content max width",
+      "min": 760,
+      "max": 1440,
+      "step": 20,
+      "unit": "px",
+      "default": 1280
+    },
+    {
+      "type": "range",
+      "id": "text_max_width",
+      "label": "文字最大宽度｜Text max width",
+      "min": 480,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "default": 760
+    },
+    {
+      "type": "select",
+      "id": "desktop_aspect_ratio",
+      "label": "桌面媒体比例｜Desktop media ratio",
+      "default": "custom_height",
+      "options": [
+        {
+          "value": "custom_height",
+          "label": "自定义高度｜Custom height"
+        },
+        {
+          "value": "21_9",
+          "label": "21:9"
+        },
+        {
+          "value": "5_2",
+          "label": "5:2"
+        },
+        {
+          "value": "2_1",
+          "label": "2:1"
+        },
+        {
+          "value": "16_9",
+          "label": "16:9"
+        },
+        {
+          "value": "3_2",
+          "label": "3:2"
+        },
+        {
+          "value": "4_3",
+          "label": "4:3"
+        },
+        {
+          "value": "1_1",
+          "label": "1:1"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_aspect_ratio",
+      "label": "移动媒体比例｜Mobile media ratio",
+      "default": "custom_height",
+      "options": [
+        {
+          "value": "custom_height",
+          "label": "自定义高度｜Custom height"
+        },
+        {
+          "value": "16_9",
+          "label": "16:9"
+        },
+        {
+          "value": "4_5",
+          "label": "4:5"
+        },
+        {
+          "value": "3_4",
+          "label": "3:4"
+        },
+        {
+          "value": "2_3",
+          "label": "2:3"
+        },
+        {
+          "value": "9_16",
+          "label": "9:16"
+        },
+        {
+          "value": "1_1",
+          "label": "1:1"
+        }
+      ]
+    },
+    {
+      "type": "number",
+      "id": "desktop_height",
+      "label": "桌面高度 px｜Desktop height px",
+      "info": "仅在桌面媒体比例选择自定义高度时生效｜Only used when desktop media ratio is custom height",
+      "default": 760
+    },
+    {
+      "type": "number",
+      "id": "mobile_height",
+      "label": "移动高度 px｜Mobile height px",
+      "info": "仅在移动媒体比例选择自定义高度时生效｜Only used when mobile media ratio is custom height",
+      "default": 560
+    }
+  ],
+  "presets": [
+    {
+      "name": "GMK Hero",
+      "category": "GMK"
+    }
+  ]
+}
+{% endschema %}

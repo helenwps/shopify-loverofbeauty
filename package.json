@@ -1,0 +1,17 @@
+{
+  "name": "lover-of-beauty",
+  "version": "1.0.0",
+  "description": "- 确保你有该网站的后台权限>>[独立站后台账号权限] - 确保你安装了shopify cli和Themekit主题开发工具",
+  "main": "",
+  "scripts": {
+    "dev": "shopify theme dev --store=lover-of-beauty.myshopify.com",  
+    "open": "shopify theme open",
+    "deploy": "shopify theme deploy", 
+    "watch": "shopify theme watch",  
+    "check": "shopify theme check"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+
+}

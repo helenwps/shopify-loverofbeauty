@@ -1,0 +1,390 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "message-1": {
+          "type": "message",
+          "settings": {
+            "text": "ZALIFY THEME V2 IS OFFICIALLY RELEASED! SEE THE <a href=\"https://zalify.featurebase.app/changelog\" target=\"_blank\" title=\"https://zalify.featurebase.app/changelog\">CHANGELOG</a>."
+          }
+        }
+      },
+      "block_order": [
+        "message-1"
+      ],
+      "settings": {
+        "position": "non_sticky",
+        "text_size": "small",
+        "navigation_mode": "scrolling",
+        "autoplay": true,
+        "show_arrows": true,
+        "cycle_speed": 5,
+        "message_width": "boxed",
+        "scrolling_speed": 20,
+        "background": "#000000",
+        "text_color": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "header",
+      "disabled": true,
+      "settings": {
+        "position": "sticky",
+        "cart_badge_background": "rgba(0,0,0,0)",
+        "cart_badge_text_color": "rgba(0,0,0,0)",
+        "logo": "{{shop.brand.logo}}",
+        "logo_max_width": 120,
+        "mobile_logo_max_width": 100,
+        "navigation_menu": "main-menu",
+        "sidebar_navigation_menu": "main-menu",
+        "enable_tabbed_brand_nav": true,
+        "tab_lulus_menu": "main-menu",
+        "tab_outlet_menu": "outletmenu",
+        "tab_disable_hover_submenu": true,
+        "tab_hover_flyout_menu_titles": "loverbeauty,Catalog,Contact",
+        "header_layout": "logo_left_navigation_inline",
+        "show_icons": true,
+        "reduce_desktop_padding": false,
+        "enable_transparent_header": true,
+        "transparent_header_text_color": "#ffffff",
+        "transparent_header_cart_badge_background": "rgba(0,0,0,0)",
+        "transparent_header_cart_badge_text_color": "rgba(0,0,0,0)",
+        "show_country_selector": false,
+        "show_country_flag": false,
+        "show_country_name": false,
+        "show_locale_selector": false
+      }
+    },
+    "gmk_lulus_header_Tbxc4X": {
+      "type": "gmk-lulus-header",
+      "blocks": {
+        "brand_V8qKqb": {
+          "type": "brand",
+          "settings": {
+            "key": "lulus",
+            "title": "Lulus",
+            "logo_text": "Lulus",
+            "logo_style": "script"
+          }
+        },
+        "brand_78qaKp": {
+          "type": "brand",
+          "settings": {
+            "key": "outlet",
+            "title": "The Outlet",
+            "logo_text": "the OUTLET",
+            "logo_style": "outlet"
+          }
+        },
+        "nav_item_qdMQ63": {
+          "type": "nav_item",
+          "settings": {
+            "brand_key": "lulus",
+            "key": "new",
+            "title": "New",
+            "link_url": ""
+          }
+        },
+        "nav_item_NgD8Jt": {
+          "type": "nav_item",
+          "settings": {
+            "brand_key": "lulus",
+            "key": "back_in_stock",
+            "title": "Back In Stock",
+            "link_url": ""
+          }
+        },
+        "nav_item_6VGJVJ": {
+          "type": "nav_item",
+          "settings": {
+            "brand_key": "lulus",
+            "key": "dresses",
+            "title": "Dresses",
+            "link_url": ""
+          }
+        },
+        "nav_item_6mkjYH": {
+          "type": "nav_item",
+          "settings": {
+            "brand_key": "lulus",
+            "key": "tops",
+            "title": "Tops",
+            "link_url": ""
+          }
+        },
+        "nav_item_dHYVch": {
+          "type": "nav_item",
+          "settings": {
+            "brand_key": "outlet",
+            "key": "shop_all",
+            "title": "Shop All",
+            "link_url": ""
+          }
+        },
+        "nav_item_xGtpgp": {
+          "type": "nav_item",
+          "settings": {
+            "brand_key": "outlet",
+            "key": "outlet_dresses",
+            "title": "Dresses",
+            "link_url": ""
+          }
+        },
+        "nav_item_cnA4Hb": {
+          "type": "nav_item",
+          "settings": {
+            "brand_key": "outlet",
+            "key": "outlet_tops",
+            "title": "Tops",
+            "link_url": ""
+          }
+        },
+        "nav_item_mCaEmp": {
+          "type": "nav_item",
+          "settings": {
+            "brand_key": "outlet",
+            "key": "outlet_bottoms",
+            "title": "Bottoms",
+            "link_url": ""
+          }
+        },
+        "nav_item_KTAiJK": {
+          "type": "nav_item",
+          "settings": {
+            "brand_key": "outlet",
+            "key": "outlet_shoes",
+            "title": "Shoes",
+            "link_url": ""
+          }
+        },
+        "menu_column_Gm4ezP": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "new",
+            "title": "New Arrivals",
+            "text": "All New\nUnder HK$450.00\nNew Colors!\nNew In Today\nNew In This Week\nNew In Accessories\nNew In Bottoms\nNew In Dresses\nNew In Jumpsuits\nNew In Shoes\nNew In Swimwear\nNew In Tops",
+            "column_style": "wide"
+          }
+        },
+        "menu_column_LPN3gQ": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "new",
+            "title": "Trending",
+            "text": "All Trending New\nThe Devil Wears Prada | Lulus\nSummer Dresses\nGraduation Dresses\nVacation Outfits",
+            "column_style": "regular"
+          }
+        },
+        "promo_6qccLA": {
+          "type": "promo",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "new",
+            "image": "shopify://shop_images/12219581_2531651.jpg",
+            "title": "The Devil Wears Prada | Lulus",
+            "link_url": "",
+            "image_ratio": "portrait"
+          }
+        },
+        "menu_column_8BgA9r": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "back_in_stock",
+            "title": "Back In Stock",
+            "text": "All Back In Stock\nBack In Stock Dresses\nBack In Stock Tops\nBack In Stock Bottoms\nBack In Stock Jumpsuits\nBack In Stock Shoes",
+            "column_style": "wide"
+          }
+        },
+        "menu_column_jnaPLd": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "back_in_stock",
+            "title": "Bestsellers",
+            "text": "Top Rated\nSelling Fast",
+            "column_style": "regular"
+          }
+        },
+        "promo_7TaXT3": {
+          "type": "promo",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "back_in_stock",
+            "image": "shopify://shop_images/11824941_2446731.jpg",
+            "title": "Back in Stock",
+            "link_url": "",
+            "image_ratio": "portrait"
+          }
+        },
+        "menu_column_yefJeq": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "dresses",
+            "title": "All Dresses",
+            "text": "New In\nDresses Under HK$450.00\nExtended Sizing\nTrending\nFloral Print Dresses\nGraduation Dresses\nMesh Dresses\nVacation Dresses\nWhite Dresses",
+            "column_style": "wide"
+          }
+        },
+        "menu_column_PVmdad": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "dresses",
+            "title": "Occasion",
+            "text": "Birthday Dresses\nBridesmaid Dresses\nBrunch Dresses\nCasual Dresses\nClassy Dresses\nClub Dresses\nCocktail Dresses\nDance Dresses\nDay Dresses\nFormal Dresses\nGoing Out Dresses\nHomecoming Dresses\nOffice & Work Dresses\nParty Dresses\nDay Party Dresses\nProm Dresses\nSemi-Formal Dresses",
+            "column_style": "wide"
+          }
+        },
+        "promo_eAFitM": {
+          "type": "promo",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "dresses",
+            "image": "shopify://shop_images/2785011_New_02_fullbody_2025-12-15.jpg",
+            "title": "Mini Dresses",
+            "link_url": "",
+            "image_ratio": "portrait"
+          }
+        },
+        "menu_column_3QtgVE": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "tops",
+            "title": "All Women's Tops",
+            "text": "New In\nTops Under HK$180.00\nTops Under HK$270.00",
+            "column_style": "wide"
+          }
+        },
+        "menu_column_niCNa4": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "tops",
+            "title": "Style",
+            "text": "Blouses & Shirts\nBodysuits\nButton-Up Shirts\nCrop Tops\nHalter Tops\nLong Sleeve Tops\nOne-Shoulder Tops\nShort Sleeve Tops\nSweaters\nTank Tops\nTube Tops\nTees",
+            "column_style": "wide"
+          }
+        },
+        "promo_R7VgGp": {
+          "type": "promo",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "tops",
+            "image": "shopify://shop_images/11282081_2348491.jpg",
+            "title": "Tank Tops",
+            "link_url": "",
+            "image_ratio": "portrait"
+          }
+        },
+        "menu_column_e9QaTp": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "sale",
+            "title": "All Sale",
+            "text": "New In Sale\nBuy 2 Get 1 Free Sale\nLulus Deals\nOutlet\nPromotions",
+            "column_style": "wide"
+          }
+        },
+        "menu_column_zhUJWd": {
+          "type": "menu_column",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "sale",
+            "title": "Category",
+            "text": "Accessories on Sale\nBottoms on Sale\nClothing on Sale\nDresses on Sale\nJewelry on Sale\nJumpsuits on Sale\nLoungewear on Sale\nShoes on Sale\nSweater Dressing on Sale\nSwimwear on Sale\nTops on Sale\nWedding on Sale",
+            "column_style": "wide"
+          }
+        },
+        "promo_RANMrM": {
+          "type": "promo",
+          "settings": {
+            "brand_key": "lulus",
+            "parent_key": "sale",
+            "image": "shopify://shop_images/2714871_01_hero_2025-08-27.jpg",
+            "title": "Outlet",
+            "link_url": "",
+            "image_ratio": "portrait"
+          }
+        }
+      },
+      "block_order": [
+        "brand_V8qKqb",
+        "brand_78qaKp",
+        "nav_item_qdMQ63",
+        "nav_item_NgD8Jt",
+        "nav_item_6VGJVJ",
+        "nav_item_6mkjYH",
+        "nav_item_dHYVch",
+        "nav_item_xGtpgp",
+        "nav_item_cnA4Hb",
+        "nav_item_mCaEmp",
+        "nav_item_KTAiJK",
+        "menu_column_Gm4ezP",
+        "menu_column_LPN3gQ",
+        "promo_6qccLA",
+        "menu_column_8BgA9r",
+        "menu_column_jnaPLd",
+        "promo_7TaXT3",
+        "menu_column_yefJeq",
+        "menu_column_PVmdad",
+        "promo_eAFitM",
+        "menu_column_3QtgVE",
+        "menu_column_niCNa4",
+        "promo_R7VgGp",
+        "menu_column_e9QaTp",
+        "menu_column_zhUJWd",
+        "promo_RANMrM"
+      ],
+      "name": "GMK Lulus Header",
+      "settings": {
+        "enable_section": true,
+        "default_brand_key": "lulus",
+        "sticky_header": true,
+        "collapse_on_scroll": false,
+        "collapse_offset": 20,
+        "search_placeholder": "Search",
+        "market_label": "",
+        "account_link": "",
+        "wishlist_link": "",
+        "cart_link": "",
+        "section_width": "full",
+        "content_max_width": 1920,
+        "top_row_height": 70,
+        "nav_height": 60,
+        "dropdown_max_height": 520,
+        "background_color": "#ffffff",
+        "nav_background_color": "#ffffff",
+        "inactive_brand_color": "#f3f3f3",
+        "text_color": "#202020",
+        "muted_color": "#343434",
+        "border_color": "#e6e6e6",
+        "accent_color": "#202020",
+        "market_background_color": "#e4272f",
+        "market_text_color": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header",
+    "gmk_lulus_header_Tbxc4X"
+  ]
+}
