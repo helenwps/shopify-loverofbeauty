@@ -1,0 +1,327 @@
+<!-- Dropdown Navigation Section -->
+<div class="dropdown-navigation">
+  <div class="dropdown-nav-container">
+    {% for menu_item in section.blocks %}
+      {% if menu_item.type == 'menu_column' %}
+        <div class="dropdown-menu-item">
+          <button class="dropdown-trigger" aria-expanded="false">
+            <span class="menu-title">{{ menu_item.settings.menu_title }}</span>
+            <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
+              <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          
+          <div class="dropdown-content">
+            <div class="dropdown-inner">
+              <!-- Menu Items List -->
+              <div class="menu-list">
+                {% for item in menu_item.settings.menu_items %}
+                  {% if item != blank %}
+                    <a href="{{ item.url }}" class="menu-link">{{ item.title }}</a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              
+              <!-- Clickable Image -->
+              {% if menu_item.settings.menu_image %}
+                <div class="menu-image-container">
+                  <a href="{{ menu_item.settings.image_link }}" class="menu-image-link">
+                    <img 
+                      src="{{ menu_item.settings.menu_image | image_url: width: 200 }}"
+                      alt="{{ menu_item.settings.menu_image.alt }}"
+                      class="menu-image"
+                    />
+                  </a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .dropdown-navigation {
+    width: 100%;
+    background-color: {{ section.settings.nav_background }};
+    padding: {{ section.settings.nav_padding }};
+  }
+
+  .dropdown-nav-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .dropdown-menu-item {
+    position: relative;
+  }
+
+  .dropdown-trigger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: {{ section.settings.text_color }};
+    transition: color 0.3s ease;
+  }
+
+  .dropdown-trigger:hover {
+    color: {{ section.settings.hover_color }};
+  }
+
+  .dropdown-trigger[aria-expanded="true"] .dropdown-icon {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid {{ section.settings.border_color }};
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 250px;
+    max-width: 350px;
+    padding: 1.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .dropdown-menu-item[open] .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .menu-link {
+    color: {{ section.settings.link_color }};
+    text-decoration: none;
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
+    transition: color 0.2s ease;
+    border-left: 3px solid transparent;
+    padding-left: 0.75rem;
+  }
+
+  .menu-link:hover {
+    color: {{ section.settings.link_hover_color }};
+    border-left-color: {{ section.settings.link_hover_color }};
+  }
+
+  .menu-image-container {
+    margin-top: 0.5rem;
+    overflow: hidden;
+    border-radius: 0.375rem;
+  }
+
+  .menu-image-link {
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .menu-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .menu-image-link:hover .menu-image {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    .dropdown-nav-container {
+      gap: 0.5rem;
+    }
+
+    .dropdown-trigger {
+      font-size: 0.9rem;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .dropdown-content {
+      position: fixed;
+      top: auto;
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%) translateY(10px);
+      max-width: 90vw;
+      width: 90vw;
+    }
+
+    .dropdown-menu-item[open] .dropdown-content {
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const triggers = document.querySelectorAll('.dropdown-trigger');
+    
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        const menuItem = this.closest('.dropdown-menu-item');
+        const isOpen = menuItem.hasAttribute('open');
+        
+        // Close all other menus
+        document.querySelectorAll('.dropdown-menu-item[open]').forEach(item => {
+          if (item !== menuItem) {
+            item.removeAttribute('open');
+            item.querySelector('.dropdown-trigger').setAttribute('aria-expanded', 'false');
+          }
+        });
+        
+        // Toggle current menu
+        if (isOpen) {
+          menuItem.removeAttribute('open');
+          this.setAttribute('aria-expanded', 'false');
+        } else {
+          menuItem.setAttribute('open', '');
+          this.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown-menu-item')) {
+        document.querySelectorAll('.dropdown-menu-item[open]').forEach(item => {
+          item.removeAttribute('open');
+          item.querySelector('.dropdown-trigger').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Dropdown Navigation",
+  "settings": [
+    {
+      "type": "color",
+      "id": "nav_background",
+      "label": "Navigation Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "nav_padding",
+      "label": "Navigation Padding",
+      "default": "1rem"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Menu Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "hover_color",
+      "label": "Menu Title Hover Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Menu Link Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Menu Link Hover Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Dropdown Border Color",
+      "default": "#e0e0e0"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_column",
+      "name": "Menu Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Menu Title",
+          "default": "Category"
+        },
+        {
+          "type": "richtext",
+          "id": "menu_items",
+          "label": "Menu Items (Enter links as markdown: [Link Text](url))"
+        },
+        {
+          "type": "image_picker",
+          "id": "menu_image",
+          "label": "Menu Image"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dropdown Navigation",
+      "blocks": [
+        {
+          "type": "menu_column",
+          "settings": {
+            "menu_title": "Women"
+          }
+        },
+        {
+          "type": "menu_column",
+          "settings": {
+            "menu_title": "Men"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
