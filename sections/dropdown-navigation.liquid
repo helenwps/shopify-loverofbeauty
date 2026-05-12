@@ -1,60 +1,162 @@
 <!-- Dropdown Navigation Section -->
-<div class="dropdown-navigation">
-  <div class="dropdown-nav-container">
-    {% for menu_item in section.blocks %}
-      {% if menu_item.type == 'menu_column' %}
-        <div class="dropdown-menu-item">
-          <button class="dropdown-trigger" aria-expanded="false">
-            <span class="menu-title">{{ menu_item.settings.menu_title }}</span>
-            <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
-              <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </button>
-          
-          <div class="dropdown-content">
-            <div class="dropdown-inner">
-              <!-- Menu Items List -->
-              <div class="menu-list">
-                {% for item in menu_item.settings.menu_items %}
-                  {% if item != blank %}
-                    <a href="{{ item.url }}" class="menu-link">{{ item.title }}</a>
+<div class="dropdown-navigation" id="dropdownNav">
+  <!-- Mobile Toggle Button -->
+  <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
+
+  <!-- Navigation Container -->
+  <nav class="dropdown-nav-container" id="navContainer">
+    <div class="nav-content">
+      {% for menu_item in section.blocks %}
+        {% if menu_item.type == 'menu_column' %}
+          <div class="dropdown-menu-item">
+            <button class="dropdown-trigger" aria-expanded="false" aria-label="Toggle {{ menu_item.settings.menu_title }} menu">
+              <span class="menu-title">{{ menu_item.settings.menu_title }}</span>
+              <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
+                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            
+            <div class="dropdown-content">
+              <div class="dropdown-inner">
+                <!-- Multi-column menu items -->
+                <div class="menu-columns">
+                  {% if menu_item.settings.column_1_title %}
+                    <div class="menu-column">
+                      <h4 class="column-title">{{ menu_item.settings.column_1_title }}</h4>
+                      <ul class="menu-list">
+                        {% for item in menu_item.settings.column_1_items %}
+                          {% if item != blank %}
+                            <li><a href="{{ item.url }}" class="menu-link">{{ item.title }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
                   {% endif %}
-                {% endfor %}
-              </div>
-              
-              <!-- Clickable Image -->
-              {% if menu_item.settings.menu_image %}
-                <div class="menu-image-container">
-                  <a href="{{ menu_item.settings.image_link }}" class="menu-image-link">
-                    <img 
-                      src="{{ menu_item.settings.menu_image | image_url: width: 200 }}"
-                      alt="{{ menu_item.settings.menu_image.alt }}"
-                      class="menu-image"
-                    />
-                  </a>
+
+                  {% if menu_item.settings.column_2_title %}
+                    <div class="menu-column">
+                      <h4 class="column-title">{{ menu_item.settings.column_2_title }}</h4>
+                      <ul class="menu-list">
+                        {% for item in menu_item.settings.column_2_items %}
+                          {% if item != blank %}
+                            <li><a href="{{ item.url }}" class="menu-link">{{ item.title }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+
+                  {% if menu_item.settings.column_3_title %}
+                    <div class="menu-column">
+                      <h4 class="column-title">{{ menu_item.settings.column_3_title }}</h4>
+                      <ul class="menu-list">
+                        {% for item in menu_item.settings.column_3_items %}
+                          {% if item != blank %}
+                            <li><a href="{{ item.url }}" class="menu-link">{{ item.title }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
                 </div>
-              {% endif %}
+                
+                <!-- Clickable Image -->
+                {% if menu_item.settings.menu_image %}
+                  <div class="menu-image-wrapper">
+                    <div class="menu-image-container">
+                      <a href="{{ menu_item.settings.image_link }}" class="menu-image-link">
+                        <img 
+                          src="{{ menu_item.settings.menu_image | image_url: width: 250 }}"
+                          alt="{{ menu_item.settings.menu_image.alt }}"
+                          class="menu-image"
+                          loading="lazy"
+                        />
+                      </a>
+                    </div>
+                    {% if menu_item.settings.image_caption %}
+                      <p class="image-caption">{{ menu_item.settings.image_caption }}</p>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
             </div>
           </div>
-        </div>
-      {% endif %}
-    {% endfor %}
-  </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu-overlay" id="menuOverlay"></div>
 </div>
 
 <style>
+  :root {
+    --nav-bg: {{ section.settings.nav_background }};
+    --text-color: {{ section.settings.text_color }};
+    --hover-color: {{ section.settings.hover_color }};
+    --link-color: {{ section.settings.link_color }};
+    --link-hover-color: {{ section.settings.link_hover_color }};
+    --border-color: {{ section.settings.border_color }};
+    --column-title-color: {{ section.settings.column_title_color }};
+  }
+
   .dropdown-navigation {
     width: 100%;
-    background-color: {{ section.settings.nav_background }};
-    padding: {{ section.settings.nav_padding }};
+    background-color: var(--nav-bg);
+    position: relative;
+  }
+
+  .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+    gap: 6px;
+    position: relative;
+    z-index: 1001;
+  }
+
+  .hamburger-line {
+    width: 24px;
+    height: 3px;
+    background-color: var(--text-color);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(10px, 10px);
+  }
+
+  .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
   }
 
   .dropdown-nav-container {
     display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    padding: {{ section.settings.nav_padding }};
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .nav-content {
+    display: flex;
+    width: 100%;
     gap: 2rem;
     flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
   }
 
   .dropdown-menu-item {
@@ -70,13 +172,20 @@
     gap: 0.5rem;
     padding: 0.75rem 1rem;
     font-size: 1rem;
-    font-weight: 500;
-    color: {{ section.settings.text_color }};
-    transition: color 0.3s ease;
+    font-weight: {{ section.settings.menu_font_weight }};
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
   }
 
   .dropdown-trigger:hover {
-    color: {{ section.settings.hover_color }};
+    color: var(--hover-color);
+    border-bottom-color: var(--hover-color);
+  }
+
+  .dropdown-trigger[aria-expanded="true"] {
+    color: var(--hover-color);
+    border-bottom-color: var(--hover-color);
   }
 
   .dropdown-trigger[aria-expanded="true"] .dropdown-icon {
@@ -92,17 +201,17 @@
     top: 100%;
     left: 0;
     background-color: white;
-    border: 1px solid {{ section.settings.border_color }};
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    min-width: 250px;
-    max-width: 350px;
-    padding: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    min-width: 800px;
+    padding: 2rem;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
     z-index: 1000;
+    margin-top: 0.5rem;
   }
 
   .dropdown-menu-item[open] .dropdown-content {
@@ -113,35 +222,65 @@
 
   .dropdown-inner {
     display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .menu-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    flex: 1;
+  }
+
+  .menu-column {
+    display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .column-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--column-title-color);
+    margin: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-color);
   }
 
   .menu-list {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .menu-link {
-    color: {{ section.settings.link_color }};
+    color: var(--link-color);
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding: 0.5rem 0;
-    transition: color 0.2s ease;
-    border-left: 3px solid transparent;
-    padding-left: 0.75rem;
+    transition: all 0.2s ease;
+    position: relative;
   }
 
   .menu-link:hover {
-    color: {{ section.settings.link_hover_color }};
-    border-left-color: {{ section.settings.link_hover_color }};
+    color: var(--link-hover-color);
+    padding-left: 0.5rem;
+  }
+
+  .menu-image-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 250px;
   }
 
   .menu-image-container {
-    margin-top: 0.5rem;
     overflow: hidden;
-    border-radius: 0.375rem;
+    border-radius: {{ section.settings.image_border_radius }};
   }
 
   .menu-image-link {
@@ -161,36 +300,187 @@
     transform: scale(1.05);
   }
 
+  .image-caption {
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--column-title-color);
+    margin: 0;
+  }
+
+  .mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
+  .mobile-menu-overlay.active {
+    display: block;
+  }
+
+  /* Tablet Breakpoint (1024px and below) */
+  @media (max-width: 1024px) {
+    .menu-columns {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .dropdown-content {
+      min-width: 600px;
+      padding: 1.5rem;
+    }
+
+    .dropdown-inner {
+      gap: 1.5rem;
+    }
+  }
+
+  /* Mobile Breakpoint (768px and below) */
   @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: flex;
+    }
+
     .dropdown-nav-container {
-      gap: 0.5rem;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      max-height: calc(100vh - 60px);
+      overflow-y: auto;
+      background-color: white;
+      flex-direction: column;
+      padding: 0;
+      gap: 0;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-20px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .dropdown-nav-container.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .nav-content {
+      flex-direction: column;
+      width: 100%;
+      gap: 0;
+    }
+
+    .dropdown-menu-item {
+      width: 100%;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .dropdown-trigger {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 0;
+      justify-content: space-between;
+      border-bottom: none;
+    }
+
+    .dropdown-content {
+      position: static;
+      opacity: 0;
+      visibility: hidden;
+      max-height: 0;
+      overflow: hidden;
+      transform: none;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      min-width: 100%;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .dropdown-menu-item[open] .dropdown-content {
+      opacity: 1;
+      visibility: visible;
+      max-height: 1000px;
+      padding: 1.5rem;
+    }
+
+    .dropdown-inner {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .menu-columns {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .menu-image-wrapper {
+      min-width: 100%;
+    }
+
+    .menu-image {
+      max-width: 100%;
+    }
+  }
+
+  /* Small Mobile (480px and below) */
+  @media (max-width: 480px) {
+    .mobile-menu-toggle {
+      padding: 0.75rem;
+    }
+
+    .hamburger-line {
+      width: 20px;
+      height: 2px;
     }
 
     .dropdown-trigger {
       font-size: 0.9rem;
-      padding: 0.5rem 0.75rem;
+      padding: 0.75rem;
     }
 
-    .dropdown-content {
-      position: fixed;
-      top: auto;
-      left: 50%;
-      right: auto;
-      transform: translateX(-50%) translateY(10px);
-      max-width: 90vw;
-      width: 90vw;
-    }
-
-    .dropdown-menu-item[open] .dropdown-content {
-      transform: translateX(-50%) translateY(0);
+    .menu-link {
+      font-size: 0.85rem;
     }
   }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.getElementById('mobileMenuToggle');
+    const navContainer = document.getElementById('navContainer');
+    const menuOverlay = document.getElementById('menuOverlay');
     const triggers = document.querySelectorAll('.dropdown-trigger');
-    
+    const isMobileView = window.innerWidth <= 768;
+
+    // Mobile menu toggle
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        navContainer.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
+      });
+    }
+
+    // Overlay click to close mobile menu
+    if (menuOverlay) {
+      menuOverlay.addEventListener('click', function() {
+        mobileToggle.classList.remove('active');
+        navContainer.classList.remove('active');
+        menuOverlay.classList.remove('active');
+      });
+    }
+
+    // Dropdown menu functionality
     triggers.forEach(trigger => {
       trigger.addEventListener('click', function(e) {
         e.preventDefault();
@@ -216,13 +506,22 @@
       });
     });
     
-    // Close menu when clicking outside
+    // Close menu when clicking outside (desktop only)
     document.addEventListener('click', function(e) {
-      if (!e.target.closest('.dropdown-menu-item')) {
+      if (!e.target.closest('.dropdown-menu-item') && !e.target.closest('.mobile-menu-toggle') && window.innerWidth > 768) {
         document.querySelectorAll('.dropdown-menu-item[open]').forEach(item => {
           item.removeAttribute('open');
           item.querySelector('.dropdown-trigger').setAttribute('aria-expanded', 'false');
         });
+      }
+    });
+
+    // Handle responsive resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        mobileToggle?.classList.remove('active');
+        navContainer?.classList.remove('active');
+        menuOverlay?.classList.remove('active');
       }
     });
   });
@@ -242,7 +541,7 @@
       "type": "text",
       "id": "nav_padding",
       "label": "Navigation Padding",
-      "default": "1rem"
+      "default": "1rem 2rem"
     },
     {
       "type": "color",
@@ -270,15 +569,39 @@
     },
     {
       "type": "color",
+      "id": "column_title_color",
+      "label": "Column Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
       "id": "border_color",
-      "label": "Dropdown Border Color",
+      "label": "Border Color",
       "default": "#e0e0e0"
+    },
+    {
+      "type": "select",
+      "id": "menu_font_weight",
+      "label": "Menu Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "text",
+      "id": "image_border_radius",
+      "label": "Image Border Radius",
+      "default": "8px"
     }
   ],
   "blocks": [
     {
       "type": "menu_column",
-      "name": "Menu Column",
+      "name": "Menu Item",
       "settings": [
         {
           "type": "text",
@@ -287,9 +610,40 @@
           "default": "Category"
         },
         {
-          "type": "richtext",
-          "id": "menu_items",
-          "label": "Menu Items (Enter links as markdown: [Link Text](url))"
+          "type": "text",
+          "id": "column_1_title",
+          "label": "Column 1 Title",
+          "default": "Category 1"
+        },
+        {
+          "type": "text",
+          "id": "column_1_items",
+          "label": "Column 1 Items (one per line)",
+          "placeholder": "Link 1\nLink 2\nLink 3"
+        },
+        {
+          "type": "text",
+          "id": "column_2_title",
+          "label": "Column 2 Title",
+          "default": "Category 2"
+        },
+        {
+          "type": "text",
+          "id": "column_2_items",
+          "label": "Column 2 Items (one per line)",
+          "placeholder": "Link 1\nLink 2\nLink 3"
+        },
+        {
+          "type": "text",
+          "id": "column_3_title",
+          "label": "Column 3 Title",
+          "default": "Category 3"
+        },
+        {
+          "type": "text",
+          "id": "column_3_items",
+          "label": "Column 3 Items (one per line)",
+          "placeholder": "Link 1\nLink 2\nLink 3"
         },
         {
           "type": "image_picker",
@@ -300,6 +654,12 @@
           "type": "url",
           "id": "image_link",
           "label": "Image Link URL"
+        },
+        {
+          "type": "text",
+          "id": "image_caption",
+          "label": "Image Caption",
+          "placeholder": "e.g., Summer Wedding Guest"
         }
       ]
     }
@@ -311,13 +671,7 @@
         {
           "type": "menu_column",
           "settings": {
-            "menu_title": "Women"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "menu_title": "Men"
+            "menu_title": "Wedding Guest"
           }
         }
       ]
