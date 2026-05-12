@@ -10,11 +10,11 @@
   <!-- Navigation Container -->
   <nav class="dropdown-nav-container" id="navContainer">
     <div class="nav-content">
-      {% for menu_item in section.blocks %}
-        {% if menu_item.type == 'menu_item' %}
+      {% for block in section.blocks %}
+        {% if block.type == 'menu_item' %}
           <div class="dropdown-menu-item">
-            <button class="dropdown-trigger" aria-expanded="false" aria-label="Toggle {{ menu_item.settings.menu_title }} menu">
-              <span class="menu-title">{{ menu_item.settings.menu_title }}</span>
+            <button class="dropdown-trigger" aria-expanded="false" aria-label="Toggle {{ block.settings.menu_title }} menu">
+              <span class="menu-title">{{ block.settings.menu_title }}</span>
               <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
                 <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
@@ -24,37 +24,107 @@
               <div class="dropdown-inner">
                 <!-- Dynamic menu columns -->
                 <div class="menu-columns">
-                  {% for column_block in menu_item.blocks %}
-                    {% if column_block.type == 'menu_column' %}
-                      <div class="menu-column">
-                        <h4 class="column-title">{{ column_block.settings.column_title }}</h4>
-                        <ul class="menu-list">
-                          {% for link_block in column_block.blocks %}
-                            {% if link_block.type == 'menu_link' %}
-                              <li><a href="{{ link_block.settings.column_link_url }}" class="menu-link">{{ link_block.settings.column_link_text }}</a></li>
+                  {% if block.settings.column_1_title != blank %}
+                    <div class="menu-column">
+                      <h4 class="column-title">{{ block.settings.column_1_title }}</h4>
+                      <ul class="menu-list">
+                        {% assign items_1 = block.settings.column_1_items | split: '|' %}
+                        {% for item in items_1 %}
+                          {% if item != blank %}
+                            {% assign link_parts = item | split: ':' %}
+                            {% if link_parts.size == 2 %}
+                              <li><a href="{{ link_parts[1] | strip }}" class="menu-link">{{ link_parts[0] | strip }}</a></li>
                             {% endif %}
-                          {% endfor %}
-                        </ul>
-                      </div>
-                    {% endif %}
-                  {% endfor %}
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.column_2_title != blank %}
+                    <div class="menu-column">
+                      <h4 class="column-title">{{ block.settings.column_2_title }}</h4>
+                      <ul class="menu-list">
+                        {% assign items_2 = block.settings.column_2_items | split: '|' %}
+                        {% for item in items_2 %}
+                          {% if item != blank %}
+                            {% assign link_parts = item | split: ':' %}
+                            {% if link_parts.size == 2 %}
+                              <li><a href="{{ link_parts[1] | strip }}" class="menu-link">{{ link_parts[0] | strip }}</a></li>
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.column_3_title != blank %}
+                    <div class="menu-column">
+                      <h4 class="column-title">{{ block.settings.column_3_title }}</h4>
+                      <ul class="menu-list">
+                        {% assign items_3 = block.settings.column_3_items | split: '|' %}
+                        {% for item in items_3 %}
+                          {% if item != blank %}
+                            {% assign link_parts = item | split: ':' %}
+                            {% if link_parts.size == 2 %}
+                              <li><a href="{{ link_parts[1] | strip }}" class="menu-link">{{ link_parts[0] | strip }}</a></li>
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.column_4_title != blank %}
+                    <div class="menu-column">
+                      <h4 class="column-title">{{ block.settings.column_4_title }}</h4>
+                      <ul class="menu-list">
+                        {% assign items_4 = block.settings.column_4_items | split: '|' %}
+                        {% for item in items_4 %}
+                          {% if item != blank %}
+                            {% assign link_parts = item | split: ':' %}
+                            {% if link_parts.size == 2 %}
+                              <li><a href="{{ link_parts[1] | strip }}" class="menu-link">{{ link_parts[0] | strip }}</a></li>
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.column_5_title != blank %}
+                    <div class="menu-column">
+                      <h4 class="column-title">{{ block.settings.column_5_title }}</h4>
+                      <ul class="menu-list">
+                        {% assign items_5 = block.settings.column_5_items | split: '|' %}
+                        {% for item in items_5 %}
+                          {% if item != blank %}
+                            {% assign link_parts = item | split: ':' %}
+                            {% if link_parts.size == 2 %}
+                              <li><a href="{{ link_parts[1] | strip }}" class="menu-link">{{ link_parts[0] | strip }}</a></li>
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% endif %}
                 </div>
                 
                 <!-- Clickable Image -->
-                {% if menu_item.settings.menu_image %}
+                {% if block.settings.menu_image %}
                   <div class="menu-image-wrapper">
                     <div class="menu-image-container">
-                      <a href="{{ menu_item.settings.image_link }}" class="menu-image-link">
+                      <a href="{{ block.settings.image_link }}" class="menu-image-link">
                         <img 
-                          src="{{ menu_item.settings.menu_image | image_url: width: 250 }}"
-                          alt="{{ menu_item.settings.menu_image.alt }}"
+                          src="{{ block.settings.menu_image | image_url: width: 250 }}"
+                          alt="{{ block.settings.menu_image.alt }}"
                           class="menu-image"
                           loading="lazy"
                         />
                       </a>
                     </div>
-                    {% if menu_item.settings.image_caption %}
-                      <p class="image-caption">{{ menu_item.settings.image_caption }}</p>
+                    {% if block.settings.image_caption %}
+                      <p class="image-caption">{{ block.settings.image_caption }}</p>
                     {% endif %}
                   </div>
                 {% endif %}
@@ -615,6 +685,71 @@
           "default": "Category"
         },
         {
+          "type": "text",
+          "id": "column_1_title",
+          "label": "Column 1 Title",
+          "default": "Category 1"
+        },
+        {
+          "type": "textarea",
+          "id": "column_1_items",
+          "label": "Column 1 Links",
+          "placeholder": "Link Text 1: /url1\nLink Text 2: /url2\nLink Text 3: /url3",
+          "info": "Format: 'Link Text: URL' on each line"
+        },
+        {
+          "type": "text",
+          "id": "column_2_title",
+          "label": "Column 2 Title",
+          "default": "Category 2"
+        },
+        {
+          "type": "textarea",
+          "id": "column_2_items",
+          "label": "Column 2 Links",
+          "placeholder": "Link Text 1: /url1\nLink Text 2: /url2\nLink Text 3: /url3",
+          "info": "Format: 'Link Text: URL' on each line"
+        },
+        {
+          "type": "text",
+          "id": "column_3_title",
+          "label": "Column 3 Title",
+          "default": "Category 3"
+        },
+        {
+          "type": "textarea",
+          "id": "column_3_items",
+          "label": "Column 3 Links",
+          "placeholder": "Link Text 1: /url1\nLink Text 2: /url2\nLink Text 3: /url3",
+          "info": "Format: 'Link Text: URL' on each line"
+        },
+        {
+          "type": "text",
+          "id": "column_4_title",
+          "label": "Column 4 Title (Optional)",
+          "default": ""
+        },
+        {
+          "type": "textarea",
+          "id": "column_4_items",
+          "label": "Column 4 Links (Optional)",
+          "placeholder": "Link Text 1: /url1\nLink Text 2: /url2",
+          "info": "Format: 'Link Text: URL' on each line"
+        },
+        {
+          "type": "text",
+          "id": "column_5_title",
+          "label": "Column 5 Title (Optional)",
+          "default": ""
+        },
+        {
+          "type": "textarea",
+          "id": "column_5_items",
+          "label": "Column 5 Links (Optional)",
+          "placeholder": "Link Text 1: /url1\nLink Text 2: /url2",
+          "info": "Format: 'Link Text: URL' on each line"
+        },
+        {
           "type": "image_picker",
           "id": "menu_image",
           "label": "Menu Image"
@@ -630,39 +765,6 @@
           "label": "Image Caption",
           "placeholder": "e.g., Summer Wedding Guest"
         }
-      ],
-      "blocks": [
-        {
-          "type": "menu_column",
-          "name": "Column",
-          "settings": [
-            {
-              "type": "text",
-              "id": "column_title",
-              "label": "Column Title",
-              "default": "Category"
-            }
-          ],
-          "blocks": [
-            {
-              "type": "menu_link",
-              "name": "Link",
-              "settings": [
-                {
-                  "type": "text",
-                  "id": "column_link_text",
-                  "label": "Link Text",
-                  "default": "Link"
-                },
-                {
-                  "type": "url",
-                  "id": "column_link_url",
-                  "label": "Link URL"
-                }
-              ]
-            }
-          ]
-        }
       ]
     }
   ],
@@ -673,7 +775,13 @@
         {
           "type": "menu_item",
           "settings": {
-            "menu_title": "Wedding Guest"
+            "menu_title": "Wedding Guest",
+            "column_1_title": "All Wedding Guest",
+            "column_1_items": "New In: /collections/new-in\nBestsellers: /collections/bestsellers",
+            "column_2_title": "Dress Code",
+            "column_2_items": "Black Tie: /collections/black-tie\nCocktail: /collections/cocktail",
+            "column_3_title": "Season",
+            "column_3_items": "Summer: /collections/summer\nFall: /collections/fall"
           }
         }
       ]
