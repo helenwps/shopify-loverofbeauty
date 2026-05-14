@@ -1,4 +1,4 @@
-<!-- Dropdown Navigation Section -->
+<!-- Dropdown Navigation Section - Fullscreen Mega Menu with Slide Down Effect -->
 <div class="dropdown-navigation" id="dropdownNav">
   <!-- Mobile Toggle Button -->
   <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
@@ -15,9 +15,6 @@
           <div class="dropdown-menu-item">
             <button class="dropdown-trigger" aria-expanded="false" aria-label="Toggle {{ block.settings.menu_title }} menu">
               <span class="menu-title">{{ block.settings.menu_title }}</span>
-              <svg class="dropdown-icon" width="12" height="8" viewBox="0 0 12 8" fill="none">
-                <path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
             </button>
             
             <div class="dropdown-content">
@@ -123,6 +120,8 @@
                         <img 
                           src="{{ block.settings.menu_image | image_url: width: 250 }}"
                           alt="{{ block.settings.menu_image.alt }}"
+                          width="250"
+                          height="250"
                           class="menu-image"
                           loading="lazy"
                         />
@@ -159,8 +158,9 @@
   .dropdown-navigation {
     width: 100%;
     background-color: var(--nav-bg);
-    position: relative;
+    position: relative; /* 关键：作为全屏下拉菜单的定位参考 */
     border-bottom: 1px solid var(--border-color);
+    z-index: 100;
   }
 
   .mobile-menu-toggle {
@@ -211,8 +211,9 @@
     flex-wrap: wrap;
   }
 
+  /* PC端菜单项 - 取消自身相对定位，让下拉菜单相对导航栏全屏定位 */
   .dropdown-menu-item {
-    position: relative;
+    position: static;
   }
 
   .dropdown-trigger {
@@ -229,9 +230,16 @@
     transition: all 0.3s ease;
     border-bottom: 3px solid transparent;
     white-space: nowrap;
+    position: relative;
   }
 
   .dropdown-trigger:hover {
+    color: var(--hover-color);
+    border-bottom-color: var(--hover-color);
+  }
+
+  /* 高亮当前悬停的菜单标题 */
+  .dropdown-menu-item:hover .dropdown-trigger {
     color: var(--hover-color);
     border-bottom-color: var(--hover-color);
   }
@@ -241,47 +249,80 @@
     border-bottom-color: var(--hover-color);
   }
 
-  .dropdown-trigger[aria-expanded="true"] .dropdown-icon {
+  {% comment %} .dropdown-trigger[aria-expanded="true"] .dropdown-icon {
     transform: rotate(180deg);
   }
 
   .dropdown-icon {
     transition: transform 0.3s ease;
-  }
+  } {% endcomment %}
 
-  /* PC端 - hover时显示菜单 */
-  .dropdown-content {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: white;
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    min-width: max-content;
-    max-width: 90vw;
-    padding: 2rem;
+  /* PC端全屏下拉菜单 - 从上往下的滑动渐变效果 */
+  /* 在原有 :root 样式后替换 .dropdown-content 及相关的样式 */
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: white;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  padding: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-20px);
+  transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* JS 控制显示类 */
+.dropdown-content.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* 保留触发按钮 hover 高亮（同时支持 JS 添加的 .hover 类） */
+.dropdown-trigger:hover,
+.dropdown-menu-item.hover .dropdown-trigger {
+  color: var(--hover-color);
+  border-bottom-color: var(--hover-color);
+}
+
+/* 防止移动端干扰，移动端样式内保持原有规则 */
+@media (max-width: 768px) {
+  .dropdown-menu-item:hover .dropdown-content {
+    display: none; /* 移动端不启用 hover 显示，完全由 JS 控制 */
+  }
+  /* 原有移动端样式保持不变，但确保 .show 在移动端不被误用 */
+  .dropdown-content.show {
+    /* 移动端不适用 PC 的 show 类，由 [open] 属性控制 */
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-    z-index: 1000;
-    margin-top: 0.5rem;
     pointer-events: none;
   }
-
-  /* PC端 hover展示 */
-  .dropdown-menu-item:hover .dropdown-content {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+  .dropdown-menu-item[open] .dropdown-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+    max-height: 2000px;
+    padding: 1.5rem;
     pointer-events: auto;
+    transform: none;
   }
-
+}
+  /* 全屏内容居中容器 */
   .dropdown-inner {
     display: flex;
     gap: 2rem;
     align-items: flex-start;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
   }
 
   .menu-columns {
@@ -295,7 +336,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    min-width: 150px;
+    min-width: 160px;
   }
 
   .column-title {
@@ -323,11 +364,12 @@
     padding: 0.5rem 0;
     transition: all 0.2s ease;
     position: relative;
+    display: inline-block;
   }
 
   .menu-link:hover {
     color: var(--link-hover-color);
-    padding-left: 0.5rem;
+    transform: translateX(4px);
   }
 
   .menu-image-wrapper {
@@ -395,10 +437,15 @@
 
     .dropdown-inner {
       gap: 1.5rem;
+      max-width: 960px;
+    }
+    
+    .menu-column {
+      min-width: 140px;
     }
   }
 
-  /* Mobile Breakpoint (768px and below) */
+  /* Mobile Breakpoint (768px and below) - 恢复移动端折叠菜单样式 */
   @media (max-width: 768px) {
     .mobile-menu-toggle {
       display: flex;
@@ -434,16 +481,18 @@
       gap: 0;
     }
 
+    /* 移动端菜单项恢复相对定位，取消全屏效果 */
     .dropdown-menu-item {
+      position: relative;
       width: 100%;
       border-bottom: 1px solid var(--border-color);
     }
 
-    /* 移动端取消hover效果 */
+    /* 移动端取消hover全屏效果 */
     .dropdown-menu-item:hover .dropdown-content {
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-10px);
+      transform: translateY(-20px);
       pointer-events: none;
     }
 
@@ -469,7 +518,7 @@
       padding: 0;
       background-color: #f9f9f9;
       min-width: 100%;
-      transition: max-height 0.3s ease, padding 0.3s ease;
+      transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.2s ease;
       pointer-events: none;
     }
 
@@ -479,11 +528,13 @@
       max-height: 2000px;
       padding: 1.5rem;
       pointer-events: auto;
+      transform: none;
     }
 
     .dropdown-inner {
       flex-direction: column;
       gap: 1.5rem;
+      max-width: 100%;
     }
 
     .menu-columns {
@@ -528,39 +579,116 @@
     const navContainer = document.getElementById('navContainer');
     const menuOverlay = document.getElementById('menuOverlay');
     const triggers = document.querySelectorAll('.dropdown-trigger');
-
-    // Mobile menu toggle
+  
+    // ---------- PC 端 Hover 交互 (宽度 > 768px) ----------
+    function initPCHover() {
+      if (window.innerWidth <= 768) return;
+      
+      const menuItems = document.querySelectorAll('.dropdown-menu-item');
+      
+      menuItems.forEach(item => {
+        const trigger = item.querySelector('.dropdown-trigger');
+        const content = item.querySelector('.dropdown-content');
+        if (!content) return;
+        
+        // 鼠标进入菜单项（包括触发按钮）显示下拉
+        const showMenu = () => {
+          // 关闭其他所有菜单
+          menuItems.forEach(other => {
+            if (other !== item) {
+              other.classList.remove('hover');
+              other.querySelector('.dropdown-content')?.classList.remove('show');
+            }
+          });
+          item.classList.add('hover');
+          content.classList.add('show');
+        };
+        
+        const hideMenu = () => {
+          item.classList.remove('hover');
+          content.classList.remove('show');
+        };
+        
+        // 监听触发按钮和整个菜单项区域的进入/离开
+        item.addEventListener('mouseenter', showMenu);
+        item.addEventListener('mouseleave', hideMenu);
+        // 关键：下拉内容本身也要监听，防止鼠标移动到内容上时因为父容器离开而关闭
+        content.addEventListener('mouseenter', showMenu);
+        content.addEventListener('mouseleave', hideMenu);
+      });
+    }
+    
+    // 响应窗口大小变化，重新初始化 PC hover 绑定（解除旧的监听）
+    let pcHandlersBound = false;
+    function bindPCHover() {
+      if (window.innerWidth > 768) {
+        if (!pcHandlersBound) {
+          initPCHover();
+          pcHandlersBound = true;
+        }
+      } else {
+        pcHandlersBound = false;
+        // 移除 PC 端添加的类，恢复移动端默认状态
+        document.querySelectorAll('.dropdown-menu-item').forEach(item => {
+          item.classList.remove('hover');
+          item.querySelector('.dropdown-content')?.classList.remove('show');
+        });
+      }
+    }
+    
+    // 初始化 + 监听 resize
+    bindPCHover();
+    window.addEventListener('resize', () => {
+      bindPCHover();
+      // 同时处理移动端菜单关闭等原有逻辑
+      if (window.innerWidth > 768) {
+        mobileToggle?.classList.remove('active');
+        navContainer?.classList.remove('active');
+        menuOverlay?.classList.remove('active');
+        document.body.style.overflow = '';
+        document.querySelectorAll('.dropdown-menu-item[open]').forEach(item => {
+          item.removeAttribute('open');
+          item.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+    
+    // ---------- 移动端原有交互保持不变 ----------
     if (mobileToggle) {
       mobileToggle.addEventListener('click', function() {
         this.classList.toggle('active');
         navContainer.classList.toggle('active');
         menuOverlay.classList.toggle('active');
+        if (navContainer.classList.contains('active')) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
       });
     }
-
-    // Overlay click to close mobile menu
+    
     if (menuOverlay) {
       menuOverlay.addEventListener('click', function() {
-        mobileToggle.classList.remove('active');
-        navContainer.classList.remove('active');
+        mobileToggle?.classList.remove('active');
+        navContainer?.classList.remove('active');
         menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
       });
     }
-
-    // Dropdown menu functionality (for mobile only)
+    
     triggers.forEach(trigger => {
       trigger.addEventListener('click', function(e) {
-        // 只在移动端处理点击事件
         if (window.innerWidth > 768) {
+          // PC 端：阻止按钮默认点击行为，保持纯 hover 交互（无点击展开）
           e.preventDefault();
           return;
         }
-
+        
+        // 移动端：原有折叠逻辑
         e.preventDefault();
         const menuItem = this.closest('.dropdown-menu-item');
         const isOpen = menuItem.hasAttribute('open');
         
-        // 关闭其他菜单
         document.querySelectorAll('.dropdown-menu-item[open]').forEach(item => {
           if (item !== menuItem) {
             item.removeAttribute('open');
@@ -568,7 +696,6 @@
           }
         });
         
-        // 切换当前菜单
         if (isOpen) {
           menuItem.removeAttribute('open');
           this.setAttribute('aria-expanded', 'false');
@@ -579,29 +706,15 @@
       });
     });
     
-    // 关闭菜单当点击外部（仅限移动端）
+    // 移动端点击外部关闭
     document.addEventListener('click', function(e) {
       if (window.innerWidth <= 768) {
-        if (!e.target.closest('.dropdown-menu-item') && !e.target.closest('.mobile-menu-toggle')) {
+        if (!e.target.closest('.dropdown-menu-item') && !e.target.closest('.mobile-menu-toggle') && !e.target.closest('.mobile-menu-overlay')) {
           document.querySelectorAll('.dropdown-menu-item[open]').forEach(item => {
             item.removeAttribute('open');
             item.querySelector('.dropdown-trigger').setAttribute('aria-expanded', 'false');
           });
         }
-      }
-    });
-
-    // 响应式调整
-    window.addEventListener('resize', function() {
-      if (window.innerWidth > 768) {
-        mobileToggle?.classList.remove('active');
-        navContainer?.classList.remove('active');
-        menuOverlay?.classList.remove('active');
-        // 关闭所有移动端菜单
-        document.querySelectorAll('.dropdown-menu-item[open]').forEach(item => {
-          item.removeAttribute('open');
-          item.querySelector('.dropdown-trigger').setAttribute('aria-expanded', 'false');
-        });
       }
     });
   });

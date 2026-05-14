@@ -128,7 +128,7 @@
     .{{ section_scope }} .gmk-product-carousel__heading {
       margin: 0;
       color: var(--gmk-product-carousel-text);
-      font-size: 28px;
+      font-size: 18px;
       font-weight: 700;
       line-height: 1.15;
       letter-spacing: 0;
@@ -195,7 +195,7 @@
       min-height: 48px;
       margin: 16px 0 0;
       color: var(--gmk-product-carousel-text);
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 1.28;
       letter-spacing: 0;
@@ -209,7 +209,7 @@
       gap: 8px;
       margin: 8px 0 0;
       color: var(--gmk-product-carousel-price);
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 1.25;
       letter-spacing: 0;
@@ -227,10 +227,10 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 58px;
-      height: 58px;
+      width: 36px;
+      height: 36px;
       padding: 0;
-      border: 1.5px solid var(--gmk-product-carousel-nav-border);
+      {% comment %} border: 1.5px solid var(--gmk-product-carousel-nav-border); {% endcomment %}
       border-radius: 50%;
       color: var(--gmk-product-carousel-text);
       background: var(--gmk-product-carousel-nav-bg);
@@ -240,9 +240,12 @@
     }
 
     .{{ section_scope }} .gmk-product-carousel__nav:hover {
-      background: var(--gmk-product-carousel-nav-bg);
+      background: #222;
+      {% comment %} background: var(--gmk-product-carousel-nav-bg); {% endcomment %}
     }
-
+    .{{ section_scope }} .gmk-product-carousel__nav:hover .gmk-product-carousel__nav-icon {
+      color: #fff;
+    }
     .{{ section_scope }} .gmk-product-carousel__nav[hidden] {
       display: none;
     }
@@ -257,10 +260,10 @@
 
     .{{ section_scope }} .gmk-product-carousel__nav-icon {
       display: block;
-      width: 14px;
-      height: 14px;
-      border-top: 2px solid currentColor;
-      border-right: 2px solid currentColor;
+      width: 10px;
+      height: 10px;
+      border-top: 1px solid currentColor;
+      border-right: 1px solid currentColor;
     }
 
     .{{ section_scope }} .gmk-product-carousel__nav--prev .gmk-product-carousel__nav-icon {
@@ -303,13 +306,13 @@
       }
 
       .{{ section_scope }} .gmk-product-carousel__scroller {
-        gap: 12px;
+        gap: 8px;
         padding: 0 16px;
         scroll-padding-inline: 16px;
       }
 
       .{{ section_scope }} .gmk-product-carousel__card {
-        flex-basis: min(72vw, 320px);
+        flex-basis: min(33.33vw, 320px);
       }
 
       .{{ section_scope }} .gmk-product-carousel__media {
@@ -319,7 +322,7 @@
       .{{ section_scope }} .gmk-product-carousel__title {
         min-height: auto;
         margin-top: 12px;
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .{{ section_scope }} .gmk-product-carousel__price {
@@ -327,7 +330,7 @@
       }
 
       .{{ section_scope }} .gmk-product-carousel__nav {
-        display: none;
+        {% comment %} display: none; {% endcomment %}
       }
     }
   </style>

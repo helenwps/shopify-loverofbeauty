@@ -226,7 +226,7 @@
       }
     },
     "gmk_lulus_trending_tiles_NAcMXR": {
-      "type": "gmk-lulus-trending-tiles",
+      "type": "gmk-lulus-trending-tiles-custom",
       "blocks": {
         "item_Krw6YA": {
           "type": "item",
@@ -289,7 +289,7 @@
       }
     },
     "gmk_lulus_trending_tiles_JAczyU": {
-      "type": "gmk-lulus-trending-tiles",
+      "type": "gmk-lulus-trending-tiles-custom",
       "blocks": {
         "item_BjEjeg": {
           "type": "item",

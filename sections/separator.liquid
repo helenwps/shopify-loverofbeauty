@@ -12,7 +12,7 @@
       {%- assign background = section.settings.background -%}
     {%- endif -%}
 
-    --background: {{ background.red }}, {{ background.green }}, {{ background.blue }};
+    --background: {% if section.settings.show_background %} {{ background.red }}, {{ background.green }}, {{ background.blue }} {% endif %};
 
     --top-padding: {{ section.settings.mobile_top_padding }}px;
     --bottom-padding: {{ section.settings.mobile_bottom_padding }}px;
@@ -70,6 +70,12 @@
     {
       "type": "header",
       "content": "Colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_background",
+      "label": "Show background",
+      "default": false
     },
     {
       "type": "color",

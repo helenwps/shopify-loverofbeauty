@@ -255,6 +255,7 @@
             {% if block.type == 'top_item' %}
               {% liquid
                 assign image = block.settings.image
+                assign mobile_image = block.settings.mobile_image
                 assign link_url = block.settings.link_url
                 assign aria_label = block.settings.aria_label | strip
                 assign image_alt = image.alt | default: aria_label
@@ -276,6 +277,17 @@
                   <div class="gmk-promo-images__item" {{ block.shopify_attributes }}>
                 {% endif %}
                     <picture class="gmk-promo-images__media gmk-promo-images__media--top">
+                      {% if mobile_image != blank %}
+                        <source
+                          media="(max-width: 749px)"
+                          srcset="
+                            {{ mobile_image | image_url: width: 360 }} 360w,
+                            {{ mobile_image | image_url: width: 520 }} 520w,
+                            {{ mobile_image | image_url: width: 720 }} 720w,
+                            {{ mobile_image | image_url: width: 960 }} 960w
+                          "
+                        >
+                      {% endif %}
                       <img
                         class="gmk-promo-images__image"
                         src="{{ image | image_url: width: 720 }}"
@@ -313,6 +325,7 @@
             {% if block.type == 'bottom_item' %}
               {% liquid
                 assign image = block.settings.image
+                assign mobile_image = block.settings.mobile_image
                 assign link_url = block.settings.link_url
                 assign aria_label = block.settings.aria_label | strip
                 assign image_alt = image.alt | default: aria_label
@@ -334,6 +347,17 @@
                   <div class="gmk-promo-images__item" {{ block.shopify_attributes }}>
                 {% endif %}
                     <picture class="gmk-promo-images__media gmk-promo-images__media--bottom">
+                      {% if mobile_image != blank %}
+                        <source
+                          media="(max-width: 749px)"
+                          srcset="
+                            {{ mobile_image | image_url: width: 720 }} 720w,
+                            {{ mobile_image | image_url: width: 1000 }} 1000w,
+                            {{ mobile_image | image_url: width: 1400 }} 1400w,
+                            {{ mobile_image | image_url: width: 2000 }} 2000w
+                          "
+                        >
+                      {% endif %}
                       <img
                         class="gmk-promo-images__image"
                         src="{{ image | image_url: width: 1600 }}"
@@ -623,6 +647,11 @@
           "label": "图片｜Image"
         },
         {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "移动端图片｜Mobile image"
+        },
+        {
           "type": "text",
           "id": "aria_label",
           "label": "辅助文字｜Accessible label"
@@ -643,6 +672,11 @@
           "type": "image_picker",
           "id": "image",
           "label": "图片｜Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "移动端图片｜Mobile image"
         },
         {
           "type": "text",

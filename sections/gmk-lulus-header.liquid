@@ -1,7 +1,5 @@
 {% comment %}
-  Section: GMK Lulus Header
-  Purpose: Lulus-style sticky header with brand-specific navigation and mega menus.
-  Blocks: brand, nav_item, menu_column, promo
+  Section: GMK Lulus Header（移动端禁用吸顶，品牌区和公告栏正常滚动）
 {% endcomment %}
 
 {% liquid
@@ -62,6 +60,7 @@
 
 {% if enable_section and render_header %}
   <style>
+    /* ========== 基础变量 ========== */
     #{{ section_id }} {
       --gmk-lulus-header-container: {{ container_width }};
       --gmk-lulus-header-top-height: {{ top_row_height }}px;
@@ -97,12 +96,7 @@
       text-decoration: none;
     }
 
-    #{{ section_id }} button,
-    #{{ section_id }} input {
-      font: inherit;
-      letter-spacing: 0;
-    }
-
+    /* ========== 顶部区域 ========== */
     #{{ section_id }} .gmk-lulus-header__shell {
       position: relative;
       width: 100%;
@@ -133,6 +127,7 @@
       pointer-events: none;
     }
 
+    /* ========== 品牌区 ========== */
     #{{ section_id }} .gmk-lulus-header__brands {
       display: flex;
       align-items: stretch;
@@ -164,10 +159,6 @@
       background: var(--gmk-lulus-header-bg);
     }
 
-    #{{ section_id }} .gmk-lulus-header__brand-button:hover {
-      opacity: 0.78;
-    }
-
     #{{ section_id }} .gmk-lulus-header__brand-image {
       display: block;
       width: auto;
@@ -187,14 +178,14 @@
 
     #{{ section_id }} .gmk-lulus-header__brand-text--script {
       font-family: "Brush Script MT", "Segoe Script", cursive;
-      font-size: 48px;
+      font-size: 40px;
       font-weight: 400;
     }
 
     #{{ section_id }} .gmk-lulus-header__brand-text--serif {
       gap: 7px;
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 37px;
+      font-size: 26px;
       font-weight: 400;
       text-transform: none;
     }
@@ -212,6 +203,7 @@
       text-transform: uppercase;
     }
 
+    /* ========== 右侧工具区 ========== */
     #{{ section_id }} .gmk-lulus-header__tools {
       display: flex;
       align-items: center;
@@ -226,9 +218,9 @@
     #{{ section_id }} .gmk-lulus-header__search {
       display: flex;
       align-items: center;
-      flex: 0 1 360px;
+      flex: 0 1 230px;
       min-width: 220px;
-      border-bottom: 2px solid currentColor;
+      border-bottom: 1px solid currentColor;
       color: var(--gmk-lulus-header-text);
     }
 
@@ -241,7 +233,7 @@
       outline: 0;
       background: transparent;
       color: var(--gmk-lulus-header-text);
-      font-size: 18px;
+      font-size: 14px;
     }
 
     #{{ section_id }} .gmk-lulus-header__search-input::placeholder {
@@ -262,12 +254,12 @@
       color: var(--gmk-lulus-header-text);
       cursor: pointer;
     }
-
+ 
     #{{ section_id }} .gmk-lulus-header__icon-button svg {
       display: block;
-      width: 31px;
-      height: 31px;
-      stroke-width: 1.8;
+      width: 24px;
+      height: 24px;
+      stroke-width: 1.2;
     }
 
     #{{ section_id }} .gmk-lulus-header__market {
@@ -286,14 +278,13 @@
 
     #{{ section_id }} .gmk-lulus-header__cart-count {
       position: absolute;
-      right: -8px;
-      bottom: -6px;
+      right: 0px;
+      bottom: 2px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 22px;
-      height: 22px;
-      padding: 0 6px;
+      min-width: 15px;
+      height: 15px;
       border-radius: 999px;
       background: #202020;
       color: #ffffff;
@@ -302,6 +293,7 @@
       line-height: 1;
     }
 
+    /* ========== 桌面导航栏 ========== */
     #{{ section_id }} .gmk-lulus-header__nav-shell {
       position: relative;
       min-height: var(--gmk-lulus-header-nav-height);
@@ -352,7 +344,7 @@
       border: 0;
       background: transparent;
       color: var(--gmk-lulus-header-text);
-      font-size: 21px;
+      font-size: 14px;
       font-weight: 400;
       line-height: 1.2;
       white-space: nowrap;
@@ -363,8 +355,10 @@
       position: absolute;
       right: 18px;
       bottom: 0;
-      left: 18px;
-      height: 4px;
+      left: 50%;
+      margin-left: -15px;
+      width: 30px;
+      height: 3px;
       background: var(--gmk-lulus-header-accent);
       content: "";
       opacity: 0;
@@ -379,6 +373,7 @@
       transform: scaleX(1);
     }
 
+    /* ========== 桌面 Mega 菜单 ========== */
     #{{ section_id }} .gmk-lulus-header__mega {
       position: absolute;
       top: 100%;
@@ -390,18 +385,21 @@
       overflow-y: auto;
       overscroll-behavior: contain;
       background: var(--gmk-lulus-header-bg);
+      transition: all 0s ease-out .2s;
       border-top: 1px solid var(--gmk-lulus-header-border);
       box-shadow: 0 1px 0 var(--gmk-lulus-header-border);
     }
 
     #{{ section_id }} .gmk-lulus-header__nav-item.is-open > .gmk-lulus-header__mega {
       display: block;
+      transition: all 0s linear 0.2s;
     }
 
     @media (hover: hover) and (pointer: fine) {
       #{{ section_id }} .gmk-lulus-header__nav-item.has-mega:hover > .gmk-lulus-header__mega,
       #{{ section_id }} .gmk-lulus-header__nav-item.has-mega:focus-within > .gmk-lulus-header__mega {
         display: block;
+        transition: all 0s linear 0.2s;
       }
     }
 
@@ -435,8 +433,8 @@
     #{{ section_id }} .gmk-lulus-header__mega-subtitle {
       margin: 0 0 18px;
       color: var(--gmk-lulus-header-text);
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 600;
       line-height: 1.25;
     }
 
@@ -450,20 +448,6 @@
       margin: 0;
       padding: 0;
       list-style: none;
-    }
-
-    #{{ section_id }} .gmk-lulus-header__mega-link,
-    #{{ section_id }} .gmk-lulus-header__mega-label {
-      display: inline-block;
-      color: var(--gmk-lulus-header-muted);
-      font-size: 18px;
-      line-height: 1.28;
-    }
-
-    #{{ section_id }} .gmk-lulus-header__mega-link:hover {
-      color: var(--gmk-lulus-header-text);
-      text-decoration: underline;
-      text-underline-offset: 4px;
     }
 
     #{{ section_id }} .gmk-lulus-header__promos {
@@ -511,161 +495,327 @@
     #{{ section_id }} .gmk-lulus-header__promo-title {
       margin: 18px 0 0;
       color: var(--gmk-lulus-header-text);
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 600;
       line-height: 1.25;
     }
 
-    @media screen and (max-width: 1399px) {
-      #{{ section_id }} .gmk-lulus-header__nav-list {
-        padding-right: 24px;
-        padding-left: 24px;
-      }
+    #{{ section_id }} .gmk-lulus-header__mega-link,
+    #{{ section_id }} .gmk-lulus-header__mega-label {
+      display: inline-block;
+      color: var(--gmk-lulus-header-muted);
+      font-size: 14px;
+      line-height: 1.28;
+    }
 
-      #{{ section_id }} .gmk-lulus-header__nav-link {
-        padding-right: 14px;
-        padding-left: 14px;
-        font-size: 19px;
-      }
+    #{{ section_id }} .gmk-lulus-header__mega-link:hover {
+      color: var(--gmk-lulus-header-text);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
 
-      #{{ section_id }} .gmk-lulus-header__mega-inner {
-        gap: 34px;
-        padding-right: 34px;
-        padding-left: 34px;
-      }
+    #{{ section_id }} .gmk-lulus-header__brand-button-logo {
+      display: none;
+    }
 
-      #{{ section_id }} .gmk-lulus-header__mega-columns {
-        gap: 34px;
-      }
+    /* ========== 移动端样式 ========== */
+    #{{ section_id }} .gmk-lulus-header__menu-toggle {
+      display: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-header__nav-inner {
+      min-height: auto;
+    }
+
+    /* 抽屉：左侧滑出，动态 top */
+    #{{ section_id }} .gmk-lulus-header__mobile-drawer {
+      position: fixed;
+      left: 0;
+      right: auto;
+      bottom: 0;
+      z-index: 1000;
+      width: 85%;
+      max-width: 380px;
+      background: var(--gmk-lulus-header-bg);
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      visibility: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    #{{ section_id }} .gmk-lulus-header__mobile-drawer.is-open {
+      transform: translateX(0);
+      visibility: visible;
+    }
+
+    /* 遮罩层：默认全屏，打开抽屉时动态设置 top 为 header 高度，避免覆盖工具栏 */
+    #{{ section_id }} .gmk-lulus-header__drawer-overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    #{{ section_id }} .gmk-lulus-header__drawer-overlay.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* 移动端导航容器内样式 */
+    .c-site-nav-mobile__list {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .c-site-nav-mobile__list .o-list-plain {
+      display: flex;
+      flex-flow: column;
+      gap: 2px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
     @media screen and (max-width: 989px) {
+      .c-site-nav-mobile__list .o-list-plain {
+        background: #fff;
+      }
+      .c-submenu .o-list-plain li,
+      .o-list-plain li {
+        background: #fcfcfc;
+      }
+    }
+
+    .c-menu {
+      flex: 1;
+    }
+
+    .c-menu__link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--gmk-lulus-header-text);
+      border: 0;
+      width: 100%;
+      cursor: pointer;
+      text-align: left;
+      text-decoration: none;
+    }
+
+    .c-menu__link--icon {
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .c-menu__link--icon .o-flex-col {
+      display: inline-flex;
+      gap: 12px;
+    }
+    .c-menu__acct {
+      background: var(--gmk-lulus-header-inactive-brand);
+    }
+
+    .c-menu__acct-list {
+      display: none;
+      background: var(--gmk-lulus-header-bg);
+    }
+
+    .c-menu__acct-list .c-menu__link {
+      padding-left: 56px;
+      font-weight: normal;
+      border-bottom: none;
+    }
+
+    .c-submenu {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--gmk-lulus-header-bg);
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .c-submenu.is-active {
+      display: block;
+    }
+
+    .c-submenu__btn {
+      background: none;
+      border: 0;
+      font-size: 24px;
+      cursor: pointer;
+      padding-right: 12px;
+    }
+
+    .c-submenu__list {
+      display: none;
+      padding-left: 32px;
+    }
+
+    .c-submenu__list .c-menu__link {
+      border-bottom: none;
+      padding: 12px 20px;
+      font-size: 16px;
+    }
+
+    .c-submenu__list.is-expanded {
+      display: block;
+    }
+
+    .c-menu__sublink .icon {
+      transition: transform 0.2s;
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .c-submenu__btn .icon {
+      transform: rotate(90deg);
+    }
+
+    .c-menu__acct {
+      background: #fcfcfc;
+    }
+
+    .c-submenu .js-submenu__back-nav-wrapper {
+      padding: 16px 12px !important;
+      font-size: 14px;
+      background: #fcfcfc;
+      border-bottom: none !important;
+    }
+
+    .c-submenu .js-submenu__back-nav-wrapper h4 {
+      margin: 0.3rem 0px;
+      font-weight: 500;
+    }
+
+    .o-list-plain .c-submenu__list li {
+      padding: 6px 10px;
+      list-style: none;
+    }
+
+    .c-menu__sublink[aria-expanded="true"] .icon {
+      transform: rotate(45deg);
+    }
+
+    .c-menu__cs .c-menu__link {
+      border-bottom: none;
+    }
+
+    /* 移动端搜索框样式 */
+    #{{ section_id }} .gmk-lulus-header__mobile-search {
+      display: none;
+      margin: 12px 16px;
+    }
+
+    #{{ section_id }} .gmk-lulus-header__mobile-search .gmk-lulus-header__search {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0px 10px;
+      background: #f7f7f7;
+      border-radius: 25px;
+      border-bottom: none;
+    }
+
+    #{{ section_id }} .gmk-lulus-header__mobile-search .gmk-lulus-header__search-input {
+      flex: 1;
+      padding: 12px 8px 12px 0;
+      font-size: 14px;
+    }
+
+    #{{ section_id }} .gmk-lulus-header__market-container {
+      display: flex;
+    }
+
+    /* ========== 移动端禁用吸顶 ========== */
+    @media screen and (max-width: 989px) {
+      #{{ section_id }}.gmk-lulus-header--sticky {
+        position: static;
+      }
+    }
+
+    /* 响应式断点：移动端调整 */
+    @media screen and (max-width: 989px) {
+      .c-menu__link,#{{ section_id }} .o-list-plain .c-submenu__list .gmk-lulus-header__mega-label {
+        font-size: 14px;
+      }
+      #{{ section_id }} .gmk-lulus-header__nav-shell .gmk-lulus-header__nav-list {
+        display: none !important;
+      }
+      #{{ section_id }} .gmk-lulus-header__brand-button-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1 0 50%;
+        min-width: 170px;
+        height: 45px;
+        padding: 10px 18px;
+      }
+      .c-menu__link--icon .icon {
+        width: 24px;
+        height: 24px;
+      }
+      #{{ section_id }} .gmk-lulus-header__menu-toggle {
+        display: inline-flex;
+        order: -1;
+      }
+      #{{ section_id }} .gmk-lulus-header__tools {
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 8px 16px;
+        background: #fff;
+      }
       #{{ section_id }} .gmk-lulus-header__top {
         flex-direction: column;
         min-height: auto;
       }
-
       #{{ section_id }} .gmk-lulus-header__brands {
         width: 100%;
         min-width: 0;
       }
-
       #{{ section_id }} .gmk-lulus-header__brand-button {
         flex: 1 0 50%;
         min-width: 170px;
-        height: 74px;
+        height: 45px;
         padding: 10px 18px;
       }
-
-      #{{ section_id }} .gmk-lulus-header__brand-text--script {
-        font-size: 38px;
+      #{{ section_id }} .gmk-lulus-header__icon-button.account-button {
+        display: none;
       }
-
-      #{{ section_id }} .gmk-lulus-header__brand-text--serif {
-        font-size: 30px;
+      /* 桌面搜索框隐藏 */
+      #{{ section_id }} .gmk-lulus-header__tools .gmk-lulus-header__search {
+        display: none;
       }
-
-      #{{ section_id }} .gmk-lulus-header__tools {
-        gap: 14px;
-        width: 100%;
-        padding: 12px 16px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__search {
-        flex: 1 1 auto;
-        min-width: 0;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__search-input {
-        font-size: 16px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__icon-button {
-        width: 30px;
-        height: 30px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__icon-button svg {
-        width: 27px;
-        height: 27px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__market {
-        width: 34px;
-        height: 28px;
-        font-size: 12px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__nav-list {
-        min-height: 58px;
-        padding: 0 10px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__nav-link {
-        min-height: 58px;
-        padding: 0 13px;
-        font-size: 17px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__nav-link::after {
-        right: 13px;
-        left: 13px;
-        height: 3px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__mega {
-        position: absolute;
-        max-height: min(var(--gmk-lulus-header-dropdown-max-height), calc(100vh - 58px));
-        overflow-y: auto;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__mega-inner {
+      /* 移动端搜索框显示 */
+      #{{ section_id }} .gmk-lulus-header__mobile-search {
         display: block;
-        min-height: 0;
-        padding: 26px 18px 34px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__mega-columns {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 26px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__mega-column,
-      #{{ section_id }} .gmk-lulus-header__mega-column--wide {
-        min-width: 0;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__mega-title,
-      #{{ section_id }} .gmk-lulus-header__mega-subtitle {
-        font-size: 17px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__mega-links {
-        gap: 13px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__mega-link,
-      #{{ section_id }} .gmk-lulus-header__mega-label {
-        font-size: 16px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__promos {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 24px;
-        margin-top: 28px;
-      }
-
-      #{{ section_id }} .gmk-lulus-header__promo {
-        width: min(100%, 330px);
       }
     }
   </style>
 
   <section
     id="{{ section_id }}"
-    class="gmk-lulus-header{% if sticky_header %} gmk-lulus-header--sticky{% endif %}"
+    class="gmk-lulus-header
+    {% if sticky_header %} gmk-lulus-header--sticky{% endif %}"
     data-section-id="{{ section.id }}"
     data-section-type="{{ section.type | escape }}"
     data-default-brand="{{ active_brand_key | escape }}"
@@ -686,12 +836,10 @@
                 assign outlet_prefix = logo_words.first
                 assign outlet_main = logo_text | remove_first: outlet_prefix | strip
                 assign brand_is_active = false
-
                 if brand_key == active_brand_key
                   assign brand_is_active = true
                 endif
               %}
-
               {% if brand_key != blank and brand_title != blank %}
                 <button
                   type="button"
@@ -722,6 +870,17 @@
         </div>
 
         <div class="gmk-lulus-header__tools">
+          <!-- 汉堡菜单按钮 -->
+          <button class="gmk-lulus-header__icon-button gmk-lulus-header__menu-toggle" type="button" aria-label="Menu" data-mobile-menu-toggle>
+            <svg class="icon-hamburger" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+            <svg class="icon-close" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+
+          <!-- 桌面搜索框（移动端隐藏） -->
           <form class="gmk-lulus-header__search" action="{{ routes.search_url }}" method="get" role="search">
             <input
               class="gmk-lulus-header__search-input"
@@ -739,60 +898,56 @@
             </button>
           </form>
 
-          {% if market_label != blank %}
-            <button class="gmk-lulus-header__market" type="button" aria-label="Market selector">
-              {{ market_label | escape }}
-            </button>
-          {% endif %}
+          <button type="button" class="gmk-lulus-header__brand-button-logo" data-brand-button="lulus" role="tab" aria-selected="true">               
+            <span class="gmk-lulus-header__brand-text gmk-lulus-header__brand-text--script">Lulus</span>
+          </button>
 
-          {% if account_link != blank %}
-            <a class="gmk-lulus-header__icon-button" href="{{ account_link }}" aria-label="Account">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path>
-              </svg>
-            </a>
-          {% endif %}
+          <div class="gmk-lulus-header__market-container">
+            {% if market_label != blank %}
+              <button class="gmk-lulus-header__market" type="button" aria-label="Market selector">{{ market_label | escape }}</button>
+            {% endif %}
 
-          {% if wishlist_link != blank %}
-            <a class="gmk-lulus-header__icon-button" href="{{ wishlist_link }}" aria-label="Wishlist">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M20.5 5.8c-1.6-1.7-4.3-1.7-5.9 0L12 8.5 9.4 5.8c-1.6-1.7-4.3-1.7-5.9 0-1.7 1.8-1.7 4.6 0 6.4l8.5 8.8 8.5-8.8c1.7-1.8 1.7-4.6 0-6.4Z"></path>
-              </svg>
-            </a>
-          {% else %}
-            <button class="gmk-lulus-header__icon-button" type="button" aria-label="Wishlist">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M20.5 5.8c-1.6-1.7-4.3-1.7-5.9 0L12 8.5 9.4 5.8c-1.6-1.7-4.3-1.7-5.9 0-1.7 1.8-1.7 4.6 0 6.4l8.5 8.8 8.5-8.8c1.7-1.8 1.7-4.6 0-6.4Z"></path>
-              </svg>
-            </button>
-          {% endif %}
+            {% if account_link != blank %}
+              <a class="gmk-lulus-header__icon-button account-button" href="{{ account_link }}" aria-label="Account">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>
+              </a>
+            {% endif %}
 
-          {% if cart_link != blank %}
-            <a class="gmk-lulus-header__icon-button" href="{{ cart_link }}" aria-label="Cart">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path d="M6.5 8.5h11l-.7 11H7.2l-.7-11Z"></path>
-                <path d="M9 8.5V6a3 3 0 0 1 6 0v2.5"></path>
-              </svg>
-              <span class="gmk-lulus-header__cart-count">{{ cart.item_count | default: 0 }}</span>
-            </a>
-          {% endif %}
+            {% if wishlist_link != blank %}
+              <a class="gmk-lulus-header__icon-button" href="{{ wishlist_link }}" aria-label="Wishlist">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.5 5.8c-1.6-1.7-4.3-1.7-5.9 0L12 8.5 9.4 5.8c-1.6-1.7-4.3-1.7-5.9 0-1.7 1.8-1.7 4.6 0 6.4l8.5 8.8 8.5-8.8c1.7-1.8 1.7-4.6 0-6.4Z"></path></svg>
+              </a>
+            {% else %}
+              <button class="gmk-lulus-header__icon-button" type="button" aria-label="Wishlist">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20.5 5.8c-1.6-1.7-4.3-1.7-5.9 0L12 8.5 9.4 5.8c-1.6-1.7-4.3-1.7-5.9 0-1.7 1.8-1.7 4.6 0 6.4l8.5 8.8 8.5-8.8c1.7-1.8 1.7-4.6 0-6.4Z"></path></svg>
+              </button>
+            {% endif %}
+
+            {% if cart_link != blank %}
+              <a class="gmk-lulus-header__icon-button" href="{{ cart_link }}" aria-label="Cart">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6.5 8.5h11l-.7 11H7.2l-.7-11Z"></path><path d="M9 8.5V6a3 3 0 0 1 6 0v2.5"></path></svg>
+                <span class="gmk-lulus-header__cart-count">{{ cart.item_count | default: 0 }}</span>
+              </a>
+            {% endif %}
+          </div>
         </div>
       </div>
 
+      <!-- 桌面导航栏（移动端会被 CSS 隐藏） -->
       <nav class="gmk-lulus-header__nav-shell" aria-label="Main navigation">
         <div class="gmk-lulus-header__nav-inner">
+          <!-- 移动端搜索框容器 -->
+          <div class="gmk-lulus-header__mobile-search" data-mobile-search-container></div>
+
           {% for brand_block in section.blocks %}
             {% if brand_block.type == 'brand' %}
               {% liquid
                 assign panel_brand_key = brand_block.settings.key | strip
                 assign panel_is_active = false
-
                 if panel_brand_key == active_brand_key
                   assign panel_is_active = true
                 endif
               %}
-
               {% if panel_brand_key != blank %}
                 <ul
                   class="gmk-lulus-header__nav-list"
@@ -810,151 +965,103 @@
                         assign has_mega_columns = false
                         assign has_mega_promos = false
                       %}
-
                       {% if nav_brand_key == panel_brand_key and nav_key != blank and nav_title != blank %}
                         {% for mega_check_block in section.blocks %}
-                          {% liquid
-                            assign mega_brand_key = mega_check_block.settings.brand_key | strip
-                            assign mega_parent_key = mega_check_block.settings.parent_key | strip
-                          %}
-
-                          {% if mega_brand_key == nav_brand_key and mega_parent_key == nav_key %}
-                            {% if mega_check_block.type == 'menu_column' %}
-                              {% if mega_check_block.settings.title != blank or mega_check_block.settings.text != blank %}
-                                {% assign has_mega = true %}
-                                {% assign has_mega_columns = true %}
-                              {% endif %}
-                            {% elsif mega_check_block.type == 'promo' %}
-                              {% if mega_check_block.settings.image != blank %}
-                                {% assign has_mega = true %}
-                                {% assign has_mega_promos = true %}
-                              {% endif %}
+                          {% if mega_check_block.type == 'menu_column' and mega_check_block.settings.brand_key == nav_brand_key and mega_check_block.settings.parent_key == nav_key %}
+                            {% if mega_check_block.settings.title != blank or mega_check_block.settings.text != blank %}
+                              {% assign has_mega = true %}
+                              {% assign has_mega_columns = true %}
+                            {% endif %}
+                          {% elsif mega_check_block.type == 'promo' and mega_check_block.settings.brand_key == nav_brand_key and mega_check_block.settings.parent_key == nav_key %}
+                            {% if mega_check_block.settings.image != blank %}
+                              {% assign has_mega = true %}
+                              {% assign has_mega_promos = true %}
                             {% endif %}
                           {% endif %}
                         {% endfor %}
-
                         <li
                           class="gmk-lulus-header__nav-item{% if has_mega %} has-mega{% endif %}"
                           data-nav-item
-                          {{ nav_block.shopify_attributes }}
+                          data-nav-key="{{ nav_key }}"
+                          data-nav-title="{{ nav_title | escape }}"
+                          {% if nav_link %}data-nav-url="{{ nav_link }}"{% endif %}
                         >
                           {% if nav_link != blank %}
-                            <a
-                              class="gmk-lulus-header__nav-link"
-                              href="{{ nav_link }}"
-                              data-nav-link
-                              {% if has_mega %}aria-haspopup="true" aria-expanded="false"{% endif %}
-                            >
-                              {{ nav_title | escape }}
-                            </a>
+                            <a class="gmk-lulus-header__nav-link" href="{{ nav_link }}">{{ nav_title | escape }}</a>
                           {% else %}
-                            <button
-                              type="button"
-                              class="gmk-lulus-header__nav-link"
-                              data-nav-link
-                              {% if has_mega %}aria-haspopup="true" aria-expanded="false"{% endif %}
-                            >
-                              {{ nav_title | escape }}
-                            </button>
+                            <button type="button" class="gmk-lulus-header__nav-link">{{ nav_title | escape }}</button>
                           {% endif %}
-
-                          {% if has_mega %}
-                            <div class="gmk-lulus-header__mega" data-mega>
-                              <div class="gmk-lulus-header__mega-inner">
-                                {% if has_mega_columns %}
-                                  <div class="gmk-lulus-header__mega-columns">
-                                  {% for mega_block in section.blocks %}
-                                    {% liquid
-                                      assign mega_brand_key = mega_block.settings.brand_key | strip
-                                      assign mega_parent_key = mega_block.settings.parent_key | strip
-                                    %}
-
-                                    {% if mega_block.type == 'menu_column' and mega_brand_key == nav_brand_key and mega_parent_key == nav_key %}
-                                      {% liquid
-                                        assign column_title = mega_block.settings.title | strip
-                                        assign column_text = mega_block.settings.text | strip
-                                        assign column_style = mega_block.settings.column_style
-                                      %}
-
-                                      {% if column_title != blank or column_text != blank %}
-                                        <div class="gmk-lulus-header__mega-column gmk-lulus-header__mega-column--{{ column_style | escape }}" {{ mega_block.shopify_attributes }}>
-                                          {% if column_title != blank %}
-                                            <p class="gmk-lulus-header__mega-title">{{ column_title | escape }}</p>
-                                          {% endif %}
-
-                                          {% if column_text != blank %}
-                                            <ul class="gmk-lulus-header__mega-links">
-                                              {% assign menu_lines = column_text | newline_to_br | split: '<br />' %}
-                                              {% for menu_line in menu_lines %}
-                                                {% liquid
-                                                  assign clean_line = menu_line | strip
-                                                  assign heading_marker = clean_line | slice: 0, 2
-                                                %}
-
-                                                {% if clean_line != blank %}
-                                                  {% if heading_marker == '# ' %}
-                                                    <li>
-                                                      <p class="gmk-lulus-header__mega-subtitle">{{ clean_line | remove_first: '# ' | strip | escape }}</p>
-                                                    </li>
-                                                  {% else %}
-                                                    {% assign line_parts = clean_line | split: '|' %}
-                                                    {% assign line_label = line_parts[0] | strip %}
-                                                    {% assign line_url = line_parts[1] | strip %}
-                                                    <li>
-                                                      {% if line_url != blank %}
-                                                        <a class="gmk-lulus-header__mega-link" href="{{ line_url }}">{{ line_label | escape }}</a>
-                                                      {% else %}
-                                                        <span class="gmk-lulus-header__mega-label">{{ line_label | escape }}</span>
-                                                      {% endif %}
-                                                    </li>
-                                                  {% endif %}
-                                                {% endif %}
-                                              {% endfor %}
-                                            </ul>
-                                          {% endif %}
-                                        </div>
-                                      {% endif %}
-                                    {% endif %}
-                                  {% endfor %}
-                                  </div>
-                                {% endif %}
-
-                                {% if has_mega_promos %}
-                                  <div class="gmk-lulus-header__promos">
-                                  {% for promo_block in section.blocks %}
-                                    {% liquid
-                                      assign promo_brand_key = promo_block.settings.brand_key | strip
-                                      assign promo_parent_key = promo_block.settings.parent_key | strip
-                                    %}
-
-                                    {% if promo_block.type == 'promo' and promo_brand_key == nav_brand_key and promo_parent_key == nav_key and promo_block.settings.image != blank %}
-                                      {% liquid
-                                        assign promo_title = promo_block.settings.title | strip
-                                        assign promo_link = promo_block.settings.link_url
-                                        assign image_ratio = promo_block.settings.image_ratio
-                                      %}
-
-                                      <div class="gmk-lulus-header__promo" {{ promo_block.shopify_attributes }}>
-                                        {% if promo_link != blank %}
-                                          <a class="gmk-lulus-header__promo-link" href="{{ promo_link }}">
-                                        {% endif %}
-                                          <div class="gmk-lulus-header__promo-media gmk-lulus-header__promo-media--{{ image_ratio | escape }}">
-                                            {{ promo_block.settings.image | image_url: width: 720 | image_tag: loading: 'lazy', class: 'gmk-lulus-header__promo-image', sizes: '(min-width: 990px) 304px, 80vw', alt: promo_title }}
-                                          </div>
-                                          {% if promo_title != blank %}
-                                            <p class="gmk-lulus-header__promo-title">{{ promo_title | escape }}</p>
-                                          {% endif %}
-                                        {% if promo_link != blank %}
-                                          </a>
-                                        {% endif %}
-                                      </div>
-                                    {% endif %}
-                                  {% endfor %}
-                                  </div>
-                                {% endif %}
-                              </div>
-                            </div>
+                         <!-- 在桌面导航栏的 nav_item 内部，找到 has_mega 的判断，替换为以下完整内容 -->
+{% if has_mega %}
+  <div class="gmk-lulus-header__mega" data-mega data-mega-key="{{ nav_key }}">
+    <div class="gmk-lulus-header__mega-inner">
+      {% if has_mega_columns %}
+        <div class="gmk-lulus-header__mega-columns">
+          {% for mega_block in section.blocks %}
+            {% if mega_block.type == 'menu_column' and mega_block.settings.brand_key == nav_brand_key and mega_block.settings.parent_key == nav_key %}
+              {% assign column_title = mega_block.settings.title | strip %}
+              {% assign column_text = mega_block.settings.text | strip %}
+              {% assign column_style = mega_block.settings.column_style %}
+              {% if column_title != blank or column_text != blank %}
+                <div class="gmk-lulus-header__mega-column gmk-lulus-header__mega-column--{{ column_style | escape }}">
+                  {% if column_title != blank %}
+                    <p class="gmk-lulus-header__mega-title">{{ column_title | escape }}</p>
+                  {% endif %}
+                  {% if column_text != blank %}
+                    <ul class="gmk-lulus-header__mega-links">
+                      {% assign menu_lines = column_text | newline_to_br | split: '<br />' %}
+                      {% for menu_line in menu_lines %}
+                        {% assign clean_line = menu_line | strip %}
+                        {% assign heading_marker = clean_line | slice: 0, 2 %}
+                        {% if clean_line != blank %}
+                          {% if heading_marker == '# ' %}
+                            <li><p class="gmk-lulus-header__mega-subtitle">{{ clean_line | remove_first: '# ' | strip | escape }}</p></li>
+                          {% else %}
+                            {% assign line_parts = clean_line | split: '|' %}
+                            {% assign line_label = line_parts[0] | strip %}
+                            {% assign line_url = line_parts[1] | strip %}
+                            <li>
+                              {% if line_url != blank %}
+                                <a class="gmk-lulus-header__mega-link" href="{{ line_url }}">{{ line_label | escape }}</a>
+                              {% else %}
+                                <span class="gmk-lulus-header__mega-label">{{ line_label | escape }}</span>
+                              {% endif %}
+                            </li>
                           {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% comment %} # 桌面端显示 promo 图片模块 # {% endcomment %}
+      {% if has_mega_promos %}
+        <div class="gmk-lulus-header__promos">
+          {% for promo_block in section.blocks %}
+            {% if promo_block.type == 'promo' and promo_block.settings.brand_key == nav_brand_key and promo_block.settings.parent_key == nav_key and promo_block.settings.image != blank %}
+              {% assign promo_title = promo_block.settings.title | strip %}
+              {% assign promo_link = promo_block.settings.link_url %}
+              {% assign image_ratio = promo_block.settings.image_ratio %}
+              <div class="gmk-lulus-header__promo">
+                {% if promo_link != blank %}<a class="gmk-lulus-header__promo-link" href="{{ promo_link }}">{% endif %}
+                  <div class="gmk-lulus-header__promo-media gmk-lulus-header__promo-media--{{ image_ratio | escape }}">
+                    {{ promo_block.settings.image | image_url: width: 720 | image_tag: loading: 'lazy', class: 'gmk-lulus-header__promo-image', alt: promo_title }}
+                  </div>
+                  {% if promo_title != blank %}<p class="gmk-lulus-header__promo-title">{{ promo_title | escape }}</p>{% endif %}
+                {% if promo_link != blank %}</a>{% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
                         </li>
                       {% endif %}
                     {% endif %}
@@ -966,101 +1073,389 @@
         </div>
       </nav>
     </div>
+
+    <!-- 移动端遮罩 + 抽屉（左侧滑出） -->
+    <div class="gmk-lulus-header__drawer-overlay" data-drawer-overlay></div>
+    <div class="gmk-lulus-header__mobile-drawer" data-mobile-drawer>
+      <div class="c-site-nav-mobile__list" data-mobile-nav-container></div>
+    </div>
   </section>
 
   <script>
     (() => {
       const root = document.getElementById({{ section_id | json }});
-
-      if (!root || root.dataset.gmkLulusHeaderReady === 'true') {
-        return;
-      }
-
+      if (!root || root.dataset.gmkLulusHeaderReady === 'true') return;
       root.dataset.gmkLulusHeaderReady = 'true';
 
       const brandButtons = Array.from(root.querySelectorAll('[data-brand-button]'));
       const brandPanels = Array.from(root.querySelectorAll('[data-brand-panel]'));
-      const navItems = Array.from(root.querySelectorAll('[data-nav-item]'));
       const collapseOnScroll = root.dataset.collapseOnScroll === 'true';
       const collapseOffset = Number(root.dataset.collapseOffset || 80);
 
-      const closeMenus = () => {
-        navItems.forEach((item) => {
-          item.classList.remove('is-open');
-          const link = item.querySelector('[data-nav-link]');
-          if (link) {
-            link.setAttribute('aria-expanded', 'false');
-          }
-        });
+      // 移动端元素
+      const menuToggle = root.querySelector('[data-mobile-menu-toggle]');
+      const hamburgerIcon = menuToggle?.querySelector('.icon-hamburger');
+      const closeIcon = menuToggle?.querySelector('.icon-close');
+      const drawer = root.querySelector('[data-mobile-drawer]');
+      const drawerOverlay = root.querySelector('[data-drawer-overlay]');
+      const mobileNavContainer = root.querySelector('[data-mobile-nav-container]');
+      const drawerCloseBtn = root.querySelector('[data-drawer-close]');
+      const mobileSearchContainer = root.querySelector('[data-mobile-search-container]');
+
+      let currentActiveBrand = null;
+      let isDrawerOpen = false;
+
+      // 获取 header 实际高度（.gmk-lulus-header__top + .announcement-bar）
+      const getHeaderHeight = () => {
+        const headerTop = root.querySelector('.gmk-lulus-header__top');
+        const announcementBar = document.querySelector('.announcement-bar');
+        let height = 0;
+        if (headerTop) height += headerTop.offsetHeight;
+        if (announcementBar && announcementBar.offsetHeight) height += announcementBar.offsetHeight;
+        return height;
       };
 
-      const setBrand = (brandKey) => {
-        const selectedKey = brandButtons.some((button) => button.dataset.brandButton === brandKey)
-          ? brandKey
-          : brandButtons[0]?.dataset.brandButton;
+      // 更新遮罩层 top 值，使其不覆盖 header 区域
+      const updateOverlayTop = () => {
+        if (!drawerOverlay) return;
+        const headerHeight = getHeaderHeight();
+        drawerOverlay.style.top = `${headerHeight}px`;
+      };
 
-        if (!selectedKey) {
-          return;
+      // 重置遮罩层 top 为 0
+      const resetOverlayTop = () => {
+        if (!drawerOverlay) return;
+        drawerOverlay.style.top = '0';
+      };
+
+      // 更新抽屉 top 位置（使其紧贴 header 下方）
+      const updateDrawerTop = () => {
+        if (!drawer) return;
+        const headerHeight = getHeaderHeight();
+        drawer.style.top = `${headerHeight}px`;
+      };
+
+      // 克隆搜索框到移动端容器（只执行一次）
+      const moveSearchToMobile = () => {
+        if (!mobileSearchContainer) return;
+        if (mobileSearchContainer.querySelector('.gmk-lulus-header__search')) return;
+        const desktopSearch = root.querySelector('.gmk-lulus-header__tools .gmk-lulus-header__search');
+        if (!desktopSearch) return;
+        const clonedSearch = desktopSearch.cloneNode(true);
+        mobileSearchContainer.appendChild(clonedSearch);
+      };
+
+      // 关闭抽屉
+      const closeDrawer = () => {
+        if (!drawer) return;
+        drawer.classList.remove('is-open');
+        drawerOverlay.classList.remove('is-active');
+        document.body.style.overflow = '';
+        isDrawerOpen = false;
+        resetOverlayTop();
+        if (hamburgerIcon && closeIcon) {
+          hamburgerIcon.style.display = '';
+          closeIcon.style.display = 'none';
         }
+        // 重置子菜单显示
+        if (mobileNavContainer) {
+          const mainMenu = mobileNavContainer.querySelector('.c-menu');
+          const allSubmenus = mobileNavContainer.querySelectorAll('.c-submenu');
+          if (mainMenu) mainMenu.style.display = '';
+          allSubmenus.forEach(sub => sub.classList.remove('is-active'));
+        }
+      };
 
-        root.dataset.activeBrand = selectedKey;
+      // 打开抽屉
+      const openDrawer = () => {
+        if (!drawer || !drawerOverlay) return;
+        // 计算并设置抽屉 top
+        updateDrawerTop();
+        // 设置遮罩 top 为 header 高度，避免覆盖工具栏
+        updateOverlayTop();
+        refreshMobileNav(currentActiveBrand);
+        drawer.classList.add('is-open');
+        drawerOverlay.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+        isDrawerOpen = true;
+        if (hamburgerIcon && closeIcon) {
+          hamburgerIcon.style.display = 'none';
+          closeIcon.style.display = '';
+        }
+      };
 
-        brandButtons.forEach((button) => {
-          const isActive = button.dataset.brandButton === selectedKey;
-          button.classList.toggle('is-active', isActive);
-          button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      // 生成子菜单HTML（不包含 promo 图片）
+      const generateSubmenuHtml = (title, megaElement, navKey) => {
+        const cloneMega = megaElement.cloneNode(true);
+        const columns = Array.from(cloneMega.querySelectorAll('.gmk-lulus-header__mega-column'));
+        const ul = document.createElement('ul');
+        ul.className = 'o-list-plain';
+
+        columns.forEach(col => {
+          const titleEl = col.querySelector('.gmk-lulus-header__mega-title');
+          const groupTitle = titleEl ? titleEl.innerText.trim() : '';
+          const linksUl = col.querySelector('.gmk-lulus-header__mega-links');
+          if (!linksUl || linksUl.children.length === 0) return;
+
+          const li = document.createElement('li');
+          li.setAttribute('role', 'none');
+          
+          const sublinkBtn = document.createElement('button');
+          sublinkBtn.className = 'c-menu__link c-menu__sublink';
+          sublinkBtn.setAttribute('aria-expanded', 'false');
+          sublinkBtn.innerHTML = `<span>${escapeHtml(groupTitle)}</span><span aria-hidden="true" class="icon icon-plus-thin"><svg class="icon icon-arrow icon--small" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 3.74121L13.75 9.99121L7.5 16.2412" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>`;
+          
+          const sublist = document.createElement('ul');
+          sublist.className = 'c-submenu__list';
+          sublist.style.display = 'none';
+          
+          Array.from(linksUl.children).forEach(liItem => {
+            const cloned = liItem.cloneNode(true);
+            const linkEl = cloned.querySelector('a');
+            if (linkEl) linkEl.addEventListener('click', () => closeDrawer());
+            const subLi = document.createElement('li');
+            subLi.setAttribute('role', 'none');
+            subLi.appendChild(cloned);
+            sublist.appendChild(subLi);
+          });
+          
+          sublinkBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const expanded = sublinkBtn.getAttribute('aria-expanded') === 'true';
+            sublinkBtn.setAttribute('aria-expanded', !expanded);
+            sublist.style.display = !expanded ? 'block' : 'none';
+          });
+          
+          li.appendChild(sublinkBtn);
+          li.appendChild(sublist);
+          ul.appendChild(li);
         });
 
-        brandPanels.forEach((panel) => {
+        const submenuDiv = document.createElement('div');
+        submenuDiv.id = `submenu_${navKey}`;
+        submenuDiv.className = 'c-submenu';
+        
+        const backWrapper = document.createElement('div');
+        backWrapper.className = 'o-flex u-pad-vert js-submenu__back-nav-wrapper';
+        backWrapper.style.display = 'flex';
+        backWrapper.style.alignItems = 'center';
+        backWrapper.style.padding = '12px 16px';
+        backWrapper.style.borderBottom = '1px solid var(--gmk-lulus-header-border)';
+        
+        const backBtn = document.createElement('button');
+        backBtn.className = 'c-submenu__btn c-btn--plain';
+        backBtn.setAttribute('aria-label', 'Return to main navigation menu');
+        backBtn.innerHTML = '<span aria-hidden="true" class="icon icon-arrow-left"><svg class="icon icon-arrow icon--small" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 3.74121L13.75 9.99121L7.5 16.2412" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>';
+        backBtn.addEventListener('click', () => {
+          const mainMenu = mobileNavContainer.querySelector('.c-menu');
+          submenuDiv.classList.remove('is-active');
+          if (mainMenu) mainMenu.style.display = '';
+        });
+        
+        const heading = document.createElement('h4');
+        heading.className = 'u-text-sm u-margin-none u-text-bold c-heading-h5 u-wide u-margin-left';
+        heading.innerText = title;
+        
+        backWrapper.appendChild(backBtn);
+        backWrapper.appendChild(heading);
+        submenuDiv.appendChild(backWrapper);
+        
+        const ulContainer = document.createElement('ul');
+        ulContainer.setAttribute('role', 'menu');
+        ulContainer.setAttribute('aria-label', `${title} Menu`);
+        ulContainer.className = 'o-list-plain';
+        ulContainer.appendChild(ul);
+        submenuDiv.appendChild(ulContainer);
+        
+        return submenuDiv;
+      };
+
+      // 生成主菜单
+      const generateMainMenuHtml = (brandKey) => {
+        const activePanel = brandPanels.find(panel => panel.dataset.brandPanel === brandKey && !panel.hidden);
+        if (!activePanel) return document.createDocumentFragment();
+        
+        const navItems = Array.from(activePanel.querySelectorAll(':scope > .gmk-lulus-header__nav-item'));
+        const fragment = document.createDocumentFragment();
+        
+        const ul = document.createElement('ul');
+        ul.setAttribute('role', 'menu');
+        ul.setAttribute('aria-label', 'Main Navigation');
+        ul.className = 'o-list-plain c-menu';
+        
+        // 账户区域
+        const accountLi = document.createElement('li');
+        accountLi.setAttribute('role', 'none');
+        accountLi.innerHTML = `
+          <div class="c-menu__acct u-bg-gray">
+            <button class="c-menu__link c-menu__link--icon" aria-expanded="false" aria-haspopup="true">
+              <div class="o-flex-col">
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>
+                <div class="o-flex-col"><span>Sign In</span></div>
+              </div>
+              <span aria-hidden="true" class="icon icon-plus-thin">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14" /></svg>
+              </span>
+            </button>
+            <div class="c-menu__acct-list" style="display: none;">
+              <a href="{{ routes.account_login_url }}" rel="nofollow" class="c-menu__link">Sign In</a>
+              <a href="{{ routes.account_register_url }}" rel="nofollow" class="c-menu__link">Create Account</a>
+              <a href="/returns" rel="nofollow" class="c-menu__link">Initiate Return</a>
+              <a href="/orders" rel="nofollow" class="c-menu__link">Track Your Order</a>
+            </div>
+          </div>
+        `;
+        ul.appendChild(accountLi);
+        
+        navItems.forEach((item, idx) => {
+          const linkEl = item.querySelector(':scope > .gmk-lulus-header__nav-link');
+          if (!linkEl) return;
+          const title = linkEl.innerText.trim();
+          const href = linkEl.tagName === 'A' ? linkEl.getAttribute('href') : null;
+          const hasMega = item.classList.contains('has-mega');
+          const megaDiv = hasMega ? item.querySelector('.gmk-lulus-header__mega') : null;
+          const navKey = `nav_${idx}_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+          
+          const li = document.createElement('li');
+          li.setAttribute('role', 'none');
+          
+          if (href && !hasMega) {
+            const a = document.createElement('a');
+            a.className = 'c-menu__link';
+            a.href = href;
+            a.innerText = title;
+            a.addEventListener('click', () => closeDrawer());
+            li.appendChild(a);
+          } else {
+            const btn = document.createElement('button');
+            btn.className = 'c-menu__link';
+            btn.setAttribute('aria-expanded', 'false');
+            btn.setAttribute('aria-haspopup', 'true');
+            btn.setAttribute('data-submenu-id', `submenu_${navKey}`);
+            btn.innerHTML = `<span>${escapeHtml(title)}</span>`;
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              const submenuId = btn.getAttribute('data-submenu-id');
+              const submenu = mobileNavContainer.querySelector(`#${submenuId}`);
+              const mainMenu = mobileNavContainer.querySelector('.c-menu');
+              if (submenu && mainMenu) {
+                mainMenu.style.display = 'none';
+                submenu.classList.add('is-active');
+              }
+            });
+            li.appendChild(btn);
+            
+            if (megaDiv) {
+              const submenuHtml = generateSubmenuHtml(title, megaDiv, navKey);
+              submenuHtml.id = `submenu_${navKey}`;
+              fragment.appendChild(submenuHtml);
+            }
+          }
+          ul.appendChild(li);
+        });
+        
+        // Customer Care
+        const csLi = document.createElement('li');
+        csLi.setAttribute('role', 'none');
+        csLi.innerHTML = `<div class="c-menu__cs"><a href="/customerservice" class="c-menu__link c-menu__link--no-border">Customer Care</a></div>`;
+        ul.appendChild(csLi);
+        
+        fragment.appendChild(ul);
+        return fragment;
+      };
+
+      const refreshMobileNav = (brandKey) => {
+        if (!mobileNavContainer) return;
+        mobileNavContainer.innerHTML = '';
+        const navContent = generateMainMenuHtml(brandKey);
+        mobileNavContainer.appendChild(navContent);
+        
+        // 绑定账户折叠 + 图标切换
+        const acctBtn = mobileNavContainer.querySelector('.c-menu__acct > .c-menu__link');
+        if (acctBtn) {
+          const acctList = acctBtn.parentElement.querySelector('.c-menu__acct-list');
+          const iconSpan = acctBtn.querySelector('.icon-plus-thin');
+          acctBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const expanded = acctBtn.getAttribute('aria-expanded') === 'true';
+            acctBtn.setAttribute('aria-expanded', !expanded);
+            acctList.style.display = !expanded ? 'block' : 'none';
+            // 切换图标：加号 ↔ 减号
+            if (iconSpan) {
+              if (!expanded) {
+                // 展开 → 显示减号
+                iconSpan.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>`;
+              } else {
+                // 收起 → 显示加号
+                iconSpan.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>`;
+              }
+            }
+          });
+        }
+      };
+
+      // 品牌切换
+      const setBrand = (brandKey) => {
+        const selectedKey = brandButtons.some(btn => btn.dataset.brandButton === brandKey) ? brandKey : brandButtons[0]?.dataset.brandButton;
+        if (!selectedKey) return;
+        currentActiveBrand = selectedKey;
+        root.dataset.activeBrand = selectedKey;
+        brandButtons.forEach(btn => {
+          const isActive = btn.dataset.brandButton === selectedKey;
+          btn.classList.toggle('is-active', isActive);
+          btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+        brandPanels.forEach(panel => {
           panel.hidden = panel.dataset.brandPanel !== selectedKey;
         });
-
-        closeMenus();
+        if (isDrawerOpen) refreshMobileNav(selectedKey);
       };
 
-      brandButtons.forEach((button) => {
-        button.addEventListener('click', () => setBrand(button.dataset.brandButton));
+      // 初始化
+      moveSearchToMobile();
+      // 监听窗口大小变化，如果抽屉打开则重新计算抽屉和遮罩位置
+      window.addEventListener('resize', () => {
+        if (isDrawerOpen) {
+          updateDrawerTop();
+          updateOverlayTop();
+        }
       });
+      // 不再监听 scroll 事件，避免滚动时跳动
 
+      brandButtons.forEach(btn => btn.addEventListener('click', () => setBrand(btn.dataset.brandButton)));
       setBrand(root.dataset.defaultBrand);
 
-      navItems.forEach((item) => {
-        const link = item.querySelector('[data-nav-link]');
-        const mega = item.querySelector('[data-mega]');
-
-        if (!link || !mega) {
-          return;
-        }
-
-        link.addEventListener('click', (event) => {
-          const shouldToggle = window.innerWidth < 990 || window.matchMedia('(hover: none)').matches;
-
-          if (!shouldToggle) {
-            return;
-          }
-
-          event.preventDefault();
-          const willOpen = !item.classList.contains('is-open');
-          closeMenus();
-          item.classList.toggle('is-open', willOpen);
-          link.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      // 事件绑定
+      if (menuToggle && drawer && drawerOverlay) {
+        menuToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (isDrawerOpen) closeDrawer();
+          else openDrawer();
         });
-      });
+        if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', closeDrawer);
+      }
 
+      // 点击外部关闭抽屉（如果点击事件没有在 root 内）
       document.addEventListener('click', (event) => {
-        if (!root.contains(event.target)) {
-          closeMenus();
-        }
+        if (!root.contains(event.target) && isDrawerOpen) closeDrawer();
       });
 
       if (collapseOnScroll) {
-        const syncCondensed = () => {
-          root.classList.toggle('is-condensed', window.scrollY > collapseOffset);
-        };
-
+        const syncCondensed = () => root.classList.toggle('is-condensed', window.scrollY > collapseOffset);
         syncCondensed();
         window.addEventListener('scroll', syncCondensed, { passive: true });
       }
+
+      const escapeHtml = (str) => {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, (m) => {
+          if (m === '&') return '&amp;';
+          if (m === '<') return '&lt;';
+          if (m === '>') return '&gt;';
+          return m;
+        });
+      };
     })();
   </script>
 {% endif %}
@@ -1069,380 +1464,78 @@
 {
   "name": "GMK Lulus Header",
   "settings": [
-    {
-      "type": "header",
-      "content": "基础设置｜Basic settings"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_section",
-      "label": "启用 Section｜Enable section",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "default_brand_key",
-      "label": "默认品牌 Key｜Default brand key",
-      "default": "lulus"
-    },
-    {
-      "type": "checkbox",
-      "id": "sticky_header",
-      "label": "吸顶 Header｜Sticky header",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "collapse_on_scroll",
-      "label": "下滑收起顶部｜Collapse top on scroll",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "collapse_offset",
-      "label": "收起触发距离｜Collapse offset",
-      "min": 20,
-      "max": 240,
-      "step": 10,
-      "unit": "px",
-      "default": 80
-    },
-    {
-      "type": "header",
-      "content": "内容设置｜Content settings"
-    },
-    {
-      "type": "text",
-      "id": "search_placeholder",
-      "label": "搜索占位文字｜Search placeholder",
-      "default": "Search"
-    },
-    {
-      "type": "text",
-      "id": "market_label",
-      "label": "市场标签｜Market label",
-      "default": "HK"
-    },
-    {
-      "type": "url",
-      "id": "account_link",
-      "label": "账户链接｜Account link"
-    },
-    {
-      "type": "url",
-      "id": "wishlist_link",
-      "label": "收藏链接｜Wishlist link"
-    },
-    {
-      "type": "url",
-      "id": "cart_link",
-      "label": "购物车链接｜Cart link"
-    },
-    {
-      "type": "header",
-      "content": "布局设置｜Layout settings"
-    },
-    {
-      "type": "select",
-      "id": "section_width",
-      "label": "区块宽度｜Section width",
-      "default": "full",
-      "options": [
-        {
-          "value": "full",
-          "label": "Full"
-        },
-        {
-          "value": "wide",
-          "label": "Wide"
-        },
-        {
-          "value": "standard",
-          "label": "Standard"
-        },
-        {
-          "value": "narrow",
-          "label": "Narrow"
-        }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "content_max_width",
-      "label": "内容最大宽度｜Content max width",
-      "min": 960,
-      "max": 1920,
-      "step": 20,
-      "unit": "px",
-      "default": 1920
-    },
-    {
-      "type": "range",
-      "id": "top_row_height",
-      "label": "顶部高度｜Top row height",
-      "min": 64,
-      "max": 112,
-      "step": 2,
-      "unit": "px",
-      "default": 92
-    },
-    {
-      "type": "range",
-      "id": "nav_height",
-      "label": "导航高度｜Navigation height",
-      "min": 48,
-      "max": 88,
-      "step": 2,
-      "unit": "px",
-      "default": 78
-    },
-    {
-      "type": "range",
-      "id": "dropdown_max_height",
-      "label": "下拉最大高度｜Dropdown max height",
-      "min": 320,
-      "max": 900,
-      "step": 20,
-      "unit": "px",
-      "default": 680
-    },
-    {
-      "type": "header",
-      "content": "样式设置｜Style settings"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "背景颜色｜Background color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "nav_background_color",
-      "label": "导航背景｜Navigation background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "inactive_brand_color",
-      "label": "未选品牌背景｜Inactive brand background",
-      "default": "#f3f3f3"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "文字颜色｜Text color",
-      "default": "#202020"
-    },
-    {
-      "type": "color",
-      "id": "muted_color",
-      "label": "次级文字颜色｜Muted text color",
-      "default": "#343434"
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "边框颜色｜Border color",
-      "default": "#e6e6e6"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "下划线颜色｜Underline color",
-      "default": "#202020"
-    },
-    {
-      "type": "color",
-      "id": "market_background_color",
-      "label": "市场背景｜Market background",
-      "default": "#e4272f"
-    },
-    {
-      "type": "color",
-      "id": "market_text_color",
-      "label": "市场文字｜Market text",
-      "default": "#ffffff"
-    }
+    { "type": "header", "content": "基础设置｜Basic settings" },
+    { "type": "checkbox", "id": "enable_section", "label": "启用 Section｜Enable section", "default": true },
+    { "type": "text", "id": "default_brand_key", "label": "默认品牌 Key｜Default brand key", "default": "lulus" },
+    { "type": "checkbox", "id": "sticky_header", "label": "吸顶 Header｜Sticky header", "default": true },
+    { "type": "checkbox", "id": "collapse_on_scroll", "label": "下滑收起顶部｜Collapse top on scroll", "default": true },
+    { "type": "range", "id": "collapse_offset", "label": "收起触发距离｜Collapse offset", "min": 20, "max": 240, "step": 10, "unit": "px", "default": 80 },
+    { "type": "header", "content": "内容设置｜Content settings" },
+    { "type": "text", "id": "search_placeholder", "label": "搜索占位文字｜Search placeholder", "default": "Search" },
+    { "type": "text", "id": "market_label", "label": "市场标签｜Market label", "default": "HK" },
+    { "type": "url", "id": "account_link", "label": "账户链接｜Account link" },
+    { "type": "url", "id": "wishlist_link", "label": "收藏链接｜Wishlist link" },
+    { "type": "url", "id": "cart_link", "label": "购物车链接｜Cart link" },
+    { "type": "header", "content": "布局设置｜Layout settings" },
+    { "type": "select", "id": "section_width", "label": "区块宽度｜Section width", "default": "full", "options": [{ "value": "full", "label": "Full" },{ "value": "wide", "label": "Wide" },{ "value": "standard", "label": "Standard" },{ "value": "narrow", "label": "Narrow" }] },
+    { "type": "range", "id": "content_max_width", "label": "内容最大宽度｜Content max width", "min": 960, "max": 1920, "step": 20, "unit": "px", "default": 1920 },
+    { "type": "range", "id": "top_row_height", "label": "顶部高度｜Top row height", "min": 64, "max": 112, "step": 2, "unit": "px", "default": 92 },
+    { "type": "range", "id": "nav_height", "label": "导航高度｜Navigation height", "min": 48, "max": 88, "step": 2, "unit": "px", "default": 78 },
+    { "type": "range", "id": "dropdown_max_height", "label": "下拉最大高度｜Dropdown max height", "min": 320, "max": 900, "step": 20, "unit": "px", "default": 680 },
+    { "type": "header", "content": "样式设置｜Style settings" },
+    { "type": "color", "id": "background_color", "label": "背景颜色｜Background color", "default": "#ffffff" },
+    { "type": "color", "id": "nav_background_color", "label": "导航背景｜Navigation background", "default": "#ffffff" },
+    { "type": "color", "id": "inactive_brand_color", "label": "未选品牌背景｜Inactive brand background", "default": "#f7f7f7" },
+    { "type": "color", "id": "text_color", "label": "文字颜色｜Text color", "default": "#202020" },
+    { "type": "color", "id": "muted_color", "label": "次级文字颜色｜Muted text color", "default": "#343434" },
+    { "type": "color", "id": "border_color", "label": "边框颜色｜Border color", "default": "#e6e6e6" },
+    { "type": "color", "id": "accent_color", "label": "下划线颜色｜Underline color", "default": "#202020" },
+    { "type": "color", "id": "market_background_color", "label": "市场背景｜Market background", "default": "#e4272f" },
+    { "type": "color", "id": "market_text_color", "label": "市场文字｜Market text", "default": "#ffffff" }
   ],
   "blocks": [
     {
       "type": "brand",
       "name": "品牌｜Brand",
       "settings": [
-        {
-          "type": "text",
-          "id": "key",
-          "label": "品牌 Key｜Brand key",
-          "default": "lulus"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "品牌名称｜Brand title",
-          "default": "Lulus"
-        },
-        {
-          "type": "image_picker",
-          "id": "logo_image",
-          "label": "Logo 图片｜Logo image"
-        },
-        {
-          "type": "text",
-          "id": "logo_text",
-          "label": "Logo 文字｜Logo text",
-          "default": "Lulus"
-        },
-        {
-          "type": "select",
-          "id": "logo_style",
-          "label": "Logo 样式｜Logo style",
-          "default": "script",
-          "options": [
-            {
-              "value": "script",
-              "label": "Script"
-            },
-            {
-              "value": "outlet",
-              "label": "Outlet"
-            },
-            {
-              "value": "classic",
-              "label": "Classic"
-            }
-          ]
-        }
+        { "type": "text", "id": "key", "label": "品牌 Key｜Brand key", "default": "lulus" },
+        { "type": "text", "id": "title", "label": "品牌名称｜Brand title", "default": "Lulus" },
+        { "type": "image_picker", "id": "logo_image", "label": "Logo 图片｜Logo image" },
+        { "type": "text", "id": "logo_text", "label": "Logo 文字｜Logo text", "default": "Lulus" },
+        { "type": "select", "id": "logo_style", "label": "Logo 样式｜Logo style", "default": "script", "options": [{ "value": "script", "label": "Script" },{ "value": "outlet", "label": "Outlet" },{ "value": "classic", "label": "Classic" }] }
       ]
     },
     {
       "type": "nav_item",
       "name": "导航项｜Navigation item",
       "settings": [
-        {
-          "type": "text",
-          "id": "brand_key",
-          "label": "所属品牌 Key｜Brand key",
-          "default": "lulus"
-        },
-        {
-          "type": "text",
-          "id": "key",
-          "label": "导航 Key｜Navigation key",
-          "default": "new"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "导航标题｜Navigation title",
-          "default": "New"
-        },
-        {
-          "type": "url",
-          "id": "link_url",
-          "label": "导航链接｜Navigation link"
-        }
+        { "type": "text", "id": "brand_key", "label": "所属品牌 Key｜Brand key", "default": "lulus" },
+        { "type": "text", "id": "key", "label": "导航 Key｜Navigation key", "default": "new" },
+        { "type": "text", "id": "title", "label": "导航标题｜Navigation title", "default": "New" },
+        { "type": "url", "id": "link_url", "label": "导航链接｜Navigation link" }
       ]
     },
     {
       "type": "menu_column",
       "name": "菜单列｜Menu column",
       "settings": [
-        {
-          "type": "text",
-          "id": "brand_key",
-          "label": "所属品牌 Key｜Brand key",
-          "default": "lulus"
-        },
-        {
-          "type": "text",
-          "id": "parent_key",
-          "label": "父级导航 Key｜Parent key",
-          "default": "new"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "列标题｜Column title",
-          "default": "New Arrivals"
-        },
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "菜单文本｜Menu text",
-          "info": "一行一个菜单。可写 Label|/link。以 # 开头的行会显示为组标题。One item per line. Use Label|/link. Lines starting with # become subheadings.",
-          "default": "All New\nUnder HK$450.00\nNew Colors!"
-        },
-        {
-          "type": "select",
-          "id": "column_style",
-          "label": "列宽样式｜Column style",
-          "default": "regular",
-          "options": [
-            {
-              "value": "regular",
-              "label": "Regular"
-            },
-            {
-              "value": "wide",
-              "label": "Wide"
-            }
-          ]
-        }
+        { "type": "text", "id": "brand_key", "label": "所属品牌 Key｜Brand key", "default": "lulus" },
+        { "type": "text", "id": "parent_key", "label": "父级导航 Key｜Parent key", "default": "new" },
+        { "type": "text", "id": "title", "label": "列标题｜Column title", "default": "New Arrivals" },
+        { "type": "textarea", "id": "text", "label": "菜单文本｜Menu text", "info": "一行一个菜单。可写 Label|/link。以 # 开头的行会显示为组标题。", "default": "All New\nUnder HK$450.00\nNew Colors!" },
+        { "type": "select", "id": "column_style", "label": "列宽样式｜Column style", "default": "regular", "options": [{ "value": "regular", "label": "Regular" },{ "value": "wide", "label": "Wide" }] }
       ]
     },
     {
       "type": "promo",
       "name": "菜单图片｜Menu promo",
       "settings": [
-        {
-          "type": "text",
-          "id": "brand_key",
-          "label": "所属品牌 Key｜Brand key",
-          "default": "lulus"
-        },
-        {
-          "type": "text",
-          "id": "parent_key",
-          "label": "父级导航 Key｜Parent key",
-          "default": "new"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "图片｜Image"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "标题｜Title",
-          "default": "The Devil Wears Prada | Lulus"
-        },
-        {
-          "type": "url",
-          "id": "link_url",
-          "label": "链接｜Link"
-        },
-        {
-          "type": "select",
-          "id": "image_ratio",
-          "label": "图片比例｜Image ratio",
-          "default": "portrait",
-          "options": [
-            {
-              "value": "portrait",
-              "label": "Portrait"
-            },
-            {
-              "value": "square",
-              "label": "Square"
-            },
-            {
-              "value": "tall",
-              "label": "Tall"
-            }
-          ]
-        }
+        { "type": "text", "id": "brand_key", "label": "所属品牌 Key｜Brand key", "default": "lulus" },
+        { "type": "text", "id": "parent_key", "label": "父级导航 Key｜Parent key", "default": "new" },
+        { "type": "image_picker", "id": "image", "label": "图片｜Image" },
+        { "type": "text", "id": "title", "label": "标题｜Title", "default": "The Devil Wears Prada | Lulus" },
+        { "type": "url", "id": "link_url", "label": "链接｜Link" },
+        { "type": "select", "id": "image_ratio", "label": "图片比例｜Image ratio", "default": "portrait", "options": [{ "value": "portrait", "label": "Portrait" },{ "value": "square", "label": "Square" },{ "value": "tall", "label": "Tall" }] }
       ]
     }
   ],
@@ -1451,401 +1544,12 @@
       "name": "GMK Lulus Header",
       "category": "GMK",
       "blocks": [
-        {
-          "type": "brand",
-          "settings": {
-            "key": "lulus",
-            "title": "Lulus",
-            "logo_text": "Lulus",
-            "logo_style": "script"
-          }
-        },
-        {
-          "type": "brand",
-          "settings": {
-            "key": "outlet",
-            "title": "The Outlet",
-            "logo_text": "the OUTLET",
-            "logo_style": "outlet"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "new",
-            "title": "New"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "back_in_stock",
-            "title": "Back In Stock"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "dresses",
-            "title": "Dresses"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "tops",
-            "title": "Tops"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "bottoms",
-            "title": "Bottoms"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "wedding_guest",
-            "title": "Wedding Guest"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "formal",
-            "title": "Formal"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "cocktail",
-            "title": "Cocktail"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "casual",
-            "title": "Casual"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "summer",
-            "title": "Summer"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "graduation",
-            "title": "Graduation"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "clothing",
-            "title": "Clothing"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "shoes",
-            "title": "Shoes"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "accessories",
-            "title": "Accessories"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "lulus",
-            "key": "sale",
-            "title": "Sale"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "outlet",
-            "key": "shop_all",
-            "title": "Shop All"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "outlet",
-            "key": "outlet_dresses",
-            "title": "Dresses"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "outlet",
-            "key": "outlet_tops",
-            "title": "Tops"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "outlet",
-            "key": "outlet_bottoms",
-            "title": "Bottoms"
-          }
-        },
-        {
-          "type": "nav_item",
-          "settings": {
-            "brand_key": "outlet",
-            "key": "outlet_shoes",
-            "title": "Shoes"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "new",
-            "title": "New Arrivals",
-            "text": "All New\nUnder HK$450.00\nNew Colors!\nNew In Today\nNew In This Week\nNew In Accessories\nNew In Bottoms\nNew In Dresses\nNew In Jumpsuits\nNew In Shoes\nNew In Swimwear\nNew In Tops",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "new",
-            "title": "Trending",
-            "text": "All Trending New\nThe Devil Wears Prada | Lulus\nSummer Dresses\nGraduation Dresses\nVacation Outfits"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "new",
-            "title": "Brands We Love",
-            "text": "All Brands\nBetsey Johnson\nDAZE DENIM\nDippin' Daisy's\nDolce Vita\nKulani Kinis\nLevi's\nLulus Label\nReebok\nRoxy\nSteve Madden\nVans"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "new",
-            "title": "More",
-            "text": "Gift Cards\nOn The Blog\nShop Our Feed"
-          }
-        },
-        {
-          "type": "promo",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "new",
-            "title": "The Devil Wears Prada | Lulus",
-            "image_ratio": "portrait"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "back_in_stock",
-            "title": "Back In Stock",
-            "text": "All Back In Stock\nBack In Stock Dresses\nBack In Stock Tops\nBack In Stock Bottoms\nBack In Stock Jumpsuits\nBack In Stock Shoes",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "back_in_stock",
-            "title": "Bestsellers",
-            "text": "Top Rated\nSelling Fast"
-          }
-        },
-        {
-          "type": "promo",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "back_in_stock",
-            "title": "Back in Stock",
-            "image_ratio": "portrait"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "dresses",
-            "title": "All Dresses",
-            "text": "New In\nDresses Under HK$450.00\nExtended Sizing\nTrending\nFloral Print Dresses\nGraduation Dresses\nMesh Dresses\nVacation Dresses\nWhite Dresses",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "dresses",
-            "title": "Occasion",
-            "text": "Birthday Dresses\nBridesmaid Dresses\nBrunch Dresses\nCasual Dresses\nClassy Dresses\nClub Dresses\nCocktail Dresses\nDance Dresses\nDay Dresses\nFormal Dresses\nGoing Out Dresses\nHomecoming Dresses\nOffice & Work Dresses\nParty Dresses\nDay Party Dresses\nProm Dresses\nSemi-Formal Dresses",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "dresses",
-            "title": "Style",
-            "text": "Babydoll Dresses\nBackless Dresses\nBodycon Dresses\nBra Friendly Dresses\nBump Friendly Dresses\nCorset & Bustier Dresses\nDrop Waist Dresses\nHalter Dresses\nMaxi Dresses\nOne-Shoulder Dresses\nRuffled Dresses\nSkater Dresses\nSundresses\nTwo-Piece Dresses",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "dresses",
-            "title": "Season",
-            "text": "Spring Dresses\nSummer Dresses\nFall Dresses\nWinter Dresses\n# Color\nBeige Dresses\nBlack Dresses\nBlue Dresses\nBrown Dresses\nGreen Dresses\nOrange Dresses\nPink Dresses\nPurple Dresses\nRed Dresses\nYellow Dresses"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "dresses",
-            "title": "Length",
-            "text": "Long Dresses\nMidi Dresses\nMini Dresses\nLittle Black Dresses\nLittle White Dresses\n# Fabric\nDenim Dresses\nJersey Knit Dresses\nPleated Dresses\nPrint & Floral Dresses\nSatin Dresses\nSequin Dresses\nSparkly Dresses\nSweater Dresses"
-          }
-        },
-        {
-          "type": "promo",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "dresses",
-            "title": "Mini Dresses",
-            "image_ratio": "portrait"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "tops",
-            "title": "All Women's Tops",
-            "text": "New In\nTops Under HK$180.00\nTops Under HK$270.00",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "tops",
-            "title": "Style",
-            "text": "Blouses & Shirts\nBodysuits\nButton-Up Shirts\nCrop Tops\nHalter Tops\nLong Sleeve Tops\nOne-Shoulder Tops\nShort Sleeve Tops\nSweaters\nTank Tops\nTube Tops\nTees",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "tops",
-            "title": "Outerwear",
-            "text": "All Outerwear\nBlazers\nCoats\nJackets"
-          }
-        },
-        {
-          "type": "promo",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "tops",
-            "title": "Tank Tops",
-            "image_ratio": "portrait"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "sale",
-            "title": "All Sale",
-            "text": "New In Sale\nBuy 2 Get 1 Free Sale\nLulus Deals\nOutlet\nPromotions",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "sale",
-            "title": "Category",
-            "text": "Accessories on Sale\nBottoms on Sale\nClothing on Sale\nDresses on Sale\nJewelry on Sale\nJumpsuits on Sale\nLoungewear on Sale\nShoes on Sale\nSweater Dressing on Sale\nSwimwear on Sale\nTops on Sale\nWedding on Sale",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "sale",
-            "title": "Occasion",
-            "text": "Bridesmaid Dresses on Sale\nCasual Dresses on Sale\nCocktail Dresses on Sale\nDay Party Dresses on Sale\nFormal Dresses on Sale\nHomecoming on Sale\nProm Dresses on Sale\nWedding Dresses on Sale\nWedding Guest on Sale\n# Season\nSummer Fashion on Sale\nFall Fashion on Sale\nWinter Fashion on Sale\nSpring Fashion on Sale",
-            "column_style": "wide"
-          }
-        },
-        {
-          "type": "menu_column",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "sale",
-            "title": "Price",
-            "text": "HK$90.00 and Under\nHK$135.00 and Under\nHK$180.00 and Under\nHK$225.00 and Under\nHK$360.00 and Under\n# Discount\n20% Off\n30% Off\n40% Off\n50% Off\n60% Off\n70% Off\n80% Off +"
-          }
-        },
-        {
-          "type": "promo",
-          "settings": {
-            "brand_key": "lulus",
-            "parent_key": "sale",
-            "title": "Outlet",
-            "image_ratio": "portrait"
-          }
-        }
+        { "type": "brand", "settings": { "key": "lulus", "title": "Lulus", "logo_text": "Lulus", "logo_style": "script" } },
+        { "type": "brand", "settings": { "key": "outlet", "title": "The Outlet", "logo_text": "the OUTLET", "logo_style": "outlet" } },
+        { "type": "nav_item", "settings": { "brand_key": "lulus", "key": "new", "title": "New" } },
+        { "type": "nav_item", "settings": { "brand_key": "lulus", "key": "dresses", "title": "Dresses" } },
+        { "type": "nav_item", "settings": { "brand_key": "lulus", "key": "sale", "title": "Sale" } },
+        { "type": "menu_column", "settings": { "brand_key": "lulus", "parent_key": "new", "title": "New Arrivals", "text": "All New\nUnder HK$450.00\nNew Colors!" } }
       ]
     }
   ]

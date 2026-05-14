@@ -430,7 +430,9 @@
       min-width: max-content;
       max-width: none;
     }
-
+    #{{ section_id }} .gmk-lulus-footer__column-header {
+      margin-bottom: 15px;
+    }
     #{{ section_id }} .gmk-lulus-footer__column-title {
       margin: 0 0 14px;
       color: var(--gmk-lulus-footer-text);
@@ -508,6 +510,82 @@
       font-size: var(--gmk-lulus-footer-copyright-font);
       font-weight: 400;
       line-height: 1.4;
+    }
+
+    /* 移动端折叠面板样式 (max-width: 749px) */
+    @media screen and (max-width: 749px) {
+      #{{ section_id }} .gmk-lulus-footer__columns {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__column {
+        min-width: 0 !important;
+        width: 100% !important;
+        border-bottom: 1px solid var(--gmk-lulus-footer-border);
+        padding-bottom: 0;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__column:last-child {
+        border-bottom: none;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__column-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 12px 0;
+        margin: 0;
+        width: 100%;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__column-title {
+        margin: 0 !important;
+        font-size: var(--gmk-lulus-footer-column-title-font);
+        font-weight: 500 !important;
+        padding-right: 12px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__toggle-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: var(--gmk-lulus-footer-icon);
+        flex-shrink: 0;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__toggle-btn svg {
+        width: 16px;
+        height: 16px;
+        display: block;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        fill: none;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__links {
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        gap: 12px;
+        padding-bottom: 12px;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__links.gmk-lulus-footer__links--collapsed {
+        display: none;
+      }
+
+      #{{ section_id }} .gmk-lulus-footer__link {
+        white-space: normal !important;
+        word-break: break-word;
+      }
     }
 
     @media screen and (max-width: 1399px) {
@@ -677,9 +755,9 @@
                     required
                   >
                   <button class="gmk-lulus-footer__submit" type="submit" aria-label="{{ newsletter_submit_label | escape }}">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                      <path d="M5 12h14"></path>
-                      <path d="M13 6l6 6-6 6"></path>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(180deg);">
+                      <path d="M8 8 L4 12 L8 16" />
+                      <path d="M8 12 L20 12" />
                     </svg>
                   </button>
                 </div>
@@ -804,7 +882,9 @@
                   {% if column_title != blank or column_links != blank %}
                     <div class="gmk-lulus-footer__column" {{ block.shopify_attributes }}>
                       {% if column_title != blank %}
-                        <p class="gmk-lulus-footer__column-title">{{ column_title | escape }}</p>
+                        <div class="gmk-lulus-footer__column-header">
+                          <p class="gmk-lulus-footer__column-title">{{ column_title | escape }}</p>
+                        </div>
                       {% endif %}
 
                       {% if column_links != blank %}
@@ -890,6 +970,212 @@
       </div>
     </div>
   </footer>
+
+  {% comment %}
+    移动端折叠功能脚本：为每个链接列添加点击展开/收起功能，显示加减图标。
+    默认所有列初始为折叠状态（收起），点击后展开，再次点击收起。
+    仅在屏幕宽度 ≤ 749px 时启用，桌面端保持多列展开布局。
+  {% endcomment %}
+  <script>
+    (function() {
+      const footerId = '{{ section_id }}';
+      const footerEl = document.getElementById(footerId);
+      if (!footerEl) return;
+
+      let activeMobileMode = false;
+
+      // 创建减号图标 (展开状态)
+      function createMinusIcon() {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('width', '16');
+        svg.setAttribute('height', '16');
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', '5');
+        line.setAttribute('y1', '12');
+        line.setAttribute('x2', '19');
+        line.setAttribute('y2', '12');
+        line.setAttribute('stroke', 'currentColor');
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('stroke-linecap', 'round');
+        svg.appendChild(line);
+        return svg;
+      }
+
+      // 创建加号图标 (折叠状态)
+      function createPlusIcon() {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('width', '16');
+        svg.setAttribute('height', '16');
+        const horizontal = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        horizontal.setAttribute('x1', '5');
+        horizontal.setAttribute('y1', '12');
+        horizontal.setAttribute('x2', '19');
+        horizontal.setAttribute('y2', '12');
+        horizontal.setAttribute('stroke', 'currentColor');
+        horizontal.setAttribute('stroke-width', '2');
+        horizontal.setAttribute('stroke-linecap', 'round');
+        const vertical = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        vertical.setAttribute('x1', '12');
+        vertical.setAttribute('y1', '5');
+        vertical.setAttribute('x2', '12');
+        vertical.setAttribute('y2', '19');
+        vertical.setAttribute('stroke', 'currentColor');
+        vertical.setAttribute('stroke-width', '2');
+        vertical.setAttribute('stroke-linecap', 'round');
+        svg.appendChild(horizontal);
+        svg.appendChild(vertical);
+        return svg;
+      }
+
+      // 为单个列添加折叠控件（默认折叠）
+      function initColumnAccordion(column) {
+        if (column.hasAttribute('data-accordion-initialized')) return;
+
+        const columnHeader = column.querySelector('.gmk-lulus-footer__column-header');
+        const linksList = column.querySelector('.gmk-lulus-footer__links');
+        
+        if (!linksList || linksList.children.length === 0) return;
+        
+        let headerElement = columnHeader;
+        if (!headerElement && linksList) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'gmk-lulus-footer__column-header';
+          const placeholderTitle = document.createElement('p');
+          placeholderTitle.className = 'gmk-lulus-footer__column-title';
+          placeholderTitle.textContent = 'Menu';
+          wrapper.appendChild(placeholderTitle);
+          column.insertBefore(wrapper, linksList);
+          headerElement = wrapper;
+        }
+        
+        if (!headerElement) return;
+
+        headerElement.style.display = 'flex';
+        headerElement.style.alignItems = 'center';
+        headerElement.style.justifyContent = 'space-between';
+        headerElement.style.width = '100%';
+        headerElement.style.cursor = 'pointer';
+
+        // 默认折叠状态：false (收起)
+        let isExpanded = false;
+        const plusIcon = createPlusIcon();
+        const minusIcon = createMinusIcon();
+        
+        const btn = document.createElement('button');
+        btn.className = 'gmk-lulus-footer__toggle-btn';
+        btn.setAttribute('aria-label', 'Toggle section');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.appendChild(plusIcon);
+        
+        // 初始状态：列表隐藏
+        linksList.style.display = 'none';
+        
+        const toggleAccordion = (event) => {
+          event.stopPropagation();
+          isExpanded = !isExpanded;
+          if (isExpanded) {
+            linksList.style.display = 'flex';
+            btn.innerHTML = '';
+            btn.appendChild(minusIcon.cloneNode(true));
+            btn.setAttribute('aria-expanded', 'true');
+          } else {
+            linksList.style.display = 'none';
+            btn.innerHTML = '';
+            btn.appendChild(plusIcon.cloneNode(true));
+            btn.setAttribute('aria-expanded', 'false');
+          }
+        };
+        
+        btn.addEventListener('click', toggleAccordion);
+        headerElement.addEventListener('click', (event) => {
+          if (event.target === btn || btn.contains(event.target)) return;
+          toggleAccordion(event);
+        });
+        
+        if (!headerElement.querySelector('.gmk-lulus-footer__toggle-btn')) {
+          headerElement.appendChild(btn);
+        }
+        
+        column.setAttribute('data-accordion-initialized', 'true');
+      }
+
+      // 移除所有列的折叠控件（恢复桌面样式）
+      function destroyAccordion() {
+        const columns = footerEl.querySelectorAll('.gmk-lulus-footer__column');
+        columns.forEach(column => {
+          column.removeAttribute('data-accordion-initialized');
+          const btn = column.querySelector('.gmk-lulus-footer__toggle-btn');
+          if (btn) btn.remove();
+          const linksList = column.querySelector('.gmk-lulus-footer__links');
+          if (linksList) {
+            linksList.style.display = '';
+          }
+          const header = column.querySelector('.gmk-lulus-footer__column-header');
+          if (header) {
+            header.style.display = '';
+            header.style.alignItems = '';
+            header.style.justifyContent = '';
+            header.style.width = '';
+            header.style.cursor = '';
+          }
+        });
+      }
+
+      function enableMobileAccordion() {
+        if (activeMobileMode) return;
+        const columns = footerEl.querySelectorAll('.gmk-lulus-footer__column');
+        if (columns.length === 0) return;
+        columns.forEach(column => {
+          initColumnAccordion(column);
+        });
+        activeMobileMode = true;
+      }
+
+      function disableMobileAccordion() {
+        if (!activeMobileMode) return;
+        destroyAccordion();
+        activeMobileMode = false;
+      }
+
+      function handleResponsiveAccordion() {
+        const isMobile = window.innerWidth <= 749;
+        if (isMobile) {
+          enableMobileAccordion();
+        } else {
+          disableMobileAccordion();
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', handleResponsiveAccordion);
+      } else {
+        handleResponsiveAccordion();
+      }
+      
+      let resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          handleResponsiveAccordion();
+        }, 150);
+      });
+      
+      if (window.Shopify && Shopify.designMode) {
+        document.addEventListener('shopify:section:load', function(event) {
+          if (event.detail.sectionId === '{{ section.id }}') {
+            setTimeout(handleResponsiveAccordion, 100);
+          }
+        });
+        document.addEventListener('shopify:section:reorder', function(event) {
+          if (event.detail.sectionId === '{{ section.id }}') {
+            setTimeout(handleResponsiveAccordion, 100);
+          }
+        });
+      }
+    })();
+  </script>
 {% endif %}
 
 {% schema %}

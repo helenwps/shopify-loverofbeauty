@@ -278,7 +278,7 @@
 
       #{{ section_id }} .gmk-social-feed__grid {
         display: flex;
-        gap: 16px;
+        gap: 4px;
         padding: 0 16px;
         overflow-x: auto;
         overflow-y: hidden;
@@ -292,7 +292,8 @@
       }
 
       #{{ section_id }} .gmk-social-feed__item {
-        flex: 0 0 min(76vw, 360px);
+        {% comment %} flex: 0 0 min(76vw, 360px); {% endcomment %}
+        flex-basis: min(25vw, 320px);
         scroll-snap-align: start;
       }
 

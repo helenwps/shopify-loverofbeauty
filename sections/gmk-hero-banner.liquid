@@ -139,6 +139,8 @@
       --gmk-hero-banner-heading-image-width: {{ section.settings.heading_image_width }}px;
       --gmk-hero-banner-overlay-opacity: {{ overlay_opacity }};
       --gmk-hero-banner-edge-gutter: clamp(16px, 3vw, 32px);
+      --top-padding: {{ section.settings.desktop_top_padding }}px;
+      --bottom-padding: {{ section.settings.desktop_bottom_padding }}px;
       position: relative;
       min-height: var(--gmk-hero-banner-height);
       overflow: hidden;
@@ -146,6 +148,8 @@
       background: #111111;
       scroll-margin-top: 72px;
       isolation: isolate;
+      margin-top: var(--top-padding);
+      margin-bottom: var(--bottom-padding);
     }
 
     .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__media,
@@ -361,8 +365,18 @@
     .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__legal p {
       margin: 0;
     }
+    {%- if section.settings.ignore_vertical_spacing -%}
+      #shopify-section-{{ section.id }} .section {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    {%- endif -%}
 
     @media screen and (max-width: 767px) {
+      #shopify-section-{{ section.id }} {
+        --top-padding: {{ section.settings.mobile_top_padding }}px;
+        --bottom-padding: {{ section.settings.mobile_bottom_padding }}px;
+      }
       .gmk-hero-banner--{{ section.id }} {
         {%- if mobile_aspect_ratio_mode == 'custom_height' -%}
           aspect-ratio: auto;
@@ -371,6 +385,8 @@
           aspect-ratio: {{ mobile_aspect_ratio }};
           min-height: 0;
         {%- endif -%}
+        --top-padding: {{ section.settings.mobile_top_padding }}px;
+        --bottom-padding: {{ section.settings.mobile_bottom_padding }}px;
       }
 
       .gmk-hero-banner--{{ section.id }} .gmk-hero-banner__container {
@@ -905,6 +921,56 @@
       "label": "移动高度 px｜Mobile height px",
       "info": "仅在移动媒体比例选择自定义高度时生效｜Only used when mobile media ratio is custom height",
       "default": 560
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "checkbox",
+      "id": "ignore_vertical_spacing",
+      "label": "Ignore vertical spacing in global configuration.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "desktop_top_padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_bottom_padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Desktop bottom padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_top_padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_bottom_padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile bottom padding",
+      "default": 0
     }
   ],
   "presets": [
